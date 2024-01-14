@@ -79,33 +79,81 @@ namespace Jodosoft.Numerics
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T CreateChecked<T, TOther>(TOther value)
             where T : INumberBase<T>, new()
-            where TOther : INumberBase<TOther>, new() =>
-#if !HAS_SYSTEM_NUMERICS
-            Default<T>.
+            where TOther : INumberBase<TOther>, new()
+#if HAS_SYSTEM_NUMERICS
+                     => T.CreateChecked(value);
+#else
+        {
+            T? result;
+
+            if (typeof(TOther) == typeof(T))
+            {
+                result = (T)(object)value;
+            }
+#pragma warning disable CS0618 // Type or member is obsolete
+            else if (!Default<T>.T.TryConvertFromChecked(value, out result) && !Default<TOther>.T.TryConvertToChecked<T>(value, out result))
+#pragma warning restore CS0618 // Type or member is obsolete
+            {
+                throw new NotSupportedException();
+            }
+
+            return result;
+        }
 #endif
-                    T.CreateChecked(value);
 
         /// <inheritdoc cref="INumberBase{TSelf}.CreateSaturating{TOther}(TOther)"/>
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T CreateSaturating<T, TOther>(TOther value)
             where T : INumberBase<T>, new()
-            where TOther : INumberBase<TOther>, new() =>
-#if !HAS_SYSTEM_NUMERICS
-            Default<T>.
+            where TOther : INumberBase<TOther>, new()
+#if HAS_SYSTEM_NUMERICS
+                     => T.CreateSaturating(value);
+#else
+        {
+            T? result;
+
+            if (typeof(TOther) == typeof(T))
+            {
+                result = (T)(object)value;
+            }
+#pragma warning disable CS0618 // Type or member is obsolete
+            else if (!Default<T>.T.TryConvertFromSaturating(value, out result) && !Default<TOther>.T.TryConvertToSaturating<T>(value, out result))
+#pragma warning restore CS0618 // Type or member is obsolete
+            {
+                throw new NotSupportedException();
+            }
+
+            return result;
+        }
 #endif
-                    T.CreateSaturating(value);
 
         /// <inheritdoc cref="INumberBase{TSelf}.CreateTruncating{TOther}(TOther)"/>
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T CreateTruncating<T, TOther>(TOther value)
             where T : INumberBase<T>, new()
-            where TOther : INumberBase<TOther>, new() =>
-#if !HAS_SYSTEM_NUMERICS
-            Default<T>.
+            where TOther : INumberBase<TOther>, new()
+#if HAS_SYSTEM_NUMERICS
+                     => T.CreateTruncating(value);
+#else
+        {
+            T? result;
+
+            if (typeof(TOther) == typeof(T))
+            {
+                result = (T)(object)value;
+            }
+#pragma warning disable CS0618 // Type or member is obsolete
+            else if (!Default<T>.T.TryConvertFromTruncating(value, out result) && !Default<TOther>.T.TryConvertToTruncating<T>(value, out result))
+#pragma warning restore CS0618 // Type or member is obsolete
+            {
+                throw new NotSupportedException();
+            }
+
+            return result;
+        }
 #endif
-                    T.CreateTruncating(value);
 
         /// <inheritdoc cref="INumberBase{TSelf}.IsCanonical(TSelf)"/>
         [DebuggerStepThrough]
@@ -314,15 +362,6 @@ namespace Jodosoft.Numerics
 #endif
                     T.Parse(s, style, provider);
 
-        /// <inheritdoc cref="INumberBase{TSelf}.Parse(ReadOnlySpan{char}, NumberStyles, IFormatProvider?)"/>
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Parse<T>(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider) where T : INumberBase<T>, new() =>
-#if !HAS_SYSTEM_NUMERICS
-            Default<T>.
-#endif
-                    T.Parse(s, style, provider);
-
         /// <inheritdoc cref="INumberBase{TSelf}.Radix"/>
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -336,15 +375,6 @@ namespace Jodosoft.Numerics
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryParse<T>([NotNullWhen(true)] string? s, NumberStyles style, IFormatProvider? provider, [MaybeNullWhen(false)] out T result) where T : INumberBase<T>, new() =>
-#if !HAS_SYSTEM_NUMERICS
-            Default<T>.
-#endif
-                    T.TryParse(s, style, provider, out result);
-
-        /// <inheritdoc cref="INumberBase{TSelf}.TryParse(ReadOnlySpan{char}, NumberStyles, IFormatProvider?, out TSelf)"/>
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryParse<T>(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, [MaybeNullWhen(false)] out T result) where T : INumberBase<T>, new() =>
 #if !HAS_SYSTEM_NUMERICS
             Default<T>.
 #endif
@@ -368,6 +398,26 @@ namespace Jodosoft.Numerics
 #endif
                     T.Parse(s, provider);
 
+#if HAS_SPANS
+
+        /// <inheritdoc cref="INumberBase{TSelf}.Parse(ReadOnlySpan{char}, NumberStyles, IFormatProvider?)"/>
+        [DebuggerStepThrough]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Parse<T>(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider) where T : INumberBase<T>, new() =>
+#if !HAS_SYSTEM_NUMERICS
+            Default<T>.
+#endif
+                    T.Parse(s, style, provider);
+
+        /// <inheritdoc cref="INumberBase{TSelf}.TryParse(ReadOnlySpan{char}, NumberStyles, IFormatProvider?, out TSelf)"/>
+        [DebuggerStepThrough]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool TryParse<T>(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, [MaybeNullWhen(false)] out T result) where T : INumberBase<T>, new() =>
+#if !HAS_SYSTEM_NUMERICS
+            Default<T>.
+#endif
+                    T.TryParse(s, style, provider, out result);
+
         /// <inheritdoc cref="ISpanParsable{TSelf}.Parse(ReadOnlySpan{char}, IFormatProvider?)"/>
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -386,5 +436,6 @@ namespace Jodosoft.Numerics
 #endif
                     T.TryParse(s, provider, out result);
 
+#endif
     }
 }

@@ -45,6 +45,9 @@ namespace Jodosoft.Numerics.Compatibility
 #if HAS_SPANS
         ISpanFormattable,
         ISpanParsable<TSelf>,
+#else
+        IFormattable,
+        IParsable<TSelf>,
 #endif
         ISubtractionOperators<TSelf, TSelf, TSelf>,
         IUnaryPlusOperators<TSelf, TSelf>,
@@ -65,28 +68,6 @@ namespace Jodosoft.Numerics.Compatibility
         /// <returns>The absolute of <paramref name="value" />.</returns>
         /// <exception cref="OverflowException">The absolute of <paramref name="value" /> is not representable by <typeparamref name="TSelf" />.</exception>
         TSelf Abs(TSelf value);
-
-        /// <summary>Creates an instance of the current type from a value, throwing an overflow exception for any values that fall outside the representable range of the current type.</summary>
-        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
-        /// <param name="value">The value which is used to create the instance of <typeparamref name="TSelf" />.</param>
-        /// <returns>An instance of <typeparamref name="TSelf" /> created from <paramref name="value" />.</returns>
-        /// <exception cref="NotSupportedException"><typeparamref name="TOther" /> is not supported.</exception>
-        /// <exception cref="OverflowException"><paramref name="value" /> is not representable by <typeparamref name="TSelf" />.</exception>
-        TSelf CreateChecked<TOther>(TOther value) where TOther : INumberBase<TOther>, new();
-
-        /// <summary>Creates an instance of the current type from a value, saturating any values that fall outside the representable range of the current type.</summary>
-        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
-        /// <param name="value">The value which is used to create the instance of <typeparamref name="TSelf" />.</param>
-        /// <returns>An instance of <typeparamref name="TSelf" /> created from <paramref name="value" />, saturating if <paramref name="value" /> falls outside the representable range of <typeparamref name="TSelf" />.</returns>
-        /// <exception cref="NotSupportedException"><typeparamref name="TOther" /> is not supported.</exception>
-        TSelf CreateSaturating<TOther>(TOther value) where TOther : INumberBase<TOther>, new();
-
-        /// <summary>Creates an instance of the current type from a value, truncating any values that fall outside the representable range of the current type.</summary>
-        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
-        /// <param name="value">The value which is used to create the instance of <typeparamref name="TSelf" />.</param>
-        /// <returns>An instance of <typeparamref name="TSelf" /> created from <paramref name="value" />, truncating if <paramref name="value" /> falls outside the representable range of <typeparamref name="TSelf" />.</returns>
-        /// <exception cref="NotSupportedException"><typeparamref name="TOther" /> is not supported.</exception>
-        TSelf CreateTruncating<TOther>(TOther value) where TOther : INumberBase<TOther>, new();
 
         /// <summary>Determines if a value is in its canonical representation.</summary>
         /// <param name="value">The value to be checked.</param>
@@ -214,6 +195,62 @@ namespace Jodosoft.Numerics.Compatibility
         /// <returns><paramref name="x" /> if it is less than <paramref name="y" />; otherwise, <paramref name="y" />.</returns>
         TSelf MinMagnitudeNumber(TSelf x, TSelf y);
 
+        /// <summary>Tries to convert a value to an instance of the current type, throwing an overflow exception for any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
+        /// <param name="value">The value which is used to create the instance of <typeparamref name="TSelf" />.</param>
+        /// <param name="result">On return, contains an instance of <typeparamref name="TSelf" /> converted from <paramref name="value" />.</param>
+        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
+        /// <exception cref="OverflowException"><paramref name="value" /> is not representable by <typeparamref name="TSelf" />.</exception>
+        [Obsolete("This method is protected in .NET 7, use CreateChecked instead.")]
+        bool TryConvertFromChecked<TOther>(TOther value, [MaybeNullWhen(false)] out TSelf result)
+           where TOther : INumberBase<TOther>, new();
+
+        /// <summary>Tries to convert a value to an instance of the current type, saturating any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
+        /// <param name="value">The value which is used to create the instance of <typeparamref name="TSelf" />.</param>
+        /// <param name="result">On return, contains an instance of <typeparamref name="TSelf" /> converted from <paramref name="value" />.</param>
+        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
+        [Obsolete("This method is protected in .NET 7, use CreateSaturating instead.")]
+        bool TryConvertFromSaturating<TOther>(TOther value, [MaybeNullWhen(false)] out TSelf result)
+           where TOther : INumberBase<TOther>, new();
+
+        /// <summary>Tries to convert a value to an instance of the current type, truncating any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
+        /// <param name="value">The value which is used to create the instance of <typeparamref name="TSelf" />.</param>
+        /// <param name="result">On return, contains an instance of <typeparamref name="TSelf" /> converted from <paramref name="value" />.</param>
+        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
+        [Obsolete("This method is protected in .NET 7, use CreateTruncating instead.")]
+        bool TryConvertFromTruncating<TOther>(TOther value, [MaybeNullWhen(false)] out TSelf result)
+           where TOther : INumberBase<TOther>, new();
+
+        /// <summary>Tries to convert an instance of the current type to another type, throwing an overflow exception for any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="TOther">The type to which <paramref name="value" /> should be converted.</typeparam>
+        /// <param name="value">The value which is used to create the instance of <typeparamref name="TOther" />.</param>
+        /// <param name="result">On return, contains an instance of <typeparamref name="TOther" /> converted from <paramref name="value" />.</param>
+        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
+        /// <exception cref="OverflowException"><paramref name="value" /> is not representable by <typeparamref name="TOther" />.</exception>
+        [Obsolete("This method is protected in .NET 7, use CreateChecked instead.")]
+        bool TryConvertToChecked<TOther>(TSelf value, [MaybeNullWhen(false)] out TOther result)
+           where TOther : INumberBase<TOther>, new();
+
+        /// <summary>Tries to convert an instance of the current type to another type, saturating any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="TOther">The type to which <paramref name="value" /> should be converted.</typeparam>
+        /// <param name="value">The value which is used to create the instance of <typeparamref name="TOther" />.</param>
+        /// <param name="result">On return, contains an instance of <typeparamref name="TOther" /> converted from <paramref name="value" />.</param>
+        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
+        [Obsolete("This method is protected in .NET 7, use CreateSaturating instead.")]
+        bool TryConvertToSaturating<TOther>(TSelf value, [MaybeNullWhen(false)] out TOther result)
+           where TOther : INumberBase<TOther>, new();
+
+        /// <summary>Tries to convert an instance of the current type to another type, truncating any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="TOther">The type to which <paramref name="value" /> should be converted.</typeparam>
+        /// <param name="value">The value which is used to create the instance of <typeparamref name="TOther" />.</param>
+        /// <param name="result">On return, contains an instance of <typeparamref name="TOther" /> converted from <paramref name="value" />.</param>
+        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
+        [Obsolete("This method is protected in .NET 7, use CreateTruncating instead.")]
+        bool TryConvertToTruncating<TOther>(TSelf value, [MaybeNullWhen(false)] out TOther result)
+           where TOther : INumberBase<TOther>, new();
+
         /// <summary>Parses a string into a value.</summary>
         /// <param name="s">The string to parse.</param>
         /// <param name="style">A bitwise combination of number styles that can be present in <paramref name="s" />.</param>
@@ -224,6 +261,15 @@ namespace Jodosoft.Numerics.Compatibility
         /// <exception cref="FormatException"><paramref name="s" /> is not in the correct format.</exception>
         /// <exception cref="OverflowException"><paramref name="s" /> is not representable by <typeparamref name="TSelf" />.</exception>
         TSelf Parse(string s, NumberStyles style, IFormatProvider? provider);
+
+        /// <summary>Tries to parses a string into a value.</summary>
+        /// <param name="s">The string to parse.</param>
+        /// <param name="style">A bitwise combination of number styles that can be present in <paramref name="s" />.</param>
+        /// <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
+        /// <param name="result">On return, contains the result of successfully parsing <paramref name="s" /> or an undefined value on failure.</param>
+        /// <returns><c>true</c> if <paramref name="s" /> was successfully parsed; otherwise, <c>false</c>.</returns>
+        /// <exception cref="ArgumentException"><paramref name="style" /> is not a supported <see cref="NumberStyles" /> value.</exception>
+        bool TryParse([NotNullWhen(true)] string? s, NumberStyles style, IFormatProvider? provider, [MaybeNullWhen(false)] out TSelf result);
 
 #if HAS_SPANS
 
@@ -236,19 +282,6 @@ namespace Jodosoft.Numerics.Compatibility
         /// <exception cref="FormatException"><paramref name="s" /> is not in the correct format.</exception>
         /// <exception cref="OverflowException"><paramref name="s" /> is not representable by <typeparamref name="TSelf" />.</exception>
         TSelf Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider);
-
-#endif
-
-        /// <summary>Tries to parses a string into a value.</summary>
-        /// <param name="s">The string to parse.</param>
-        /// <param name="style">A bitwise combination of number styles that can be present in <paramref name="s" />.</param>
-        /// <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
-        /// <param name="result">On return, contains the result of successfully parsing <paramref name="s" /> or an undefined value on failure.</param>
-        /// <returns><c>true</c> if <paramref name="s" /> was successfully parsed; otherwise, <c>false</c>.</returns>
-        /// <exception cref="ArgumentException"><paramref name="style" /> is not a supported <see cref="NumberStyles" /> value.</exception>
-        bool TryParse([NotNullWhen(true)] string? s, NumberStyles style, IFormatProvider? provider, [MaybeNullWhen(false)] out TSelf result);
-
-#if HAS_SPANS
 
         /// <summary>Tries to parses a span of characters into a value.</summary>
         /// <param name="s">The span of characters to parse.</param>
