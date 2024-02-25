@@ -25,7 +25,7 @@ namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines a mechanism for decrementing a given value.</summary>
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Maintaining similarity with the .NET 7 API .")]
+    [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     public interface IDecrementOperators<TSelf>
         where TSelf : IDecrementOperators<TSelf>?, new()
     {

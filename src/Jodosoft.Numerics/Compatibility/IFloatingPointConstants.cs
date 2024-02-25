@@ -17,23 +17,32 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-using System;
-using System.Diagnostics.CodeAnalysis;
-
 #if !HAS_SYSTEM_NUMERICS
+
+using System;
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>Defines a mechanism for getting the additive identity of a given type.</summary>
-    /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    /// <typeparam name="TResult">The type that contains the additive identify of <typeparamref name="TSelf" />.</typeparam>
-    [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
-    public interface IAdditiveIdentity<TSelf, TResult> where TSelf : IAdditiveIdentity<TSelf, TResult>?, new()
+    /// <summary>Defines support for floating-point constants.</summary>
+    /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
+    public interface IFloatingPointConstants<TSelf>
+        : INumberBase<TSelf>
+        where TSelf : IFloatingPointConstants<TSelf>?, new()
     {
-        /// <summary>Gets the additive identity of the current type.</summary>
-        /// <remarks>Use <see cref="Number.AdditiveIdentity{T}"/>.</remarks>
-        [Obsolete("Use Jodosoft.Numerics.Number.AdditiveIdentity")]
-        TResult AdditiveIdentity { get; }
+        /// <summary>Gets the mathematical constant <c>e</c>.</summary>
+        /// <remarks>Use <see cref="MathN.E{T}"/>.</remarks>
+        [Obsolete("Use Jodosoft.Numerics.MathN.E")]
+        TSelf E { get; }
+
+        /// <summary>Gets the mathematical constant <c>pi</c>.</summary>
+        /// <remarks>Use <see cref="MathN.Pi{T}"/>.</remarks>
+        [Obsolete("Use Jodosoft.Numerics.MathN.Pi")]
+        TSelf Pi { get; }
+
+        /// <summary>Gets the mathematical constant <c>tau</c>.</summary>
+        /// <remarks>Use <see cref="MathN.Tau{T}"/>.</remarks>
+        [Obsolete("Use Jodosoft.Numerics.MathN.Tau")]
+        TSelf Tau { get; }
     }
 }
 

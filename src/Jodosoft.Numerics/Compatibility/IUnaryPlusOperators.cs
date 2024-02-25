@@ -26,7 +26,7 @@ namespace Jodosoft.Numerics.Compatibility
     /// <summary>Defines a mechanism for computing the unary plus of a value.</summary>
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
     /// <typeparam name="TResult">The type that contains the result of negating <typeparamref name="TSelf" />.</typeparam>
-    [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Maintaining similarity with the .NET 7 API .")]
+    [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     public interface IUnaryPlusOperators<TSelf, TResult>
         where TSelf : IUnaryPlusOperators<TSelf, TResult>?, new()
     {

@@ -34,5 +34,4 @@ namespace Jodosoft.Numerics.Compatibility
         public static TResult Add<TSelf, TOther, TResult>(this TSelf left, TOther right) where TSelf : IAdditionOperators<TSelf, TOther, TResult>, new() => left + right;
     }
 }
-
 #endif

@@ -17,23 +17,23 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-using System;
-using System.Diagnostics.CodeAnalysis;
-
 #if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>Defines a mechanism for getting the additive identity of a given type.</summary>
+    /// <summary>Defines a mechanism for computing the modulus or remainder of two values.</summary>
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    /// <typeparam name="TResult">The type that contains the additive identify of <typeparamref name="TSelf" />.</typeparam>
-    [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
-    public interface IAdditiveIdentity<TSelf, TResult> where TSelf : IAdditiveIdentity<TSelf, TResult>?, new()
+    /// <typeparam name="TOther">The type that will divide <typeparamref name="TSelf" />.</typeparam>
+    /// <typeparam name="TResult">The type that contains the modulus or remainder of <typeparamref name="TSelf" /> and <typeparamref name="TOther" />.</typeparam>
+    /// <remarks>This type represents the <c>%</c> in C# which is often used to compute the remainder and may differ from an actual modulo operation depending on the type that implements the interface.</remarks>
+    public interface IModulusOperators<TSelf, TOther, TResult>
+        where TSelf : IModulusOperators<TSelf, TOther, TResult>?, new()
     {
-        /// <summary>Gets the additive identity of the current type.</summary>
-        /// <remarks>Use <see cref="Number.AdditiveIdentity{T}"/>.</remarks>
-        [Obsolete("Use Jodosoft.Numerics.Number.AdditiveIdentity")]
-        TResult AdditiveIdentity { get; }
+        /// <summary>Divides two values together to compute their modulus or remainder.</summary>
+        /// <param name="left">The value which <paramref name="right" /> divides.</param>
+        /// <param name="right">The value which divides <paramref name="left" />.</param>
+        /// <returns>The modulus or remainder of <paramref name="left" /> divided-by <paramref name="right" />.</returns>
+        TResult Remainder(TSelf? left, TOther? right);
     }
 }
 

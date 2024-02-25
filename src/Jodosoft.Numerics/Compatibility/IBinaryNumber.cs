@@ -17,23 +17,32 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-using System;
-using System.Diagnostics.CodeAnalysis;
-
 #if !HAS_SYSTEM_NUMERICS
+
+using System;
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>Defines a mechanism for getting the additive identity of a given type.</summary>
-    /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    /// <typeparam name="TResult">The type that contains the additive identify of <typeparamref name="TSelf" />.</typeparam>
-    [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
-    public interface IAdditiveIdentity<TSelf, TResult> where TSelf : IAdditiveIdentity<TSelf, TResult>?, new()
+    /// <summary>Defines a number that is represented in a base-2 format.</summary>
+    /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
+    public interface IBinaryNumber<TSelf>
+        : IBitwiseOperators<TSelf, TSelf, TSelf>,
+          INumber<TSelf>
+        where TSelf : IBinaryNumber<TSelf>?, new()
     {
-        /// <summary>Gets the additive identity of the current type.</summary>
-        /// <remarks>Use <see cref="Number.AdditiveIdentity{T}"/>.</remarks>
-        [Obsolete("Use Jodosoft.Numerics.Number.AdditiveIdentity")]
-        TResult AdditiveIdentity { get; }
+        /// <summary>Determines if a value is a power of two.</summary>
+        /// <param name="value">The value to be checked.</param>
+        /// <returns><c>true</c> if <paramref name="value" /> is a power of two; otherwise, <c>false</c>.</returns>
+        /// <remarks>Use <see cref="Number.IsPow2{T}(T)"/>.</remarks>
+        [Obsolete("Use Jodosoft.Numerics.Number.IsPow2")]
+        bool IsPow2(TSelf value);
+
+        /// <summary>Computes the log2 of a value.</summary>
+        /// <param name="value">The value whose log2 is to be computed.</param>
+        /// <returns>The log2 of <paramref name="value" />.</returns>
+        /// <remarks>Use <see cref="Number.Log2{T}(T)"/>.</remarks>
+        [Obsolete("Use Jodosoft.Numerics.Number.Log2")]
+        TSelf Log2(TSelf value);
     }
 }
 

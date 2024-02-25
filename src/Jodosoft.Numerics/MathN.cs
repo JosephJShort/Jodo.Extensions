@@ -18,8 +18,9 @@
 // IN THE SOFTWARE.
 
 using System;
-using System.Diagnostics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
+using Jodosoft.Numerics.Compatibility;
 using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics
@@ -30,181 +31,229 @@ namespace Jodosoft.Numerics
     /// </summary>
     public static class MathN
     {
-        /// <inheritdoc cref="IMath{TNumeric}.E" />
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric E<TNumeric>() where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.E;
+        /// <summary>Computes the quotient and remainder of two values.</summary>
+        /// <param name="left">The value which <paramref name="right" /> divides.</param>
+        /// <param name="right">The value which divides <paramref name="left" />.</param>
+        /// <returns>The quotient and remainder of <paramref name="left" /> divided-by <paramref name="right" />.</returns>
+        public static void DivRem<T>(T left, T right, out T quotient, out T remainder) where T : IBinaryInteger<T>, new()
+#if HAS_SYSTEM_NUMERICS
+        {
+            (quotient, remainder) = T.DivRem(left, right);
+        }
+#else
+        {
+            quotient = DefaultInstance<T>.Value.Divide(left, right);
+            remainder = DefaultInstance<T>.Value.Subtract(left, DefaultInstance<T>.Value.Multiply(quotient, right));
+        }
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.PI" />
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric PI<TNumeric>() where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.PI;
+#if HAS_VALUE_TUPLES
+        /// <summary>Computes the quotient and remainder of two values.</summary>
+        /// <param name="left">The value which <paramref name="right" /> divides.</param>
+        /// <param name="right">The value which divides <paramref name="left" />.</param>
+        /// <returns>The quotient and remainder of <paramref name="left" /> divided-by <paramref name="right" />.</returns>
+        public static (T Quotient, T Remainder) DivRem<T>(T left, T right) where T : IBinaryInteger<T>, new()
+#if HAS_SYSTEM_NUMERICS
+        => T.DivRem(left, right);
+#else
+        {
+            T quotient = DefaultInstance<T>.Value.Divide(left, right);
+            return (quotient, DefaultInstance<T>.Value.Subtract(left, DefaultInstance<T>.Value.Multiply(quotient, right)));
+        }
+#endif
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Tau" />
+        /// <summary>Computes <c>E</c> raised to a given power.</summary>
+        /// <param name="x">The power to which <c>E</c> is raised.</param>
+        /// <returns><c>E<sup><paramref name="x" /></sup></c></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Tau<TNumeric>() where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Tau;
+        public static T Exp<T>(T x) where T : IExponentialFunctions<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.Exp(x);
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Exp(x);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Sign(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int Sign<TNumeric>(TNumeric value) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Sign(value);
+        /// <summary>Computes <c>E</c> raised to a given power and subtracts one.</summary>
+        /// <param name="x">The power to which <c>E</c> is raised.</param>
+        /// <returns><c>E<sup><paramref name="x" /></sup> - 1</c></returns>
+        public static T ExpM1<T>(T x) where T : IExponentialFunctions<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.ExpM1(x);
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Subtract(DefaultInstance<T>.Value.Exp(x), DefaultInstance<T>.Value.One);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Abs(TNumeric)" />
-        [DebuggerStepThrough]
+        /// <summary>Computes <c>2</c> raised to a given power.</summary>
+        /// <param name="x">The power to which <c>2</c> is raised.</param>
+        /// <returns><c>2<sup><paramref name="x" /></sup></c></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Abs<TNumeric>(TNumeric value) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Abs(value);
+        public static T Exp2<T>(T x) where T : IExponentialFunctions<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.Exp2(x);
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Exp2(x);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Acos(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Acos<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Acos(x);
+        /// <summary>Computes <c>2</c> raised to a given power and subtracts one.</summary>
+        /// <param name="x">The power to which <c>2</c> is raised.</param>
+        /// <returns><c>2<sup><paramref name="x" /></sup> - 1</c></returns>
+        public static T Exp2M1<T>(T x) where T : IExponentialFunctions<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.Exp2M1(x);
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Subtract(DefaultInstance<T>.Value.Exp2(x), DefaultInstance<T>.Value.One);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Acosh(TNumeric)" />
-        [DebuggerStepThrough]
+        /// <summary>Computes <c>10</c> raised to a given power.</summary>
+        /// <param name="x">The power to which <c>10</c> is raised.</param>
+        /// <returns><c>10<sup><paramref name="x" /></sup></c></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Acosh<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Acosh(x);
+        public static T Exp10<T>(T x) where T : IExponentialFunctions<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.Exp10(x);
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Exp10(x);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Asin(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Asin<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Asin(x);
+        /// <summary>Computes <c>10</c> raised to a given power and subtracts one.</summary>
+        /// <param name="x">The power to which <c>10</c> is raised.</param>
+        /// <returns><c>10<sup><paramref name="x" /></sup> - 1</c></returns>
+        public static T Exp10M1<T>(T x) where T : IExponentialFunctions<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.Exp10M1(x);
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Subtract(DefaultInstance<T>.Value.Exp10(x), DefaultInstance<T>.Value.One);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Asinh(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Asinh<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Asinh(x);
+        /// <summary>Computes the ceiling of a value.</summary>
+        /// <param name="x">The value whose ceiling is to be computed.</param>
+        /// <returns>The ceiling of <paramref name="x" />.</returns>
+        public static T Ceiling<T>(T x) where T : IFloatingPoint<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.Ceiling(x);
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Round(x, digits: 0, (MidpointRounding)4); // MidpointRounding.ToPositiveInfinity
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Atan(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Atan<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Atan(x);
+        /// <summary>Computes the floor of a value.</summary>
+        /// <param name="x">The value whose floor is to be computed.</param>
+        /// <returns>The floor of <paramref name="x" />.</returns>
+        public static T Floor<T>(T x) where T : IFloatingPoint<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.Floor(x);
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Round(x, digits: 0, (MidpointRounding)3); // MidpointRounding.ToNegativeInfinity
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Atan2(TNumeric, TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Atan2<TNumeric>(TNumeric x, TNumeric y) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Atan2(x, y);
+        /// <summary>Rounds a value to the nearest integer using the default rounding mode (<see cref="MidpointRounding.ToEven" />).</summary>
+        /// <param name="x">The value to round.</param>
+        /// <returns>The result of rounding <paramref name="x" /> to the nearest integer using the default rounding mode.</returns>
+        public static T Round<T>(T x) where T : IFloatingPoint<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.Round(x);
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Round(x, digits: 0, MidpointRounding.ToEven);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Atanh(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Atanh<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Atanh(x);
+        /// <summary>Rounds a value to a specified number of fractional-digits using the default rounding mode (<see cref="MidpointRounding.ToEven" />).</summary>
+        /// <param name="x">The value to round.</param>
+        /// <param name="digits">The number of fractional digits to which <paramref name="x" /> should be rounded.</param>
+        /// <returns>The result of rounding <paramref name="x" /> to <paramref name="digits" /> fractional-digits using the default rounding mode.</returns>
+        public static T Round<T>(T x, int digits) where T : IFloatingPoint<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.Round(x, digits);
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Round(x, digits, MidpointRounding.ToEven);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Cbrt(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Cbrt<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Cbrt(x);
+        /// <summary>Rounds a value to the nearest integer using the specified rounding mode.</summary>
+        /// <param name="x">The value to round.</param>
+        /// <param name="mode">The mode under which <paramref name="x" /> should be rounded.</param>
+        /// <returns>The result of rounding <paramref name="x" /> to the nearest integer using <paramref name="mode" />.</returns>
+        public static T Round<T>(T x, MidpointRounding mode) where T : IFloatingPoint<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.Round(x, mode);
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Round(x, digits: 0, mode);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Ceiling(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Ceiling<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Ceiling(x);
+        /// <summary>Rounds a value to a specified number of fractional-digits using the default rounding mode (<see cref="MidpointRounding.ToEven" />).</summary>
+        /// <param name="x">The value to round.</param>
+        /// <param name="digits">The number of fractional digits to which <paramref name="x" /> should be rounded.</param>
+        /// <param name="mode">The mode under which <paramref name="x" /> should be rounded.</param>
+        /// <returns>The result of rounding <paramref name="x" /> to <paramref name="digits" /> fractional-digits using <paramref name="mode" />.</returns>
+        public static T Round<T>(T x, int digits, MidpointRounding mode) where T : IFloatingPoint<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.Round(x, digits, mode);
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Round(x, digits, mode);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Clamp(TNumeric, TNumeric, TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Clamp<TNumeric>(TNumeric x, TNumeric bound1, TNumeric bound2) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Clamp(x, bound1, bound2);
+        /// <summary>Truncates a value.</summary>
+        /// <param name="x">The value to truncate.</param>
+        /// <returns>The truncation of <paramref name="x" />.</returns>
+        public static T Truncate<T>(T x) where T : IFloatingPoint<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.Truncate(x);
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Round(x, digits: 0, (MidpointRounding)2); // MidpointRounding.ToZero
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Cos(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Cos<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Cos(x);
+        /// <summary>Gets the mathematical constant <c>e</c>.</summary>
+        public static T E<T>() where T : IFloatingPointConstants<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.E;
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.E;
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Cosh(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Cosh<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Cosh(x);
+        /// <summary>Gets the mathematical constant <c>pi</c>.</summary>
+        public static T Pi<T>() where T : IFloatingPointConstants<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.Pi;
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Pi;
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
-        /// <inheritdoc cref="IMath{TNumeric}.Exp(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Exp<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Exp(x);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Floor(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Floor<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Floor(x);
-
-        /// <inheritdoc cref="IMath{TNumeric}.IEEERemainder(TNumeric, TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric IEEERemainder<TNumeric>(TNumeric x, TNumeric y) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.IEEERemainder(x, y);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Log(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Log<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Log(x);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Log(TNumeric, TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Log<TNumeric>(TNumeric x, TNumeric y) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Log(x, y);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Log10(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Log10<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Log10(x);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Max(TNumeric, TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Max<TNumeric>(TNumeric x, TNumeric y) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Max(x, y);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Min(TNumeric, TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Min<TNumeric>(TNumeric x, TNumeric y) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Min(x, y);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Pow(TNumeric, TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Pow<TNumeric>(TNumeric x, TNumeric y) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Pow(x, y);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Round(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Round<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Round(x);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Round(TNumeric, int)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Round<TNumeric>(TNumeric x, int digits) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Round(x, digits);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Round(TNumeric, int)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Round<TNumeric>(TNumeric x, int digits, MidpointRounding mode) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Round(x, digits, mode);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Round(TNumeric, int, MidpointRounding)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Round<TNumeric>(TNumeric x, MidpointRounding mode) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Round(x, mode);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Sin(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Sin<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Sin(x);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Sinh(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Sinh<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Sinh(x);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Sqrt(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Sqrt<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Sqrt(x);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Tan(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Tan<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Tan(x);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Tanh(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Tanh<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Tanh(x);
-
-        /// <inheritdoc cref="IMath{TNumeric}.Truncate(TNumeric)" />
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TNumeric Truncate<TNumeric>(TNumeric x) where TNumeric : struct, INumeric<TNumeric> => DefaultProvider<TNumeric, IMath<TNumeric>>.Instance.Truncate(x);
+        /// <summary>Gets the mathematical constant <c>tau</c>.</summary>
+        public static T Tau<T>() where T : IFloatingPointConstants<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => T.Tau;
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.Tau;
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
     }
 }
