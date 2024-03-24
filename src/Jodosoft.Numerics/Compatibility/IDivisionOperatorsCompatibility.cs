@@ -17,23 +17,29 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
+using System;
 using System.Diagnostics.CodeAnalysis;
-using Jodosoft.Primitives;
 
 #if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>Defines a mechanism for computing the product of two values.</summary>
-    /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    /// <typeparam name="TOther">The type that will multiply <typeparamref name="TSelf" />.</typeparam>
-    /// <typeparam name="TResult">The type that contains the product of <typeparamref name="TSelf" /> and <typeparamref name="TOther" />.</typeparam>
+    /// <summary>Defines a mechanism for computing the quotient of two values.</summary>
+    /// <typeparam name="T">The type that implements this interface.</typeparam>
+    /// <typeparam name="TOther">The type that will divide <typeparamref name="T" />.</typeparam>
+    /// <typeparam name="TResult">The type that contains the quotient of <typeparamref name="T" /> and <typeparamref name="TOther" />.</typeparam>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     [SuppressMessage("csharpsquid", "S2436:Types and methods should not have too many generic parameters.", Justification = "Mirroring the .NET API.")]
-    public interface IMultiplyOperators<TSelf, TOther, TResult>
-        : IProvider<IMultiplyOperatorsCompatibility<TSelf, TOther, TResult>>
-        where TSelf : IMultiplyOperators<TSelf, TOther, TResult>?, new()
+    public interface IDivisionOperatorsCompatibility<T, TOther, TResult>
+        where T : IDivisionOperators<T, TOther, TResult>?, new()
     {
+        /// <summary>Divides two values together to compute their quotient.</summary>
+        /// <param name="left">The value which <paramref name="right" /> divides.</param>
+        /// <param name="right">The value which divides <paramref name="left" />.</param>
+        /// <returns>The quotient of <paramref name="left" /> divided-by <paramref name="right" />.</returns>
+        /// <remarks>Use <c>left.Divide(right)</c> to ensure compatibility with all .NET targets.</remarks>
+        [Obsolete("Use left.Divide(right) to ensure compatibility with all .NET targets.")]
+        TResult Divide(T? left, TOther? right);
     }
 }
 

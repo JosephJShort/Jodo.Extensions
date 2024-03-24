@@ -20,17 +20,23 @@
 #if !HAS_SYSTEM_NUMERICS
 
 using System;
-using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>Defines support for hyperbolic functions.</summary>
-    /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    public interface IHyperbolicFunctions<TSelf>
-        : IProvider<IHyperbolicFunctionsCompatibility<TSelf>>,
-          IFloatingPointConstants<TSelf>
-        where TSelf : IHyperbolicFunctions<TSelf>?, new()
+    /// <summary>Defines a mechanism for getting the minimum and maximum value of a type.</summary>
+    /// <typeparam name="T">The type that implements this interface.</typeparam>
+    public interface IMinMaxValueCompatibility<T>
+        where T : IMinMaxValue<T>?, new()
     {
+        /// <summary>Gets the minimum value of the current type.</summary>
+        /// <remarks>Use <see cref="Number.MinValue{T}"/>.</remarks>
+        [Obsolete("Use Jodosoft.Numerics.MathN.MinValue to ensure forward-compatibility.")]
+        T MinValue { get; }
+
+        /// <summary>Gets the maximum value of the current type.</summary>
+        /// <remarks>Use <see cref="Number.MaxValue{T}"/>.</remarks>
+        [Obsolete("Use Jodosoft.Numerics.MathN.MaxValue to ensure forward-compatibility.")]
+        T MaxValue { get; }
     }
 }
 

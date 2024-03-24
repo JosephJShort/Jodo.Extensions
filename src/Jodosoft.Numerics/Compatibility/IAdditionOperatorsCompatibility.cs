@@ -17,23 +17,30 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
+using System;
 using System.Diagnostics.CodeAnalysis;
-using Jodosoft.Primitives;
 
 #if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>Defines a mechanism for computing the product of two values.</summary>
-    /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    /// <typeparam name="TOther">The type that will multiply <typeparamref name="TSelf" />.</typeparam>
-    /// <typeparam name="TResult">The type that contains the product of <typeparamref name="TSelf" /> and <typeparamref name="TOther" />.</typeparam>
+    /// <summary>Defines a mechanism for computing the sum of two values.</summary>
+    /// <remarks>
+    ///     Allows backwards-compatible implementation of the
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> abstractions introduced in .NET 7.
+    /// </remarks>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     [SuppressMessage("csharpsquid", "S2436:Types and methods should not have too many generic parameters.", Justification = "Mirroring the .NET API.")]
-    public interface IMultiplyOperators<TSelf, TOther, TResult>
-        : IProvider<IMultiplyOperatorsCompatibility<TSelf, TOther, TResult>>
-        where TSelf : IMultiplyOperators<TSelf, TOther, TResult>?, new()
+    public interface IAdditionOperatorsCompatibility<T, TOther, TResult>
+        where T : IAdditionOperators<T, TOther, TResult>?, new()
     {
+        /// <summary>Adds two values together to compute their sum.</summary>
+        /// <param name="left">The value to which <paramref name="right" /> is added.</param>
+        /// <param name="right">The value which is added to <paramref name="left" />.</param>
+        /// <returns>The sum of <paramref name="left" /> and <paramref name="right" />.</returns>
+        /// <remarks>Use <c>left.Add(right)</c> to ensure compatibility with all .NET targets.</remarks>
+        [Obsolete("Use left.Add(right) to ensure compatibility with all .NET targets.")]
+        TResult Add(T left, TOther right);
     }
 }
 

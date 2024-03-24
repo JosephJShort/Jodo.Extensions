@@ -17,20 +17,22 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-#if !HAS_SYSTEM_NUMERICS
+using System.Diagnostics.CodeAnalysis;
 
-using System;
-using Jodosoft.Primitives;
+#if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>Defines support for hyperbolic functions.</summary>
-    /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    public interface IHyperbolicFunctions<TSelf>
-        : IProvider<IHyperbolicFunctionsCompatibility<TSelf>>,
-          IFloatingPointConstants<TSelf>
-        where TSelf : IHyperbolicFunctions<TSelf>?, new()
+    /// <summary>Defines a mechanism for incrementing a given value.</summary>
+    /// <typeparam name="T">The type that implements this interface.</typeparam>
+    [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
+    public interface IIncrementOperatorsCompatibility<T>
+        where T : IIncrementOperators<T>?, new()
     {
+        /// <summary>Increments a value.</summary>
+        /// <param name="value">The value to Increment.</param>
+        /// <returns>The result of Incrementing <paramref name="value" />.</returns>
+        T Increment(T value);
     }
 }
 

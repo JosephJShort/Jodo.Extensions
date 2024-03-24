@@ -20,29 +20,18 @@
 #if !HAS_SYSTEM_NUMERICS
 
 using System;
+using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines a number that is represented in a base-2 format.</summary>
     /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
     public interface IBinaryNumber<TSelf>
-        : IBitwiseOperators<TSelf, TSelf, TSelf>,
+        : IProvider<IBinaryNumberCompatibility<TSelf>>,
+          IBitwiseOperators<TSelf, TSelf, TSelf>,
           INumber<TSelf>
         where TSelf : IBinaryNumber<TSelf>?, new()
     {
-        /// <summary>Determines if a value is a power of two.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is a power of two; otherwise, <c>false</c>.</returns>
-        /// <remarks>Use <see cref="Number.IsPow2{T}(T)"/>.</remarks>
-        [Obsolete("Use Jodosoft.Numerics.Number.IsPow2")]
-        bool IsPow2(TSelf value);
-
-        /// <summary>Computes the log2 of a value.</summary>
-        /// <param name="value">The value whose log2 is to be computed.</param>
-        /// <returns>The log2 of <paramref name="value" />.</returns>
-        /// <remarks>Use <see cref="Number.Log2{T}(T)"/>.</remarks>
-        [Obsolete("Use Jodosoft.Numerics.Number.Log2")]
-        TSelf Log2(TSelf value);
     }
 }
 

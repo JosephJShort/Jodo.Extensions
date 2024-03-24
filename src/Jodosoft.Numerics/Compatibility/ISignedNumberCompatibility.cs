@@ -19,18 +19,15 @@
 
 #if !HAS_SYSTEM_NUMERICS
 
-using System;
-using Jodosoft.Primitives;
-
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>Defines support for hyperbolic functions.</summary>
-    /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    public interface IHyperbolicFunctions<TSelf>
-        : IProvider<IHyperbolicFunctionsCompatibility<TSelf>>,
-          IFloatingPointConstants<TSelf>
-        where TSelf : IHyperbolicFunctions<TSelf>?, new()
+    /// <summary>Defines a number type which can represent both positive and negative values.</summary>
+    /// <typeparam name="T">The type that implements the interface.</typeparam>
+    public interface ISignedNumberCompatibility<T>
+     where T : ISignedNumber<T>?, new()
     {
+        /// <summary>Gets the value <c>-1</c> for the type.</summary>
+        T NegativeOne { get; }
     }
 }
 

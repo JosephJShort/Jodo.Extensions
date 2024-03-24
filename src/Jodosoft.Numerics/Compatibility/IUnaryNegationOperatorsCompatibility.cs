@@ -17,20 +17,23 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-#if !HAS_SYSTEM_NUMERICS
+using System.Diagnostics.CodeAnalysis;
 
-using System;
-using Jodosoft.Primitives;
+#if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>Defines support for hyperbolic functions.</summary>
-    /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    public interface IHyperbolicFunctions<TSelf>
-        : IProvider<IHyperbolicFunctionsCompatibility<TSelf>>,
-          IFloatingPointConstants<TSelf>
-        where TSelf : IHyperbolicFunctions<TSelf>?, new()
+    /// <summary>Defines a mechanism for computing the unary negation of a value.</summary>
+    /// <typeparam name="T">The type that implements this interface.</typeparam>
+    /// <typeparam name="TResult">The type that contains the result of negating <typeparamref name="T" />.</typeparam>
+    [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
+    public interface IUnaryNegationOperatorsCompatibility<T, TResult>
+        where T : IUnaryNegationOperators<T, TResult>?, new()
     {
+        /// <summary>Computes the unary negation of a value.</summary>
+        /// <param name="value">The value for which to compute its unary negation.</param>
+        /// <returns>The unary negation of <paramref name="value" />.</returns>
+        T Negative(T value);
     }
 }
 

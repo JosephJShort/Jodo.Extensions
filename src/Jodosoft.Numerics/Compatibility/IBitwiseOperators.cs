@@ -19,6 +19,8 @@
 
 #if !HAS_SYSTEM_NUMERICS
 
+using Jodosoft.Primitives;
+
 namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines a mechanism for performing bitwise operations over two values.</summary>
@@ -26,30 +28,9 @@ namespace Jodosoft.Numerics.Compatibility
     /// <typeparam name="TOther">The type that will is used in the operation with <typeparamref name="TSelf" />.</typeparam>
     /// <typeparam name="TResult">The type that contains the result of <typeparamref name="TSelf" /> op <typeparamref name="TOther" />.</typeparam>
     public interface IBitwiseOperators<TSelf, TOther, TResult>
+        : IProvider<IBitwiseOperatorsCompatibility<TSelf, TOther, TResult>>
         where TSelf : IBitwiseOperators<TSelf, TOther, TResult>?, new()
     {
-        /// <summary>Computes the bitwise-and of two values.</summary>
-        /// <param name="left">The value to and with <paramref name="right" />.</param>
-        /// <param name="right">The value to and with <paramref name="left" />.</param>
-        /// <returns>The bitwise-and of <paramref name="left" /> and <paramref name="right" />.</returns>
-        TResult LogicalAnd(TSelf? left, TOther? right);
-
-        /// <summary>Computes the bitwise-or of two values.</summary>
-        /// <param name="left">The value to or with <paramref name="right" />.</param>
-        /// <param name="right">The value to or with <paramref name="left" />.</param>
-        /// <returns>The bitwise-or of <paramref name="left" /> and <paramref name="right" />.</returns>
-        TResult LogicalOr(TSelf? left, TOther? right);
-
-        /// <summary>Computes the exclusive-or of two values.</summary>
-        /// <param name="left">The value to xor with <paramref name="right" />.</param>
-        /// <param name="right">The value to xorwith <paramref name="left" />.</param>
-        /// <returns>The exclusive-or of <paramref name="left" /> and <paramref name="right" />.</returns>
-        TResult LogicalExclusiveOr(TSelf? left, TOther? right);
-
-        /// <summary>Computes the ones-complement representation of a given value.</summary>
-        /// <param name="value">The value for which to compute its ones-complement.</param>
-        /// <returns>The ones-complement of <paramref name="value" />.</returns>
-        TResult BitwiseComplement(TSelf? value);
     }
 }
 

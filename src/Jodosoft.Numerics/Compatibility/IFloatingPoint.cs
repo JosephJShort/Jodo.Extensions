@@ -18,28 +18,26 @@
 // IN THE SOFTWARE.
 
 using System;
+using Jodosoft.Primitives;
 
 #if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
+    public interface ICompatProvider<T>
+    {
+        T StaticCompatibility { get; }
+    }
+
     /// <summary>Defines a floating-point type.</summary>
     /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
     public interface IFloatingPoint<TSelf>
-        : IFloatingPointConstants<TSelf>,
+        : IProvider<IFloatingPointCompatibility<TSelf>>
+          IFloatingPointConstants<TSelf>,
           INumber<TSelf>,
           ISignedNumber<TSelf>
         where TSelf : IFloatingPoint<TSelf>?, new()
     {
-        /// <summary>Rounds a value to a specified number of fractional-digits using the default rounding mode (<see cref="MidpointRounding.ToEven" />).</summary>
-        /// <param name="x">The value to round.</param>
-        /// <param name="digits">The number of fractional digits to which <paramref name="x" /> should be rounded.</param>
-        /// <param name="mode">The mode under which <paramref name="x" /> should be rounded.</param>
-        /// <returns>The result of rounding <paramref name="x" /> to <paramref name="digits" /> fractional-digits using <paramref name="mode" />.</returns>
-        /// <remarks>Use <see cref="MathN.Round{T}(T, int, MidpointRounding)"/>.</remarks>
-        [Obsolete("Use Jodosoft.Numerics.MathN.Round")]
-        TSelf Round(TSelf x, int digits, MidpointRounding mode);
-
         /// <summary>Gets the number of bytes that will be written as part of <see cref="TryWriteExponentLittleEndian(Span{byte}, out int)" />.</summary>
         /// <returns>The number of bytes that will be written as part of <see cref="TryWriteExponentLittleEndian(Span{byte}, out int)" />.</returns>
         int GetExponentByteCount();
@@ -83,5 +81,4 @@ namespace Jodosoft.Numerics.Compatibility
 #endif
     }
 }
-
 #endif

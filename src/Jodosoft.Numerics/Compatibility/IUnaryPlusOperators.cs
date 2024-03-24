@@ -18,6 +18,7 @@
 // IN THE SOFTWARE.
 
 using System.Diagnostics.CodeAnalysis;
+using Jodosoft.Primitives;
 
 #if !HAS_SYSTEM_NUMERICS
 
@@ -28,12 +29,9 @@ namespace Jodosoft.Numerics.Compatibility
     /// <typeparam name="TResult">The type that contains the result of negating <typeparamref name="TSelf" />.</typeparam>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     public interface IUnaryPlusOperators<TSelf, TResult>
+        : IProvider<IUnaryPlusOperatorsCompatibility<TSelf, TResult>>
         where TSelf : IUnaryPlusOperators<TSelf, TResult>?, new()
     {
-        /// <summary>Computes the unary plus of a value.</summary>
-        /// <param name="value">The value for which to compute its unary plus.</param>
-        /// <returns>The unary plus of <paramref name="value" />.</returns>
-        TSelf Positive(TSelf value);
     }
 }
 

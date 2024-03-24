@@ -19,18 +19,17 @@
 
 #if !HAS_SYSTEM_NUMERICS
 
+using System;
+using Jodosoft.Primitives;
+
 namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines a mechanism for getting the minimum and maximum value of a type.</summary>
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
     public interface IMinMaxValue<TSelf>
+        : IProvider<IMinMaxValueCompatibility<TSelf>>
         where TSelf : IMinMaxValue<TSelf>?, new()
     {
-        /// <summary>Gets the minimum value of the current type.</summary>
-        TSelf MinValue { get; }
-
-        /// <summary>Gets the maximum value of the current type.</summary>
-        TSelf MaxValue { get; }
     }
 }
 

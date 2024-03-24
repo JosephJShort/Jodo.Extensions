@@ -18,6 +18,7 @@
 // IN THE SOFTWARE.
 
 using System.Diagnostics.CodeAnalysis;
+using Jodosoft.Primitives;
 
 #if !HAS_SYSTEM_NUMERICS
 
@@ -30,32 +31,10 @@ namespace Jodosoft.Numerics.Compatibility
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     [SuppressMessage("csharpsquid", "S2436:Types and methods should not have too many generic parameters.", Justification = "Mirroring the .NET API.")]
     public interface IComparisonOperators<TSelf, TOther, TResult>
-        : IEqualityOperators<TSelf, TOther, TResult>
+        : IProvider<IComparisonOperatorsCompatibility<TSelf, TOther, TResult>>,
+          IEqualityOperators<TSelf, TOther, TResult>
         where TSelf : IComparisonOperators<TSelf, TOther, TResult>?, new()
     {
-        /// <summary>Compares two values to determine which is less.</summary>
-        /// <param name="left">The value to compare with <paramref name="right" />.</param>
-        /// <param name="right">The value to compare with <paramref name="left" />.</param>
-        /// <returns><c>true</c> if <paramref name="left" /> is less than <paramref name="right" />; otherwise, <c>false</c>.</returns>
-        TResult IsLessThan(TSelf left, TOther right);
-
-        /// <summary>Compares two values to determine which is less or equal.</summary>
-        /// <param name="left">The value to compare with <paramref name="right" />.</param>
-        /// <param name="right">The value to compare with <paramref name="left" />.</param>
-        /// <returns><c>true</c> if <paramref name="left" /> is less than or equal to <paramref name="right" />; otherwise, <c>false</c>.</returns>
-        TResult IsLessThanOrEqualTo(TSelf left, TOther right);
-
-        /// <summary>Compares two values to determine which is greater.</summary>
-        /// <param name="left">The value to compare with <paramref name="right" />.</param>
-        /// <param name="right">The value to compare with <paramref name="left" />.</param>
-        /// <returns><c>true</c> if <paramref name="left" /> is greater than <paramref name="right" />; otherwise, <c>false</c>.</returns>
-        TResult IsGreaterThan(TSelf left, TOther right);
-
-        /// <summary>Compares two values to determine which is greater or equal.</summary>
-        /// <param name="left">The value to compare with <paramref name="right" />.</param>
-        /// <param name="right">The value to compare with <paramref name="left" />.</param>
-        /// <returns><c>true</c> if <paramref name="left" /> is greater than or equal to <paramref name="right" />; otherwise, <c>false</c>.</returns>
-        TResult IsGreaterThanOrEqualTo(TSelf left, TOther right);
     }
 }
 

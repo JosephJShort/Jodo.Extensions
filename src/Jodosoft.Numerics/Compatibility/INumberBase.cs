@@ -18,8 +18,10 @@
 // IN THE SOFTWARE.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
+using System.Buffers;
+using System.Text;
+using System.Text.Unicode;
+using Jodosoft.Primitives;
 using Jodosoft.Primitives.Compatibility;
 
 #if !HAS_SYSTEM_NUMERICS
@@ -33,6 +35,7 @@ namespace Jodosoft.Numerics.Compatibility
     /// </summary>
     /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
     public interface INumberBase<TSelf> :
+        IProvider<INumberBaseCompatibility<TSelf>>,
         IAdditionOperators<TSelf, TSelf, TSelf>,
         IAdditiveIdentity<TSelf, TSelf>,
         IDecrementOperators<TSelf>,
@@ -54,246 +57,60 @@ namespace Jodosoft.Numerics.Compatibility
         IUnaryNegationOperators<TSelf, TSelf>
     where TSelf : INumberBase<TSelf>?, new()
     {
-        /// <summary>Gets the value <c>1</c> for the type.</summary>
-        TSelf One { get; }
 
-        /// <summary>Gets the radix, or base, for the type.</summary>
-        int Radix { get; }
+        bool IUtf8SpanFormattable.TryFormat(Span<byte> utf8Destination, out int bytesWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+        {
+            char[]? utf16DestinationArray;
+            scoped Span<char> utf16Destination;
+            int destinationMaxCharCount = Encoding.UTF8.GetMaxCharCount(utf8Destination.Length);
 
-        /// <summary>Gets the value <c>0</c> for the type.</summary>
-        TSelf Zero { get; }
+            if (destinationMaxCharCount < 256)
+            {
+                utf16DestinationArray = null;
+                utf16Destination = stackalloc char[256];
+            }
+            else
+            {
+                utf16DestinationArray = ArrayPool<char>.Shared.Rent(destinationMaxCharCount);
+                utf16Destination = utf16DestinationArray.AsSpan(0, destinationMaxCharCount);
+            }
 
-        /// <summary>Computes the absolute of a value.</summary>
-        /// <param name="value">The value for which to get its absolute.</param>
-        /// <returns>The absolute of <paramref name="value" />.</returns>
-        /// <exception cref="OverflowException">The absolute of <paramref name="value" /> is not representable by <typeparamref name="TSelf" />.</exception>
-        TSelf Abs(TSelf value);
+            if (!TryFormat(utf16Destination, out int charsWritten, format, provider))
+            {
+                if (utf16DestinationArray != null)
+                {
+                    // Return rented buffers if necessary
+                    ArrayPool<char>.Shared.Return(utf16DestinationArray);
+                }
 
-        /// <summary>Determines if a value is in its canonical representation.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is in its canonical representation; otherwise, <c>false</c>.</returns>
-        bool IsCanonical(TSelf value);
+                bytesWritten = 0;
+                return false;
+            }
 
-        /// <summary>Determines if a value represents a complex value.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is a complex number; otherwise, <c>false</c>.</returns>
-        /// <remarks>This function returns <c>false</c> for a complex number <c>a + bi</c> where <c>b</c> is zero.</remarks>
-        bool IsComplexNumber(TSelf value);
+            // Make sure we slice the buffer to just the characters written
+            utf16Destination = utf16Destination.Slice(0, charsWritten);
 
-        /// <summary>Determines if a value represents an even integral value.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is an even integer; otherwise, <c>false</c>.</returns>
-        /// <remarks>
-        ///     <para>This correctly handles floating-point values and so <c>2.0</c> will return <c>true</c> while <c>2.2</c> will return <c>false</c>.</para>
-        ///     <para>This functioning returning <c>false</c> does not imply that <see cref="IsOddInteger(TSelf)" /> will return <c>true</c>. A number with a fractional portion, <c>3.3</c>, is not even nor odd.</para>
-        /// </remarks>
-        bool IsEvenInteger(TSelf value);
+            OperationStatus utf8DestinationStatus = Utf8.FromUtf16(utf16Destination, utf8Destination, out _, out bytesWritten, replaceInvalidSequences: false);
 
-        /// <summary>Determines if a value is finite.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is finite; otherwise, <c>false</c>.</returns>
-        /// <remarks>This function returning <c>false</c> does not imply that <see cref="IsInfinity(TSelf)" /> will return <c>true</c>. <c>NaN</c> is not finite nor infinite.</remarks>
-        bool IsFinite(TSelf value);
+            if (utf16DestinationArray != null)
+            {
+                // Return rented buffers if necessary
+                ArrayPool<char>.Shared.Return(utf16DestinationArray);
+            }
 
-        /// <summary>Determines if a value represents an imaginary value.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is an imaginary number; otherwise, <c>false</c>.</returns>
-        /// <remarks>This function returns <c>false</c> for a complex number <c>a + bi</c> where <c>a</c> is non-zero.</remarks>
-        bool IsImaginaryNumber(TSelf value);
+            if (utf8DestinationStatus == OperationStatus.Done)
+            {
+                return true;
+            }
 
-        /// <summary>Determines if a value is infinite.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is infinite; otherwise, <c>false</c>.</returns>
-        /// <remarks>This function returning <c>false</c> does not imply that <see cref="IsFinite(TSelf)" /> will return <c>true</c>. <c>NaN</c> is not finite nor infinite.</remarks>
-        bool IsInfinity(TSelf value);
+            if (utf8DestinationStatus != OperationStatus.DestinationTooSmall)
+            {
+                ThrowHelper.ThrowInvalidOperationException_InvalidUtf8();
+            }
 
-        /// <summary>Determines if a value represents an integral value.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is an integer; otherwise, <c>false</c>.</returns>
-        /// <remarks>This correctly handles floating-point values and so <c>2.0</c> and <c>3.0</c> will return <c>true</c> while <c>2.2</c> and <c>3.3</c> will return <c>false</c>.</remarks>
-        bool IsInteger(TSelf value);
-
-        /// <summary>Determines if a value is NaN.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is NaN; otherwise, <c>false</c>.</returns>
-        bool IsNaN(TSelf value);
-
-        /// <summary>Determines if a value is negative.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is negative; otherwise, <c>false</c>.</returns>
-        /// <remarks>This function returning <c>false</c> does not imply that <see cref="IsPositive(TSelf)" /> will return <c>true</c>. A complex number, <c>a + bi</c> for non-zero <c>b</c>, is not positive nor negative</remarks>
-        bool IsNegative(TSelf value);
-
-        /// <summary>Determines if a value is negative infinity.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is negative infinity; otherwise, <c>false</c>.</returns>
-        bool IsNegativeInfinity(TSelf value);
-
-        /// <summary>Determines if a value is normal.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is normal; otherwise, <c>false</c>.</returns>
-        bool IsNormal(TSelf value);
-
-        /// <summary>Determines if a value represents an odd integral value.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is an odd integer; otherwise, <c>false</c>.</returns>
-        /// <remarks>
-        ///     <para>This correctly handles floating-point values and so <c>3.0</c> will return <c>true</c> while <c>3.3</c> will return <c>false</c>.</para>
-        ///     <para>This functioning returning <c>false</c> does not imply that <see cref="IsOddInteger(TSelf)" /> will return <c>true</c>. A number with a fractional portion, <c>3.3</c>, is neither even nor odd.</para>
-        /// </remarks>
-        bool IsOddInteger(TSelf value);
-
-        /// <summary>Determines if a value is positive.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is positive; otherwise, <c>false</c>.</returns>
-        /// <remarks>This function returning <c>false</c> does not imply that <see cref="IsNegative(TSelf)" /> will return <c>true</c>. A complex number, <c>a + bi</c> for non-zero <c>b</c>, is not positive nor negative</remarks>
-        bool IsPositive(TSelf value);
-
-        /// <summary>Determines if a value is positive infinity.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is positive infinity; otherwise, <c>false</c>.</returns>
-        bool IsPositiveInfinity(TSelf value);
-
-        /// <summary>Determines if a value represents a real value.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is a real number; otherwise, <c>false</c>.</returns>
-        /// <remarks>This function returns <c>true</c> for a complex number <c>a + bi</c> where <c>b</c> is zero.</remarks>
-        bool IsRealNumber(TSelf value);
-
-        /// <summary>Determines if a value is subnormal.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is subnormal; otherwise, <c>false</c>.</returns>
-        bool IsSubnormal(TSelf value);
-
-        /// <summary>Determines if a value is zero.</summary>
-        /// <param name="value">The value to be checked.</param>
-        /// <returns><c>true</c> if <paramref name="value" /> is zero; otherwise, <c>false</c>.</returns>
-        /// <remarks>This function treats both positive and negative zero as zero and so will return <c>true</c> for <c>+0.0</c> and <c>-0.0</c>.</remarks>
-        bool IsZero(TSelf value);
-
-        /// <summary>Compares two values to compute which is greater.</summary>
-        /// <param name="x">The value to compare with <paramref name="y" />.</param>
-        /// <param name="y">The value to compare with <paramref name="x" />.</param>
-        /// <returns><paramref name="x" /> if it is greater than <paramref name="y" />; otherwise, <paramref name="y" />.</returns>
-        TSelf MaxMagnitude(TSelf x, TSelf y);
-
-        /// <summary>Compares two values to compute which has the greater magnitude and returning the other value if an input is <c>NaN</c>.</summary>
-        /// <param name="x">The value to compare with <paramref name="y" />.</param>
-        /// <param name="y">The value to compare with <paramref name="x" />.</param>
-        /// <returns><paramref name="x" /> if it is greater than <paramref name="y" />; otherwise, <paramref name="y" />.</returns>
-        TSelf MaxMagnitudeNumber(TSelf x, TSelf y);
-
-        /// <summary>Compares two values to compute which is lesser.</summary>
-        /// <param name="x">The value to compare with <paramref name="y" />.</param>
-        /// <param name="y">The value to compare with <paramref name="x" />.</param>
-        /// <returns><paramref name="x" /> if it is less than <paramref name="y" />; otherwise, <paramref name="y" />.</returns>
-        TSelf MinMagnitude(TSelf x, TSelf y);
-
-        /// <summary>Compares two values to compute which has the lesser magnitude and returning the other value if an input is <c>NaN</c>.</summary>
-        /// <param name="x">The value to compare with <paramref name="y" />.</param>
-        /// <param name="y">The value to compare with <paramref name="x" />.</param>
-        /// <returns><paramref name="x" /> if it is less than <paramref name="y" />; otherwise, <paramref name="y" />.</returns>
-        TSelf MinMagnitudeNumber(TSelf x, TSelf y);
-
-        /// <summary>Tries to convert a value to an instance of the current type, throwing an overflow exception for any values that fall outside the representable range of the current type.</summary>
-        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
-        /// <param name="value">The value which is used to create the instance of <typeparamref name="TSelf" />.</param>
-        /// <param name="result">On return, contains an instance of <typeparamref name="TSelf" /> converted from <paramref name="value" />.</param>
-        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
-        /// <exception cref="OverflowException"><paramref name="value" /> is not representable by <typeparamref name="TSelf" />.</exception>
-        [Obsolete("This method is protected in .NET 7, use CreateChecked instead.")]
-        bool TryConvertFromChecked<TOther>(TOther value, [MaybeNullWhen(false)] out TSelf result)
-           where TOther : INumberBase<TOther>, new();
-
-        /// <summary>Tries to convert a value to an instance of the current type, saturating any values that fall outside the representable range of the current type.</summary>
-        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
-        /// <param name="value">The value which is used to create the instance of <typeparamref name="TSelf" />.</param>
-        /// <param name="result">On return, contains an instance of <typeparamref name="TSelf" /> converted from <paramref name="value" />.</param>
-        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
-        [Obsolete("This method is protected in .NET 7, use CreateSaturating instead.")]
-        bool TryConvertFromSaturating<TOther>(TOther value, [MaybeNullWhen(false)] out TSelf result)
-           where TOther : INumberBase<TOther>, new();
-
-        /// <summary>Tries to convert a value to an instance of the current type, truncating any values that fall outside the representable range of the current type.</summary>
-        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
-        /// <param name="value">The value which is used to create the instance of <typeparamref name="TSelf" />.</param>
-        /// <param name="result">On return, contains an instance of <typeparamref name="TSelf" /> converted from <paramref name="value" />.</param>
-        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
-        [Obsolete("This method is protected in .NET 7, use CreateTruncating instead.")]
-        bool TryConvertFromTruncating<TOther>(TOther value, [MaybeNullWhen(false)] out TSelf result)
-           where TOther : INumberBase<TOther>, new();
-
-        /// <summary>Tries to convert an instance of the current type to another type, throwing an overflow exception for any values that fall outside the representable range of the current type.</summary>
-        /// <typeparam name="TOther">The type to which <paramref name="value" /> should be converted.</typeparam>
-        /// <param name="value">The value which is used to create the instance of <typeparamref name="TOther" />.</param>
-        /// <param name="result">On return, contains an instance of <typeparamref name="TOther" /> converted from <paramref name="value" />.</param>
-        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
-        /// <exception cref="OverflowException"><paramref name="value" /> is not representable by <typeparamref name="TOther" />.</exception>
-        [Obsolete("This method is protected in .NET 7, use CreateChecked instead.")]
-        bool TryConvertToChecked<TOther>(TSelf value, [MaybeNullWhen(false)] out TOther result)
-           where TOther : INumberBase<TOther>, new();
-
-        /// <summary>Tries to convert an instance of the current type to another type, saturating any values that fall outside the representable range of the current type.</summary>
-        /// <typeparam name="TOther">The type to which <paramref name="value" /> should be converted.</typeparam>
-        /// <param name="value">The value which is used to create the instance of <typeparamref name="TOther" />.</param>
-        /// <param name="result">On return, contains an instance of <typeparamref name="TOther" /> converted from <paramref name="value" />.</param>
-        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
-        [Obsolete("This method is protected in .NET 7, use CreateSaturating instead.")]
-        bool TryConvertToSaturating<TOther>(TSelf value, [MaybeNullWhen(false)] out TOther result)
-           where TOther : INumberBase<TOther>, new();
-
-        /// <summary>Tries to convert an instance of the current type to another type, truncating any values that fall outside the representable range of the current type.</summary>
-        /// <typeparam name="TOther">The type to which <paramref name="value" /> should be converted.</typeparam>
-        /// <param name="value">The value which is used to create the instance of <typeparamref name="TOther" />.</param>
-        /// <param name="result">On return, contains an instance of <typeparamref name="TOther" /> converted from <paramref name="value" />.</param>
-        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
-        [Obsolete("This method is protected in .NET 7, use CreateTruncating instead.")]
-        bool TryConvertToTruncating<TOther>(TSelf value, [MaybeNullWhen(false)] out TOther result)
-           where TOther : INumberBase<TOther>, new();
-
-        /// <summary>Parses a string into a value.</summary>
-        /// <param name="s">The string to parse.</param>
-        /// <param name="style">A bitwise combination of number styles that can be present in <paramref name="s" />.</param>
-        /// <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
-        /// <returns>The result of parsing <paramref name="s" />.</returns>
-        /// <exception cref="ArgumentException"><paramref name="style" /> is not a supported <see cref="NumberStyles" /> value.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="s" /> is <c>null</c>.</exception>
-        /// <exception cref="FormatException"><paramref name="s" /> is not in the correct format.</exception>
-        /// <exception cref="OverflowException"><paramref name="s" /> is not representable by <typeparamref name="TSelf" />.</exception>
-        TSelf Parse(string s, NumberStyles style, IFormatProvider? provider);
-
-        /// <summary>Tries to parses a string into a value.</summary>
-        /// <param name="s">The string to parse.</param>
-        /// <param name="style">A bitwise combination of number styles that can be present in <paramref name="s" />.</param>
-        /// <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
-        /// <param name="result">On return, contains the result of successfully parsing <paramref name="s" /> or an undefined value on failure.</param>
-        /// <returns><c>true</c> if <paramref name="s" /> was successfully parsed; otherwise, <c>false</c>.</returns>
-        /// <exception cref="ArgumentException"><paramref name="style" /> is not a supported <see cref="NumberStyles" /> value.</exception>
-        bool TryParse([NotNullWhen(true)] string? s, NumberStyles style, IFormatProvider? provider, [MaybeNullWhen(false)] out TSelf result);
-
-#if HAS_SPANS
-
-        /// <summary>Parses a span of characters into a value.</summary>
-        /// <param name="s">The span of characters to parse.</param>
-        /// <param name="style">A bitwise combination of number styles that can be present in <paramref name="s" />.</param>
-        /// <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
-        /// <returns>The result of parsing <paramref name="s" />.</returns>
-        /// <exception cref="ArgumentException"><paramref name="style" /> is not a supported <see cref="NumberStyles" /> value.</exception>
-        /// <exception cref="FormatException"><paramref name="s" /> is not in the correct format.</exception>
-        /// <exception cref="OverflowException"><paramref name="s" /> is not representable by <typeparamref name="TSelf" />.</exception>
-        TSelf Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider);
-
-        /// <summary>Tries to parses a span of characters into a value.</summary>
-        /// <param name="s">The span of characters to parse.</param>
-        /// <param name="style">A bitwise combination of number styles that can be present in <paramref name="s" />.</param>
-        /// <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
-        /// <param name="result">On return, contains the result of successfully parsing <paramref name="s" /> or an undefined value on failure.</param>
-        /// <returns><c>true</c> if <paramref name="s" /> was successfully parsed; otherwise, <c>false</c>.</returns>
-        /// <exception cref="ArgumentException"><paramref name="style" /> is not a supported <see cref="NumberStyles" /> value.</exception>
-        bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, [MaybeNullWhen(false)] out TSelf result);
-
-#endif
-
+            bytesWritten = 0;
+            return false;
+        }
     }
 }
 

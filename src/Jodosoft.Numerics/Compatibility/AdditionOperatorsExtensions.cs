@@ -19,8 +19,7 @@
 
 using System.Numerics;
 using System.Runtime.CompilerServices;
-
-#if HAS_SYSTEM_NUMERICS
+using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
@@ -30,8 +29,15 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="left">The value to which <paramref name="right" /> is added.</param>
         /// <param name="right">The value which is added to <paramref name="left" />.</param>
         /// <returns>The sum of <paramref name="left" /> and <paramref name="right" />.</returns>
+        /// <remarks>Provided for compatibility with targets lower than .NET 7 that cannot use abstract operators.</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TResult Add<TSelf, TOther, TResult>(this TSelf left, TOther right) where TSelf : IAdditionOperators<TSelf, TOther, TResult>, new() => left + right;
+        public static T Add<T>(this T left, T right) where T : IAdditionOperators<T, T, T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => left + right;
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.GetInstance().Add(left, right);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
     }
 }
-#endif

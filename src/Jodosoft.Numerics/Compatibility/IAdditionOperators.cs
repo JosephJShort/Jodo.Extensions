@@ -18,25 +18,23 @@
 // IN THE SOFTWARE.
 
 using System.Diagnostics.CodeAnalysis;
+using Jodosoft.Primitives;
 
 #if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines a mechanism for computing the sum of two values.</summary>
-    /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    /// <typeparam name="TOther">The type that will be added to <typeparamref name="TSelf" />.</typeparam>
-    /// <typeparam name="TResult">The type that contains the sum of <typeparamref name="TSelf" /> and <typeparamref name="TOther" />.</typeparam>
+    /// <remarks>
+    ///     Allows backwards-compatible implementation of the
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> abstractions introduced in .NET 7.
+    /// </remarks>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     [SuppressMessage("csharpsquid", "S2436:Types and methods should not have too many generic parameters.", Justification = "Mirroring the .NET API.")]
     public interface IAdditionOperators<TSelf, TOther, TResult>
+        : IProvider<IAdditionOperatorsCompatibility<TSelf, TOther, TResult>>
         where TSelf : IAdditionOperators<TSelf, TOther, TResult>?, new()
     {
-        /// <summary>Adds two values together to compute their sum.</summary>
-        /// <param name="left">The value to which <paramref name="right" /> is added.</param>
-        /// <param name="right">The value which is added to <paramref name="left" />.</param>
-        /// <returns>The sum of <paramref name="left" /> and <paramref name="right" />.</returns>
-        TResult Add(TSelf left, TOther right);
     }
 }
 

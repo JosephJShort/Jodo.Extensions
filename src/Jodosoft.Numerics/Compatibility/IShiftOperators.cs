@@ -17,6 +17,8 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
+using Jodosoft.Primitives;
+
 #if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
@@ -26,27 +28,9 @@ namespace Jodosoft.Numerics.Compatibility
     /// <typeparam name="TOther">The type used to specify the amount by which <typeparamref name="TSelf" /> should be shifted.</typeparam>
     /// <typeparam name="TResult">The type that contains the result of shifting <typeparamref name="TSelf" /> by <typeparamref name="TResult" />.</typeparam>
     public interface IShiftOperators<TSelf, TOther, TResult>
+        : IProvider<IShiftOperatorsCompatibility<TSelf, TOther, TResult>>
         where TSelf : IShiftOperators<TSelf, TOther, TResult>?, new()
     {
-        /// <summary>Shifts a value left by a given amount.</summary>
-        /// <param name="value">The value which is shifted left by <paramref name="shiftAmount" />.</param>
-        /// <param name="shiftAmount">The amount by which <paramref name="value" /> is shifted left.</param>
-        /// <returns>The result of shifting <paramref name="value" /> left by <paramref name="shiftAmount" />.</returns>
-        TResult LeftShift(TSelf? value, TOther? shiftAmount);
-
-        /// <summary>Shifts a value right by a given amount.</summary>
-        /// <param name="value">The value which is shifted right by <paramref name="shiftAmount" />.</param>
-        /// <param name="shiftAmount">The amount by which <paramref name="value" /> is shifted right.</param>
-        /// <returns>The result of shifting <paramref name="value" /> right by <paramref name="shiftAmount" />.</returns>
-        /// <remarks>This operation is meant to perform a signed (otherwise known as an arithmetic) right shift on signed types.</remarks>
-        TResult RightShift(TSelf? value, TOther? shiftAmount);
-
-        /// <summary>Shifts a value right by a given amount.</summary>
-        /// <param name="value">The value which is shifted right by <paramref name="shiftAmount" />.</param>
-        /// <param name="shiftAmount">The amount by which <paramref name="value" /> is shifted right.</param>
-        /// <returns>The result of shifting <paramref name="value" /> right by <paramref name="shiftAmount" />.</returns>
-        /// <remarks>This operation is meant to perform n unsigned (otherwise known as a logical) right shift on all types.</remarks>
-        TResult UnsignedRightShift(TSelf value, TOther shiftAmount);
     }
 }
 

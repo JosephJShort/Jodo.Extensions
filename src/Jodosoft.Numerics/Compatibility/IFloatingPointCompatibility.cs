@@ -17,21 +17,25 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-#if !HAS_SYSTEM_NUMERICS
-
 using System;
-using Jodosoft.Primitives;
+
+#if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>Defines support for hyperbolic functions.</summary>
-    /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    public interface IHyperbolicFunctions<TSelf>
-        : IProvider<IHyperbolicFunctionsCompatibility<TSelf>>,
-          IFloatingPointConstants<TSelf>
-        where TSelf : IHyperbolicFunctions<TSelf>?, new()
+    /// <summary>Defines a floating-point type.</summary>
+    /// <typeparam name="T">The type that implements the interface.</typeparam>
+    public interface IFloatingPointCompatibility<T>
+        where T : IFloatingPoint<T>?, new()
     {
+        /// <summary>Rounds a value to a specified number of fractional-digits using the default rounding mode (<see cref="MidpointRounding.ToEven" />).</summary>
+        /// <param name="x">The value to round.</param>
+        /// <param name="digits">The number of fractional digits to which <paramref name="x" /> should be rounded.</param>
+        /// <param name="mode">The mode under which <paramref name="x" /> should be rounded.</param>
+        /// <returns>The result of rounding <paramref name="x" /> to <paramref name="digits" /> fractional-digits using <paramref name="mode" />.</returns>
+        /// <remarks>Use <see cref="MathN.Round{T}(T, int, MidpointRounding)"/>.</remarks>
+        [Obsolete("Use Jodosoft.Numerics.MathN.Round to ensure forward-compatibility.")]
+        T Round(T x, int digits, MidpointRounding mode);
     }
 }
-
 #endif

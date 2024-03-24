@@ -18,6 +18,7 @@
 // IN THE SOFTWARE.
 
 using System.Diagnostics.CodeAnalysis;
+using Jodosoft.Primitives;
 
 #if !HAS_SYSTEM_NUMERICS
 
@@ -27,12 +28,9 @@ namespace Jodosoft.Numerics.Compatibility
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     public interface IIncrementOperators<TSelf>
+        : IProvider<IIncrementOperatorsCompatibility<TSelf>>
         where TSelf : IIncrementOperators<TSelf>?, new()
     {
-        /// <summary>Increments a value.</summary>
-        /// <param name="value">The value to Increment.</param>
-        /// <returns>The result of Incrementing <paramref name="value" />.</returns>
-        TSelf Increment(TSelf value);
     }
 }
 

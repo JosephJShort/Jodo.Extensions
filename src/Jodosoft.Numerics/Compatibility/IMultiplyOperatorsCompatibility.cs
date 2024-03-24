@@ -18,22 +18,25 @@
 // IN THE SOFTWARE.
 
 using System.Diagnostics.CodeAnalysis;
-using Jodosoft.Primitives;
 
 #if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines a mechanism for computing the product of two values.</summary>
-    /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    /// <typeparam name="TOther">The type that will multiply <typeparamref name="TSelf" />.</typeparam>
-    /// <typeparam name="TResult">The type that contains the product of <typeparamref name="TSelf" /> and <typeparamref name="TOther" />.</typeparam>
+    /// <typeparam name="T">The type that implements this interface.</typeparam>
+    /// <typeparam name="TOther">The type that will multiply <typeparamref name="T" />.</typeparam>
+    /// <typeparam name="TResult">The type that contains the product of <typeparamref name="T" /> and <typeparamref name="TOther" />.</typeparam>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     [SuppressMessage("csharpsquid", "S2436:Types and methods should not have too many generic parameters.", Justification = "Mirroring the .NET API.")]
-    public interface IMultiplyOperators<TSelf, TOther, TResult>
-        : IProvider<IMultiplyOperatorsCompatibility<TSelf, TOther, TResult>>
-        where TSelf : IMultiplyOperators<TSelf, TOther, TResult>?, new()
+    public interface IMultiplyOperatorsCompatibility<T, TOther, TResult>
+        where T : IMultiplyOperators<T, TOther, TResult>?, new()
     {
+        /// <summary>Multiplies two values together to compute their product.</summary>
+        /// <param name="left">The value which <paramref name="right" /> multiplies.</param>
+        /// <param name="right">The value which multiplies <paramref name="left" />.</param>
+        /// <returns>The product of <paramref name="left" /> multiplied-by <paramref name="right" />.</returns>
+        TResult Multiply(T? left, TOther? right);
     }
 }
 

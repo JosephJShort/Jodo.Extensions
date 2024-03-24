@@ -17,21 +17,25 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-#if !HAS_SYSTEM_NUMERICS
-
 using System;
-using Jodosoft.Primitives;
+using System.Diagnostics.CodeAnalysis;
+
+#if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>Defines support for hyperbolic functions.</summary>
+    /// <summary>Defines a mechanism for getting the multiplicative identity of a given type.</summary>
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    public interface IHyperbolicFunctions<TSelf>
-        : IProvider<IHyperbolicFunctionsCompatibility<TSelf>>,
-          IFloatingPointConstants<TSelf>
-        where TSelf : IHyperbolicFunctions<TSelf>?, new()
+    /// <typeparam name="TResult">The type that contains the multiplicative identify of <typeparamref name="TSelf" />.</typeparam>
+    [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
+    [Obsolete("Use System.Numerics.IMultiplicativeIdentity.")]
+    public interface IMultiplicativeIdentityCompatibility<TSelf, TResult>
+        where TSelf : IMultiplicativeIdentity<TSelf, TResult>?, new()
     {
+        /// <summary>Gets the multiplicative identity of the current type.</summary>
+        /// <remarks>Use <see cref="Number.MultiplicativeIdentity{T}"/>.</remarks>
+        [Obsolete("Use Jodosoft.Numerics.MathN.MultiplicativeIdentity to ensure forward-compatibility.")]
+        TResult MultiplicativeIdentity { get; }
     }
 }
-
 #endif

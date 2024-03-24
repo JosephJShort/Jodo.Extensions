@@ -20,17 +20,27 @@
 #if !HAS_SYSTEM_NUMERICS
 
 using System;
-using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>Defines support for hyperbolic functions.</summary>
-    /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    public interface IHyperbolicFunctions<TSelf>
-        : IProvider<IHyperbolicFunctionsCompatibility<TSelf>>,
-          IFloatingPointConstants<TSelf>
-        where TSelf : IHyperbolicFunctions<TSelf>?, new()
+    /// <summary>Defines a number that is represented in a base-2 format.</summary>
+    /// <typeparam name="T">The type that implements the interface.</typeparam>
+    public interface IBinaryNumberCompatibility<T>
+        where T : IBinaryNumber<T>?, new()
     {
+        /// <summary>Determines if a value is a power of two.</summary>
+        /// <param name="value">The value to be checked.</param>
+        /// <returns><c>true</c> if <paramref name="value" /> is a power of two; otherwise, <c>false</c>.</returns>
+        /// <remarks>Use <see cref="Number.IsPow2{T}(T)"/>.</remarks>
+        [Obsolete("Use Jodosoft.Numerics.Number.IsPow2 to ensure forward-compatibility.")]
+        bool IsPow2(T value);
+
+        /// <summary>Computes the log2 of a value.</summary>
+        /// <param name="value">The value whose log2 is to be computed.</param>
+        /// <returns>The log2 of <paramref name="value" />.</returns>
+        /// <remarks>Use <see cref="Number.Log2{T}(T)"/>.</remarks>
+        [Obsolete("Use Jodosoft.Numerics.Number.Log2 to ensure forward-compatibility.")]
+        T Log2(T value);
     }
 }
 

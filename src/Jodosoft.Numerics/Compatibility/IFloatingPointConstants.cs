@@ -20,29 +20,17 @@
 #if !HAS_SYSTEM_NUMERICS
 
 using System;
+using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines support for floating-point constants.</summary>
     /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
     public interface IFloatingPointConstants<TSelf>
-        : INumberBase<TSelf>
+        : IProvider<IFloatingPointConstantsCompatibility<TSelf>>,
+          INumberBase<TSelf>
         where TSelf : IFloatingPointConstants<TSelf>?, new()
     {
-        /// <summary>Gets the mathematical constant <c>e</c>.</summary>
-        /// <remarks>Use <see cref="MathN.E{T}"/>.</remarks>
-        [Obsolete("Use Jodosoft.Numerics.MathN.E")]
-        TSelf E { get; }
-
-        /// <summary>Gets the mathematical constant <c>pi</c>.</summary>
-        /// <remarks>Use <see cref="MathN.Pi{T}"/>.</remarks>
-        [Obsolete("Use Jodosoft.Numerics.MathN.Pi")]
-        TSelf Pi { get; }
-
-        /// <summary>Gets the mathematical constant <c>tau</c>.</summary>
-        /// <remarks>Use <see cref="MathN.Tau{T}"/>.</remarks>
-        [Obsolete("Use Jodosoft.Numerics.MathN.Tau")]
-        TSelf Tau { get; }
     }
 }
 

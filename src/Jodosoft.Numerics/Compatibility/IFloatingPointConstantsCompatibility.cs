@@ -20,17 +20,28 @@
 #if !HAS_SYSTEM_NUMERICS
 
 using System;
-using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>Defines support for hyperbolic functions.</summary>
-    /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    public interface IHyperbolicFunctions<TSelf>
-        : IProvider<IHyperbolicFunctionsCompatibility<TSelf>>,
-          IFloatingPointConstants<TSelf>
-        where TSelf : IHyperbolicFunctions<TSelf>?, new()
+    /// <summary>Defines support for floating-point constants.</summary>
+    /// <typeparam name="T">The type that implements the interface.</typeparam>
+    public interface IFloatingPointConstantsCompatibility<T>
+        where T : IFloatingPointConstants<T>?, new()
     {
+        /// <summary>Gets the mathematical constant <c>e</c>.</summary>
+        /// <remarks>Use <see cref="MathN.E{T}"/>.</remarks>
+        [Obsolete("Use Jodosoft.Numerics.MathN.E to ensure forward-compatibility.")]
+        T E { get; }
+
+        /// <summary>Gets the mathematical constant <c>pi</c>.</summary>
+        /// <remarks>Use <see cref="MathN.Pi{T}"/>.</remarks>
+        [Obsolete("Use Jodosoft.Numerics.MathN.Pi to ensure forward-compatibility.")]
+        T Pi { get; }
+
+        /// <summary>Gets the mathematical constant <c>tau</c>.</summary>
+        /// <remarks>Use <see cref="MathN.Tau{T}"/>.</remarks>
+        [Obsolete("Use Jodosoft.Numerics.MathN.Tau to ensure forward-compatibility.")]
+        T Tau { get; }
     }
 }
 

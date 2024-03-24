@@ -18,6 +18,7 @@
 // IN THE SOFTWARE.
 
 using System.Diagnostics.CodeAnalysis;
+using Jodosoft.Primitives;
 
 #if !HAS_SYSTEM_NUMERICS
 
@@ -28,11 +29,9 @@ namespace Jodosoft.Numerics.Compatibility
     /// <typeparam name="TResult">The type that contains the multiplicative identify of <typeparamref name="TSelf" />.</typeparam>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     public interface IMultiplicativeIdentity<TSelf, TResult>
+        : IProvider<IMultiplicativeIdentity<TSelf, TResult>>
         where TSelf : IMultiplicativeIdentity<TSelf, TResult>?, new()
     {
-        /// <summary>Gets the multiplicative identity of the current type.</summary>
-        TResult MultiplicativeIdentity { get; }
     }
 }
-
 #endif

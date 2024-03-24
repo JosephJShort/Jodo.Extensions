@@ -18,22 +18,25 @@
 // IN THE SOFTWARE.
 
 using System.Diagnostics.CodeAnalysis;
-using Jodosoft.Primitives;
 
 #if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>Defines a mechanism for computing the product of two values.</summary>
-    /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
-    /// <typeparam name="TOther">The type that will multiply <typeparamref name="TSelf" />.</typeparam>
-    /// <typeparam name="TResult">The type that contains the product of <typeparamref name="TSelf" /> and <typeparamref name="TOther" />.</typeparam>
+    /// <summary>Defines a mechanism for computing the difference of two values.</summary>
+    /// <typeparam name="T">The type that implements this interface.</typeparam>
+    /// <typeparam name="TOther">The type that will be subtracted from <typeparamref name="T" />.</typeparam>
+    /// <typeparam name="TResult">The type that contains the difference of <typeparamref name="TOther" /> subtracted from <typeparamref name="T" />.</typeparam>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     [SuppressMessage("csharpsquid", "S2436:Types and methods should not have too many generic parameters.", Justification = "Mirroring the .NET API.")]
-    public interface IMultiplyOperators<TSelf, TOther, TResult>
-        : IProvider<IMultiplyOperatorsCompatibility<TSelf, TOther, TResult>>
-        where TSelf : IMultiplyOperators<TSelf, TOther, TResult>?, new()
+    public interface ISubtractionOperatorsCompatibility<T, TOther, TResult>
+        where T : ISubtractionOperators<T, TOther, TResult>?, new()
     {
+        /// <summary>Subtracts two values to compute their difference.</summary>
+        /// <param name="left">The value from which <paramref name="right" /> is subtracted.</param>
+        /// <param name="right">The value which is subtracted from <paramref name="left" />.</param>
+        /// <returns>The difference of <paramref name="right" /> subtracted from <paramref name="left" />.</returns>
+        TResult Subtract(T? left, TOther? right);
     }
 }
 

@@ -18,6 +18,7 @@
 // IN THE SOFTWARE.
 
 using System.Diagnostics.CodeAnalysis;
+using Jodosoft.Primitives;
 
 #if !HAS_SYSTEM_NUMERICS
 
@@ -30,13 +31,9 @@ namespace Jodosoft.Numerics.Compatibility
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     [SuppressMessage("csharpsquid", "S2436:Types and methods should not have too many generic parameters.", Justification = "Mirroring the .NET API.")]
     public interface IDivisionOperators<TSelf, TOther, TResult>
+        : IProvider<IDivisionOperatorsCompatibility<TSelf, TOther, TResult>>
         where TSelf : IDivisionOperators<TSelf, TOther, TResult>?, new()
     {
-        /// <summary>Divides two values together to compute their quotient.</summary>
-        /// <param name="left">The value which <paramref name="right" /> divides.</param>
-        /// <param name="right">The value which divides <paramref name="left" />.</param>
-        /// <returns>The quotient of <paramref name="left" /> divided-by <paramref name="right" />.</returns>
-        TResult Divide(TSelf? left, TOther? right);
     }
 }
 

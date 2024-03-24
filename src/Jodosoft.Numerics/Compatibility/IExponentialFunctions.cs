@@ -20,35 +20,17 @@
 #if !HAS_SYSTEM_NUMERICS
 
 using System;
+using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines support for exponential functions.</summary>
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
     public interface IExponentialFunctions<TSelf>
-        : IFloatingPointConstants<TSelf>
+        : IProvider<IExponentialFunctionsCompatibility<TSelf>>,
+          IFloatingPointConstants<TSelf>
         where TSelf : IExponentialFunctions<TSelf>?, new()
     {
-        /// <summary>Computes <c>E</c> raised to a given power.</summary>
-        /// <param name="x">The power to which <c>E</c> is raised.</param>
-        /// <returns><c>E<sup><paramref name="x" /></sup></c></returns>
-        /// <remarks>Use <see cref="MathN.Exp{T}(T)"/>.</remarks>
-        [Obsolete("Use Jodosoft.Numerics.MathN.Exp")]
-        TSelf Exp(TSelf x);
-
-        /// <summary>Computes <c>2</c> raised to a given power.</summary>
-        /// <param name="x">The power to which <c>2</c> is raised.</param>
-        /// <returns><c>2<sup><paramref name="x" /></sup></c></returns>
-        /// <remarks>Use <see cref="MathN.Exp2{T}(T)"/>.</remarks>
-        [Obsolete("Use Jodosoft.Numerics.MathN.Exp2")]
-        TSelf Exp2(TSelf x);
-
-        /// <summary>Computes <c>10</c> raised to a given power.</summary>
-        /// <param name="x">The power to which <c>10</c> is raised.</param>
-        /// <returns><c>10<sup><paramref name="x" /></sup></c></returns>
-        /// <remarks>Use <see cref="MathN.Exp10{T}(T)"/>.</remarks>
-        [Obsolete("Use Jodosoft.Numerics.MathN.Exp10")]
-        TSelf Exp10(TSelf x);
     }
 }
 

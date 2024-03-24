@@ -18,6 +18,7 @@
 // IN THE SOFTWARE.
 
 using System.Diagnostics.CodeAnalysis;
+using Jodosoft.Primitives;
 
 #if !HAS_SYSTEM_NUMERICS
 
@@ -30,13 +31,9 @@ namespace Jodosoft.Numerics.Compatibility
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     [SuppressMessage("csharpsquid", "S2436:Types and methods should not have too many generic parameters.", Justification = "Mirroring the .NET API.")]
     public interface ISubtractionOperators<TSelf, TOther, TResult>
+        : IProvider<ISubtractionOperatorsCompatibility<TSelf, TOther, TResult>>
         where TSelf : ISubtractionOperators<TSelf, TOther, TResult>?, new()
     {
-        /// <summary>Subtracts two values to compute their difference.</summary>
-        /// <param name="left">The value from which <paramref name="right" /> is subtracted.</param>
-        /// <param name="right">The value which is subtracted from <paramref name="left" />.</param>
-        /// <returns>The difference of <paramref name="right" /> subtracted from <paramref name="left" />.</returns>
-        TResult Subtract(TSelf? left, TOther? right);
     }
 }
 
