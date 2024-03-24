@@ -17,14 +17,18 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-#if !HAS_SYSTEM_NUMERICS
-
 using System;
+
+#if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines support for floating-point constants.</summary>
     /// <typeparam name="T">The type that implements the interface.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility for <see langword="static"/> interface members introduced with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> in .NET 7.
+    /// </remarks>
     public interface IFloatingPointConstantsCompatibility<T>
         where T : IFloatingPointConstants<T>?, new()
     {

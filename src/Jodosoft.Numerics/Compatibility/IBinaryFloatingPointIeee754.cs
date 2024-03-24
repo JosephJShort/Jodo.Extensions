@@ -23,6 +23,10 @@ namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines an IEEE 754 floating-point type that is represented in a base-2 format.</summary>
     /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+    /// </remarks>
     public interface IBinaryFloatingPointIeee754<TSelf>
         : IBinaryNumber<TSelf>,
           IFloatingPointIeee754<TSelf>

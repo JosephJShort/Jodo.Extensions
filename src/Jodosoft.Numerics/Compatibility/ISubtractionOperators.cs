@@ -28,6 +28,10 @@ namespace Jodosoft.Numerics.Compatibility
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
     /// <typeparam name="TOther">The type that will be subtracted from <typeparamref name="TSelf" />.</typeparam>
     /// <typeparam name="TResult">The type that contains the difference of <typeparamref name="TOther" /> subtracted from <typeparamref name="TSelf" />.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+    /// </remarks>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     [SuppressMessage("csharpsquid", "S2436:Types and methods should not have too many generic parameters.", Justification = "Mirroring the .NET API.")]
     public interface ISubtractionOperators<TSelf, TOther, TResult>

@@ -31,6 +31,10 @@ namespace Jodosoft.Numerics.Compatibility
 
     /// <summary>Defines a floating-point type.</summary>
     /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+    /// </remarks>
     public interface IFloatingPoint<TSelf>
         : IProvider<IFloatingPointCompatibility<TSelf>>
           IFloatingPointConstants<TSelf>,
@@ -55,6 +59,7 @@ namespace Jodosoft.Numerics.Compatibility
         int GetSignificandByteCount();
 
 #if HAS_SPANS
+
         /// <summary>Tries to write the current exponent, in big-endian format, to a given span.</summary>
         /// <param name="destination">The span to which the current exponent should be written.</param>
         /// <param name="bytesWritten">The number of bytes written to <paramref name="destination" />.</param>
@@ -78,7 +83,10 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="bytesWritten">The number of bytes written to <paramref name="destination" />.</param>
         /// <returns><c>true</c> if the significand was successfully written to <paramref name="destination" />; otherwise, <c>false</c>.</returns>
         bool TryWriteSignificandLittleEndian(Span<byte> destination, out int bytesWritten);
+
 #endif
+
     }
 }
+
 #endif

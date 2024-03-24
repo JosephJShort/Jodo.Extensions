@@ -17,15 +17,18 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-#if !HAS_SYSTEM_NUMERICS
-
-using System;
 using Jodosoft.Primitives;
+
+#if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines support for hyperbolic functions.</summary>
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+    /// </remarks>
     public interface IHyperbolicFunctions<TSelf>
         : IProvider<IHyperbolicFunctionsCompatibility<TSelf>>,
           IFloatingPointConstants<TSelf>

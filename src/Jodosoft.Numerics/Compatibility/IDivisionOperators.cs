@@ -28,6 +28,10 @@ namespace Jodosoft.Numerics.Compatibility
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
     /// <typeparam name="TOther">The type that will divide <typeparamref name="TSelf" />.</typeparam>
     /// <typeparam name="TResult">The type that contains the quotient of <typeparamref name="TSelf" /> and <typeparamref name="TOther" />.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+    /// </remarks>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     [SuppressMessage("csharpsquid", "S2436:Types and methods should not have too many generic parameters.", Justification = "Mirroring the .NET API.")]
     public interface IDivisionOperators<TSelf, TOther, TResult>

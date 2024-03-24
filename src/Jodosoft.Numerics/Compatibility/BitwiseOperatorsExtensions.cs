@@ -29,7 +29,10 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="left">The value to and with <paramref name="right" />.</param>
         /// <param name="right">The value to and with <paramref name="left" />.</param>
         /// <returns>The bitwise-and of <paramref name="left" /> and <paramref name="right" />.</returns>
-        /// <remarks>Provided for compatibility with targets lower than .NET 7 that cannot use abstract operators.</remarks>
+        /// <remarks>
+        ///     Provides cross-compatibility for targets with and without the
+        ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T LogicalAnd<T>(this T? left, T? right) where T : IBitwiseOperators<T, T, T>, new()
 #if HAS_SYSTEM_NUMERICS
@@ -44,7 +47,10 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="left">The value to or with <paramref name="right" />.</param>
         /// <param name="right">The value to or with <paramref name="left" />.</param>
         /// <returns>The bitwise-or of <paramref name="left" /> and <paramref name="right" />.</returns>
-        /// <remarks>Provided for compatibility with targets lower than .NET 7 that cannot use abstract operators.</remarks>
+        /// <remarks>
+        ///     Provides cross-compatibility for targets with and without the
+        ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T LogicalOr<T>(this T? left, T? right) where T : IBitwiseOperators<T, T, T>, new()
 #if HAS_SYSTEM_NUMERICS
@@ -59,7 +65,10 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="left">The value to xor with <paramref name="right" />.</param>
         /// <param name="right">The value to xorwith <paramref name="left" />.</param>
         /// <returns>The exclusive-or of <paramref name="left" /> and <paramref name="right" />.</returns>
-        /// <remarks>Provided for compatibility with targets lower than .NET 7 that cannot use abstract operators.</remarks>
+        /// <remarks>
+        ///     Provides cross-compatibility for targets with and without the
+        ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T LogicalExclusiveOr<T>(this T? left, T? right) where T : IBitwiseOperators<T, T, T>, new()
 #if HAS_SYSTEM_NUMERICS
@@ -73,7 +82,10 @@ namespace Jodosoft.Numerics.Compatibility
         /// <summary>Computes the ones-complement representation of a given value.</summary>
         /// <param name="value">The value for which to compute its ones-complement.</param>
         /// <returns>The ones-complement of <paramref name="value" />.</returns>
-        /// <remarks>Provided for compatibility with targets lower than .NET 7 that cannot use abstract operators.</remarks>
+        /// <remarks>
+        ///     Provides cross-compatibility for targets with and without the
+        ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T BitwiseComplement<T>(this T? value) where T : IBitwiseOperators<T, T, T>, new()
 #if HAS_SYSTEM_NUMERICS

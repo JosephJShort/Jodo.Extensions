@@ -29,7 +29,10 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="left">The value to which <paramref name="right" /> is added.</param>
         /// <param name="right">The value which is added to <paramref name="left" />.</param>
         /// <returns>The sum of <paramref name="left" /> and <paramref name="right" />.</returns>
-        /// <remarks>Provided for compatibility with targets lower than .NET 7 that cannot use abstract operators.</remarks>
+        /// <remarks>
+        ///     Provides cross-compatibility for targets with and without the
+        ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Add<T>(this T left, T right) where T : IAdditionOperators<T, T, T>, new()
 #if HAS_SYSTEM_NUMERICS

@@ -27,6 +27,10 @@ namespace Jodosoft.Numerics.Compatibility
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
     /// <typeparam name="TOther">The type used to specify the amount by which <typeparamref name="TSelf" /> should be shifted.</typeparam>
     /// <typeparam name="TResult">The type that contains the result of shifting <typeparamref name="TSelf" /> by <typeparamref name="TResult" />.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+    /// </remarks>
     public interface IShiftOperators<TSelf, TOther, TResult>
         : IProvider<IShiftOperatorsCompatibility<TSelf, TOther, TResult>>
         where TSelf : IShiftOperators<TSelf, TOther, TResult>?, new()

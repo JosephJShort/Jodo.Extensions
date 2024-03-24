@@ -25,6 +25,10 @@ namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines a number type.</summary>
     /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+    /// </remarks>
     public interface INumber<TSelf>
         : IComparable,
           IComparable<TSelf>,

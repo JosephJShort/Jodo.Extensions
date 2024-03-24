@@ -26,8 +26,8 @@ namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines a mechanism for computing the sum of two values.</summary>
     /// <remarks>
-    ///     Allows backwards-compatible implementation of the
-    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> abstractions introduced in .NET 7.
+    ///     Provides backwards-compatibility for <see langword="static"/> interface members introduced with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> in .NET 7.
     /// </remarks>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     [SuppressMessage("csharpsquid", "S2436:Types and methods should not have too many generic parameters.", Justification = "Mirroring the .NET API.")]

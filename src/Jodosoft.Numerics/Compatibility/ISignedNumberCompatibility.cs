@@ -23,6 +23,10 @@ namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines a number type which can represent both positive and negative values.</summary>
     /// <typeparam name="T">The type that implements the interface.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility for <see langword="static"/> interface members introduced with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> in .NET 7.
+    /// </remarks>
     public interface ISignedNumberCompatibility<T>
      where T : ISignedNumber<T>?, new()
     {

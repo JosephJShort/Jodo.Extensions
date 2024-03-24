@@ -17,14 +17,18 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-#if !HAS_SYSTEM_NUMERICS
-
 using Jodosoft.Primitives;
+
+#if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines a number type which can represent both positive and negative values.</summary>
     /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+    /// </remarks>
     public interface ISignedNumber<TSelf>
         : IProvider<ISignedNumberCompatibility<TSelf>>,
           INumberBase<TSelf>

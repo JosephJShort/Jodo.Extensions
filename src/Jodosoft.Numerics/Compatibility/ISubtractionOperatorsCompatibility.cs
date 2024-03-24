@@ -17,6 +17,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 #if !HAS_SYSTEM_NUMERICS
@@ -27,6 +28,10 @@ namespace Jodosoft.Numerics.Compatibility
     /// <typeparam name="T">The type that implements this interface.</typeparam>
     /// <typeparam name="TOther">The type that will be subtracted from <typeparamref name="T" />.</typeparam>
     /// <typeparam name="TResult">The type that contains the difference of <typeparamref name="TOther" /> subtracted from <typeparamref name="T" />.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility for <see langword="static"/> interface members introduced with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> in .NET 7.
+    /// </remarks>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     [SuppressMessage("csharpsquid", "S2436:Types and methods should not have too many generic parameters.", Justification = "Mirroring the .NET API.")]
     public interface ISubtractionOperatorsCompatibility<T, TOther, TResult>
@@ -36,6 +41,8 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="left">The value from which <paramref name="right" /> is subtracted.</param>
         /// <param name="right">The value which is subtracted from <paramref name="left" />.</param>
         /// <returns>The difference of <paramref name="right" /> subtracted from <paramref name="left" />.</returns>
+        /// <remarks>Use <c>left.Subtract(right)</c> to ensure compatibility with all .NET targets.</remarks>
+        [Obsolete("Use left.Subtract(right) to ensure compatibility with all .NET targets.")]
         TResult Subtract(T? left, TOther? right);
     }
 }

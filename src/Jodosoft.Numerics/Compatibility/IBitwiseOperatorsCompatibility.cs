@@ -17,9 +17,9 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-#if !HAS_SYSTEM_NUMERICS
-
 using System;
+
+#if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
@@ -27,6 +27,10 @@ namespace Jodosoft.Numerics.Compatibility
     /// <typeparam name="T">The type that implements this interface.</typeparam>
     /// <typeparam name="TOther">The type that will is used in the operation with <typeparamref name="T" />.</typeparam>
     /// <typeparam name="TResult">The type that contains the result of <typeparamref name="T" /> op <typeparamref name="TOther" />.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility for <see langword="static"/> interface members introduced with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> in .NET 7.
+    /// </remarks>
     public interface IBitwiseOperatorsCompatibility<T, TOther, TResult>
         where T : IBitwiseOperators<T, TOther, TResult>?, new()
     {

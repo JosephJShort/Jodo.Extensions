@@ -24,11 +24,11 @@ using System;
 namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines support for logarithmic functions.</summary>
-    /// <remarks>
-    ///     This is a shim for <see href="https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Numerics/ILogarithmicFunctions.cs">System.Numerics.ILogarithmicFunctions&lt;TSelf&gt;</see>
-    ///     for targets below .NET 7.
-    /// </remarks>
     /// <typeparam name="T">The type that implements this interface.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility for <see langword="static"/> interface members introduced with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> in .NET 7.
+    /// </remarks>
     public interface ILogarithmicFunctionsCompatibility<T>
         where T : ILogarithmicFunctions<T>?, new()
     {

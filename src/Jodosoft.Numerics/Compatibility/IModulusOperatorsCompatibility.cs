@@ -19,13 +19,18 @@
 
 #if !HAS_SYSTEM_NUMERICS
 
+using System;
+
 namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines a mechanism for computing the modulus or remainder of two values.</summary>
     /// <typeparam name="T">The type that implements this interface.</typeparam>
     /// <typeparam name="TOther">The type that will divide <typeparamref name="T" />.</typeparam>
     /// <typeparam name="TResult">The type that contains the modulus or remainder of <typeparamref name="T" /> and <typeparamref name="TOther" />.</typeparam>
-    /// <remarks>This type represents the <c>%</c> in C# which is often used to compute the remainder and may differ from an actual modulo operation depending on the type that implements the interface.</remarks>
+    /// <remarks>
+    ///     Provides backwards-compatibility for <see langword="static"/> interface members introduced with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> in .NET 7.
+    /// </remarks>
     public interface IModulusOperatorsCompatibility<T, TOther, TResult>
         where T : IModulusOperators<T, TOther, TResult>?, new()
     {
@@ -33,6 +38,8 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="left">The value which <paramref name="right" /> divides.</param>
         /// <param name="right">The value which divides <paramref name="left" />.</param>
         /// <returns>The modulus or remainder of <paramref name="left" /> divided-by <paramref name="right" />.</returns>
+        /// <remarks>Use <c>left.Remainder(right)</c> to ensure compatibility with all .NET targets.</remarks>
+        [Obsolete("Use left.Remainder(right) to ensure compatibility with all .NET targets.")]
         TResult Remainder(T? left, TOther? right);
     }
 }

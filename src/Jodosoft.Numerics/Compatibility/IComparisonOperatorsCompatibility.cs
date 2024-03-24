@@ -17,6 +17,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 #if !HAS_SYSTEM_NUMERICS
@@ -27,6 +28,10 @@ namespace Jodosoft.Numerics.Compatibility
     /// <typeparam name="T">The type that implements this interface.</typeparam>
     /// <typeparam name="TOther">The type that will be compared with <typeparamref name="T" />.</typeparam>
     /// <typeparam name="TResult">The type that is returned as a result of the comparison.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility for <see langword="static"/> interface members introduced with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> in .NET 7.
+    /// </remarks>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     [SuppressMessage("csharpsquid", "S2436:Types and methods should not have too many generic parameters.", Justification = "Mirroring the .NET API.")]
     public interface IComparisonOperatorsCompatibility<T, TOther, TResult>
@@ -36,24 +41,32 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="left">The value to compare with <paramref name="right" />.</param>
         /// <param name="right">The value to compare with <paramref name="left" />.</param>
         /// <returns><c>true</c> if <paramref name="left" /> is less than <paramref name="right" />; otherwise, <c>false</c>.</returns>
+        /// <remarks>Use <c>left.IsLessThan(right)</c> to ensure compatibility with all .NET targets.</remarks>
+        [Obsolete("Use left.IsLessThan(right) to ensure compatibility with all .NET targets.")]
         TResult IsLessThan(T left, TOther right);
 
         /// <summary>Compares two values to determine which is less or equal.</summary>
         /// <param name="left">The value to compare with <paramref name="right" />.</param>
         /// <param name="right">The value to compare with <paramref name="left" />.</param>
         /// <returns><c>true</c> if <paramref name="left" /> is less than or equal to <paramref name="right" />; otherwise, <c>false</c>.</returns>
+        /// <remarks>Use <c>left.IsLessThanOrEqualTo(right)</c> to ensure compatibility with all .NET targets.</remarks>
+        [Obsolete("Use left.IsLessThanOrEqualTo(right) to ensure compatibility with all .NET targets.")]
         TResult IsLessThanOrEqualTo(T left, TOther right);
 
         /// <summary>Compares two values to determine which is greater.</summary>
         /// <param name="left">The value to compare with <paramref name="right" />.</param>
         /// <param name="right">The value to compare with <paramref name="left" />.</param>
         /// <returns><c>true</c> if <paramref name="left" /> is greater than <paramref name="right" />; otherwise, <c>false</c>.</returns>
+        /// <remarks>Use <c>left.IsGreaterThan(right)</c> to ensure compatibility with all .NET targets.</remarks>
+        [Obsolete("Use left.IsGreaterThan(right) to ensure compatibility with all .NET targets.")]
         TResult IsGreaterThan(T left, TOther right);
 
         /// <summary>Compares two values to determine which is greater or equal.</summary>
         /// <param name="left">The value to compare with <paramref name="right" />.</param>
         /// <param name="right">The value to compare with <paramref name="left" />.</param>
         /// <returns><c>true</c> if <paramref name="left" /> is greater than or equal to <paramref name="right" />; otherwise, <c>false</c>.</returns>
+        /// <remarks>Use <c>left.IsGreaterThanOrEqualTo(right)</c> to ensure compatibility with all .NET targets.</remarks>
+        [Obsolete("Use left.IsGreaterThanOrEqualTo(right) to ensure compatibility with all .NET targets.")]
         TResult IsGreaterThanOrEqualTo(T left, TOther right);
     }
 }

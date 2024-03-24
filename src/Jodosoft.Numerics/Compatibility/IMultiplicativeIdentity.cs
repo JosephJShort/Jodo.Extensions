@@ -27,6 +27,10 @@ namespace Jodosoft.Numerics.Compatibility
     /// <summary>Defines a mechanism for getting the multiplicative identity of a given type.</summary>
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
     /// <typeparam name="TResult">The type that contains the multiplicative identify of <typeparamref name="TSelf" />.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+    /// </remarks>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     public interface IMultiplicativeIdentity<TSelf, TResult>
         : IProvider<IMultiplicativeIdentity<TSelf, TResult>>
@@ -34,4 +38,5 @@ namespace Jodosoft.Numerics.Compatibility
     {
     }
 }
+
 #endif

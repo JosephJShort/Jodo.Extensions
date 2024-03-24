@@ -17,9 +17,9 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-#if !HAS_SYSTEM_NUMERICS
-
 using Jodosoft.Primitives;
+
+#if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
@@ -27,6 +27,10 @@ namespace Jodosoft.Numerics.Compatibility
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
     /// <typeparam name="TOther">The type that will is used in the operation with <typeparamref name="TSelf" />.</typeparam>
     /// <typeparam name="TResult">The type that contains the result of <typeparamref name="TSelf" /> op <typeparamref name="TOther" />.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+    /// </remarks>
     public interface IBitwiseOperators<TSelf, TOther, TResult>
         : IProvider<IBitwiseOperatorsCompatibility<TSelf, TOther, TResult>>
         where TSelf : IBitwiseOperators<TSelf, TOther, TResult>?, new()

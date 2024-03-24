@@ -26,6 +26,10 @@ namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines a mechanism for decrementing a given value.</summary>
     /// <typeparam name="T">The type that implements this interface.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility for <see langword="static"/> interface members introduced with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> in .NET 7.
+    /// </remarks>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     public interface IDecrementOperatorsCompatibility<T>
         where T : IDecrementOperators<T>?, new()

@@ -27,9 +27,13 @@ namespace Jodosoft.Numerics.Compatibility
     /// <summary>Defines a mechanism for computing the unary negation of a value.</summary>
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
     /// <typeparam name="TResult">The type that contains the result of negating <typeparamref name="TSelf" />.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+    /// </remarks>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     public interface IUnaryNegationOperators<TSelf, TResult>
-        : IProvider<IUnaryNegationOperatorsCompatibility<TSelf, TResult>>,
+        : IProvider<IUnaryNegationOperatorsCompatibility<TSelf, TResult>>
         where TSelf : IUnaryNegationOperators<TSelf, TResult>?, new()
     {
     }

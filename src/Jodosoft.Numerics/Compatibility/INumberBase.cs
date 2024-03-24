@@ -28,12 +28,12 @@ using Jodosoft.Primitives.Compatibility;
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    /// <summary>
-    ///     Defines the base of other number types.
-    ///     This is a subsitute for <see href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.inumberbase-1?view=net-7.0">System.Numerics.INumberBase&lt;Self&gt;</see>
-    ///     for targets before NET 7.0, promoting a near-compatible implementation for targets without static abstract methods.
-    /// </summary>
+    /// <summary>Defines the base of other number types.</summary>
     /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+    /// </remarks>
     public interface INumberBase<TSelf> :
         IProvider<INumberBaseCompatibility<TSelf>>,
         IAdditionOperators<TSelf, TSelf, TSelf>,

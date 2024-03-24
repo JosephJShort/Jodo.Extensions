@@ -17,6 +17,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 #if !HAS_SYSTEM_NUMERICS
@@ -26,6 +27,10 @@ namespace Jodosoft.Numerics.Compatibility
     /// <summary>Defines a mechanism for computing the unary negation of a value.</summary>
     /// <typeparam name="T">The type that implements this interface.</typeparam>
     /// <typeparam name="TResult">The type that contains the result of negating <typeparamref name="T" />.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility for <see langword="static"/> interface members introduced with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> in .NET 7.
+    /// </remarks>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     public interface IUnaryNegationOperatorsCompatibility<T, TResult>
         where T : IUnaryNegationOperators<T, TResult>?, new()
@@ -33,6 +38,8 @@ namespace Jodosoft.Numerics.Compatibility
         /// <summary>Computes the unary negation of a value.</summary>
         /// <param name="value">The value for which to compute its unary negation.</param>
         /// <returns>The unary negation of <paramref name="value" />.</returns>
+        /// <remarks>Use <c>value.Negative()</c> to ensure compatibility with all .NET targets.</remarks>
+        [Obsolete("Use value.Negative() to ensure compatibility with all .NET targets.")]
         T Negative(T value);
     }
 }

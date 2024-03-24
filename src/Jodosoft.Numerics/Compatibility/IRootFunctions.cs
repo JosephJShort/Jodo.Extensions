@@ -25,6 +25,10 @@ namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines support for root functions.</summary>
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+    /// </remarks>
     public interface IRootFunctions<TSelf>
         : IProvider<IRootFunctionsCompatibility<TSelf>>,
           IFloatingPointConstants<TSelf>

@@ -28,8 +28,8 @@ namespace Jodosoft.Numerics.Compatibility
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
     /// <typeparam name="TResult">The type that contains the additive identify of <typeparamref name="TSelf" />.</typeparam>
     /// <remarks>
-    ///     Allows backwards-compatible implementation of the
-    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> abstractions introduced in .NET 7.
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
     /// </remarks>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     public interface IAdditiveIdentity<TSelf, TResult>

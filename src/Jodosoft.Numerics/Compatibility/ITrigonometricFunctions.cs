@@ -25,6 +25,10 @@ namespace Jodosoft.Numerics.Compatibility
 {
     /// <summary>Defines support for trigonometric functions.</summary>
     /// <typeparam name="TSelf">The type that implements this interface.</typeparam>
+    /// <remarks>
+    ///     Provides backwards-compatibility with
+    ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+    /// </remarks>
     public interface ITrigonometricFunctions<TSelf>
         : IProvider<ITrigonometricFunctionsCompatibility<TSelf>>,
           IFloatingPointConstants<TSelf>
@@ -32,4 +36,5 @@ namespace Jodosoft.Numerics.Compatibility
     {
     }
 }
+
 #endif
