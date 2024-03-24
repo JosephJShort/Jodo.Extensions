@@ -17,28 +17,28 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-using System.Numerics;
 using System.Runtime.CompilerServices;
 using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    public static class IncrementOperatorsExtensions
+    public static class ModulusOperatorsExtensions
     {
-        /// <summary>Increments a value.</summary>
-        /// <param name="value">The value to Increment.</param>
-        /// <returns>The result of Incrementing <paramref name="value" />.</returns>
+        /// <summary>Divides two values together to compute their modulus or remainder.</summary>
+        /// <param name="left">The value which <paramref name="right" /> divides.</param>
+        /// <param name="right">The value which divides <paramref name="left" />.</param>
+        /// <returns>The modulus or remainder of <paramref name="left" /> divided-by <paramref name="right" />.</returns>
         /// <remarks>
         ///     Provides cross-compatibility for targets with and without the
         ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Increment<T>(this T value) where T : IIncrementOperators<T>, new()
+        public static T Remainder<T>(this T left, T right) where T : IModulusOperators<T, T, T>, new()
 #if HAS_SYSTEM_NUMERICS
-            => value++;
+            => left % right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().Increment(value);
+            => DefaultInstance<T>.Value.GetInstance().Remainder(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
     }

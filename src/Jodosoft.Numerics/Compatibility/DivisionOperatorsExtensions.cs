@@ -20,8 +20,6 @@
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
-#if HAS_SYSTEM_NUMERICS
-
 namespace Jodosoft.Numerics.Compatibility
 {
     public static class DivisionOperatorsExtensions
@@ -30,9 +28,18 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="left">The value which <paramref name="right" /> divides.</param>
         /// <param name="right">The value which divides <paramref name="left" />.</param>
         /// <returns>The quotient of <paramref name="left" /> divided-by <paramref name="right" />.</returns>
+        /// <remarks>
+        ///     Provides cross-compatibility for targets with and without the
+        ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TResult Divide<TSelf, TOther, TResult>(this TSelf left, TOther right) where TSelf : IDivisionOperators<TSelf, TOther, TResult>, new() => left / right;
+        public static TResult Divide<T, TOther, TResult>(this T left, TOther right) where T : IDivisionOperators<T, TOther, TResult>, new()
+#if HAS_SYSTEM_NUMERICS
+            => left / right;
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.GetInstance().Divide(left, right);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
     }
 }
-
-#endif

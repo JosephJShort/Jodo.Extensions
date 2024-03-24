@@ -19,8 +19,7 @@
 
 using System.Numerics;
 using System.Runtime.CompilerServices;
-
-#if HAS_SYSTEM_NUMERICS
+using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
@@ -31,15 +30,27 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="right">The value to compare with <paramref name="left" />.</param>
         /// <returns><c>true</c> if <paramref name="left" /> is equal to <paramref name="right" />; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TResult IsEqualTo<TSelf, TOther, TResult>(this TSelf left, TOther right) where TSelf : IEqualityOperators<TSelf, TOther, TResult>, new() => left == right;
+        public static TResult IsEqualTo<T, TOther, TResult>(this T left, TOther right) where T : IEqualityOperators<T, TOther, TResult>, new()
+#if HAS_SYSTEM_NUMERICS
+            => left == right;
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.GetInstance().IsEqualTo(left, right);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
 
         /// <summary>Compares two values to determine inequality.</summary>
         /// <param name="left">The value to compare with <paramref name="right" />.</param>
         /// <param name="right">The value to compare with <paramref name="left" />.</param>
         /// <returns><c>true</c> if <paramref name="left" /> is not equal to <paramref name="right" />; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TResult IsNotEqualTo<TSelf, TOther, TResult>(this TSelf left, TOther right) where TSelf : IEqualityOperators<TSelf, TOther, TResult>, new() => left != right;
+        public static TResult IsNotEqualTo<T, TOther, TResult>(this T left, TOther right) where T : IEqualityOperators<T, TOther, TResult>, new()
+#if HAS_SYSTEM_NUMERICS
+            => left != right;
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.GetInstance().IsNotEqualTo(left, right);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
     }
 }
-
-#endif

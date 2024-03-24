@@ -19,8 +19,7 @@
 
 using System.Numerics;
 using System.Runtime.CompilerServices;
-
-#if HAS_SYSTEM_NUMERICS
+using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
@@ -30,8 +29,13 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="value">The value to decrement.</param>
         /// <returns>The result of decrementing <paramref name="value" />.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TSelf Decrement<TSelf>(this TSelf value) where TSelf : IDecrementOperators<TSelf>, new() => value--;
+        public static T Decrement<T>(this T value) where T : IDecrementOperators<T>, new()
+#if HAS_SYSTEM_NUMERICS
+            => value--;
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.GetInstance().Decrement(value);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
     }
 }
-
-#endif

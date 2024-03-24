@@ -19,8 +19,7 @@
 
 using System.Numerics;
 using System.Runtime.CompilerServices;
-
-#if HAS_SYSTEM_NUMERICS
+using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
@@ -30,9 +29,18 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="left">The value which <paramref name="right" /> multiplies.</param>
         /// <param name="right">The value which multiplies <paramref name="left" />.</param>
         /// <returns>The product of <paramref name="left" /> multiplied-by <paramref name="right" />.</returns>
+        /// <remarks>
+        ///     Provides cross-compatibility for targets with and without the
+        ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TResult Multiply<TSelf, TOther, TResult>(this TSelf left, TOther right) where TSelf : IMultiplyOperators<TSelf, TOther, TResult>, new() => left * right;
+        public static TResult Multiply<T, TOther, TResult>(this T left, TOther right) where T : IMultiplyOperators<T, TOther, TResult>, new()
+#if HAS_SYSTEM_NUMERICS
+            => left * right;
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.GetInstance().Multiply(left, right);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
     }
 }
-
-#endif

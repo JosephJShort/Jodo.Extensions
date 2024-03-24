@@ -19,8 +19,7 @@
 
 using System.Numerics;
 using System.Runtime.CompilerServices;
-
-#if HAS_SYSTEM_NUMERICS
+using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
@@ -29,9 +28,18 @@ namespace Jodosoft.Numerics.Compatibility
         /// <summary>Computes the unary plus of a value.</summary>
         /// <param name="value">The value for which to compute its unary plus.</param>
         /// <returns>The unary plus of <paramref name="value" />.</returns>
+        /// <remarks>
+        ///     Provides cross-compatibility for targets with and without the
+        ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TResult Positive<TSelf, TResult>(this TSelf value) where TSelf : IUnaryPlusOperators<TSelf, TResult>, new() => +value;
+        public static TResult Positive<T, TResult>(this T value) where T : IUnaryPlusOperators<T, TResult>, new()
+#if HAS_SYSTEM_NUMERICS
+            => +value;
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.GetInstance().Positive(value);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
     }
 }
-
-#endif

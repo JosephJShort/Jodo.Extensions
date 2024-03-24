@@ -19,8 +19,7 @@
 
 using System.Numerics;
 using System.Runtime.CompilerServices;
-
-#if HAS_SYSTEM_NUMERICS
+using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
@@ -29,9 +28,18 @@ namespace Jodosoft.Numerics.Compatibility
         /// <summary>Computes the unary negation of a value.</summary>
         /// <param name="value">The value for which to compute its unary negation.</param>
         /// <returns>The unary negation of <paramref name="value" />.</returns>
+        /// <remarks>
+        ///     Provides cross-compatibility for targets with and without the
+        ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TResult Negative<TSelf, TResult>(this TSelf value) where TSelf : IUnaryNegationOperators<TSelf, TResult>, new() => -value;
+        public static TResult Negative<T, TResult>(this T value) where T : IUnaryNegationOperators<T, TResult>, new()
+#if HAS_SYSTEM_NUMERICS
+            => -value;
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.GetInstance().Negative(value);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
     }
 }
-
-#endif

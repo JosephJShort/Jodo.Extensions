@@ -40,7 +40,7 @@ namespace Jodosoft.Numerics.Compatibility
         /// <returns>The unary plus of <paramref name="value" />.</returns>
         /// <remarks>Use <c>value.Positive()</c> to ensure compatibility with all .NET targets.</remarks>
         [Obsolete("Use value.Positive() to ensure compatibility with all .NET targets.")]
-        T Positive(T value);
+        TResult Positive(T value);
     }
 }
 

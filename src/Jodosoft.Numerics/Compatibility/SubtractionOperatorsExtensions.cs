@@ -19,8 +19,7 @@
 
 using System.Numerics;
 using System.Runtime.CompilerServices;
-
-#if HAS_SYSTEM_NUMERICS
+using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
@@ -30,9 +29,18 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="left">The value from which <paramref name="right" /> is subtracted.</param>
         /// <param name="right">The value which is subtracted from <paramref name="left" />.</param>
         /// <returns>The difference of <paramref name="right" /> subtracted from <paramref name="left" />.</returns>
+        /// <remarks>
+        ///     Provides cross-compatibility for targets with and without the
+        ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TResult Subtract<TSelf, TOther, TResult>(this TSelf left, TOther right) where TSelf : ISubtractionOperators<TSelf, TOther, TResult>, new() => left - right;
+        public static TResult Subtract<T, TOther, TResult>(this T left, TOther right) where T : ISubtractionOperators<T, TOther, TResult>, new()
+#if HAS_SYSTEM_NUMERICS
+            => left - right;
+#else
+#pragma warning disable CS0618 // Type or member is obsolete
+            => DefaultInstance<T>.Value.GetInstance().Subtract(left, right);
+#pragma warning restore CS0618 // Type or member is obsolete
+#endif
     }
 }
-
-#endif
