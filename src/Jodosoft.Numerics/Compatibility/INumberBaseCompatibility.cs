@@ -18,11 +18,8 @@
 // IN THE SOFTWARE.
 
 using System;
-using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Text;
-using System.Text.Unicode;
 using Jodosoft.Primitives.Compatibility;
 
 #if !HAS_SYSTEM_NUMERICS
@@ -56,31 +53,6 @@ namespace Jodosoft.Numerics.Compatibility
         /// <exception cref="OverflowException">The absolute of <paramref name="value" /> is not representable by <typeparamref name="T" />.</exception>
         /*static abstract*/
         T Abs(T value);
-
-        /// <summary>Creates an instance of the current type from a value, throwing an overflow exception for any values that fall outside the representable range of the current type.</summary>
-        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
-        /// <param name="value">The value which is used to create the instance of <typeparamref name="T" />.</param>
-        /// <returns>An instance of <typeparamref name="T" /> created from <paramref name="value" />.</returns>
-        /// <exception cref="NotSupportedException"><typeparamref name="TOther" /> is not supported.</exception>
-        /// <exception cref="OverflowException"><paramref name="value" /> is not representable by <typeparamref name="T" />.</exception>
-        /*static virtual but now abstract*/
-        T CreateChecked<TOther>(TOther value) where TOther : INumberBase<TOther>, new();
-
-        /// <summary>Creates an instance of the current type from a value, saturating any values that fall outside the representable range of the current type.</summary>
-        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
-        /// <param name="value">The value which is used to create the instance of <typeparamref name="T" />.</param>
-        /// <returns>An instance of <typeparamref name="T" /> created from <paramref name="value" />, saturating if <paramref name="value" /> falls outside the representable range of <typeparamref name="T" />.</returns>
-        /// <exception cref="NotSupportedException"><typeparamref name="TOther" /> is not supported.</exception>
-       /*static virtual but now abstract*/
-        T CreateSaturating<TOther>(TOther value) where TOther : INumberBase<TOther>, new();
-
-        /// <summary>Creates an instance of the current type from a value, truncating any values that fall outside the representable range of the current type.</summary>
-        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
-        /// <param name="value">The value which is used to create the instance of <typeparamref name="T" />.</param>
-        /// <returns>An instance of <typeparamref name="T" /> created from <paramref name="value" />, truncating if <paramref name="value" /> falls outside the representable range of <typeparamref name="T" />.</returns>
-        /// <exception cref="NotSupportedException"><typeparamref name="TOther" /> is not supported.</exception>
-         /*static virtual but now abstract*/
-        T CreateTruncating<TOther>(TOther value) where TOther : INumberBase<TOther>, new();
 
         /// <summary>Determines if a value is in its canonical representation.</summary>
         /// <param name="value">The value to be checked.</param>
@@ -211,7 +183,7 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="x">The value to compare with <paramref name="y" />.</param>
         /// <param name="y">The value to compare with <paramref name="x" />.</param>
         /// <returns><paramref name="x" /> if it is greater than <paramref name="y" />; otherwise, <paramref name="y" />.</returns>
-        /// <remarks>For <see cref="IFloatingPointIeee754{TSelf}" /> this method matches the IEEE 754:2019 <c>maximumMagnitude</c> function. This requires NaN inputs to be propagated back to the caller and for <c>-0.0</c> to be treated as less than <c>+0.0</c>.</remarks>
+        /// <remarks>For <see cref="IFloatingPointIeee754{T}" /> this method matches the IEEE 754:2019 <c>maximumMagnitude</c> function. This requires NaN inputs to be propagated back to the caller and for <c>-0.0</c> to be treated as less than <c>+0.0</c>.</remarks>
         /*static abstract*/
         T MaxMagnitude(T x, T y);
 
@@ -219,7 +191,7 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="x">The value to compare with <paramref name="y" />.</param>
         /// <param name="y">The value to compare with <paramref name="x" />.</param>
         /// <returns><paramref name="x" /> if it is greater than <paramref name="y" />; otherwise, <paramref name="y" />.</returns>
-        /// <remarks>For <see cref="IFloatingPointIeee754{TSelf}" /> this method matches the IEEE 754:2019 <c>maximumMagnitudeNumber</c> function. This requires NaN inputs to not be propagated back to the caller and for <c>-0.0</c> to be treated as less than <c>+0.0</c>.</remarks>
+        /// <remarks>For <see cref="IFloatingPointIeee754{T}" /> this method matches the IEEE 754:2019 <c>maximumMagnitudeNumber</c> function. This requires NaN inputs to not be propagated back to the caller and for <c>-0.0</c> to be treated as less than <c>+0.0</c>.</remarks>
         /*static abstract*/
         T MaxMagnitudeNumber(T x, T y);
 
@@ -227,7 +199,7 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="x">The value to compare with <paramref name="y" />.</param>
         /// <param name="y">The value to compare with <paramref name="x" />.</param>
         /// <returns><paramref name="x" /> if it is less than <paramref name="y" />; otherwise, <paramref name="y" />.</returns>
-        /// <remarks>For <see cref="IFloatingPointIeee754{TSelf}" /> this method matches the IEEE 754:2019 <c>minimumMagnitude</c> function. This requires NaN inputs to be propagated back to the caller and for <c>-0.0</c> to be treated as less than <c>+0.0</c>.</remarks>
+        /// <remarks>For <see cref="IFloatingPointIeee754{T}" /> this method matches the IEEE 754:2019 <c>minimumMagnitude</c> function. This requires NaN inputs to be propagated back to the caller and for <c>-0.0</c> to be treated as less than <c>+0.0</c>.</remarks>
         /*static abstract*/
         T MinMagnitude(T x, T y);
 
@@ -235,7 +207,7 @@ namespace Jodosoft.Numerics.Compatibility
         /// <param name="x">The value to compare with <paramref name="y" />.</param>
         /// <param name="y">The value to compare with <paramref name="x" />.</param>
         /// <returns><paramref name="x" /> if it is less than <paramref name="y" />; otherwise, <paramref name="y" />.</returns>
-        /// <remarks>For <see cref="IFloatingPointIeee754{TSelf}" /> this method matches the IEEE 754:2019 <c>minimumMagnitudeNumber</c> function. This requires NaN inputs to not be propagated back to the caller and for <c>-0.0</c> to be treated as less than <c>+0.0</c>.</remarks>
+        /// <remarks>For <see cref="IFloatingPointIeee754{T}" /> this method matches the IEEE 754:2019 <c>minimumMagnitudeNumber</c> function. This requires NaN inputs to not be propagated back to the caller and for <c>-0.0</c> to be treated as less than <c>+0.0</c>.</remarks>
         /*static abstract*/
         T MinMagnitudeNumber(T x, T y);
 
@@ -250,17 +222,6 @@ namespace Jodosoft.Numerics.Compatibility
         /// <exception cref="OverflowException"><paramref name="s" /> is not representable by <typeparamref name="T" />.</exception>
         /*static abstract*/
         T Parse(string s, NumberStyles style, IFormatProvider? provider);
-
-        /// <summary>Parses a span of characters into a value.</summary>
-        /// <param name="s">The span of characters to parse.</param>
-        /// <param name="style">A bitwise combination of number styles that can be present in <paramref name="s" />.</param>
-        /// <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
-        /// <returns>The result of parsing <paramref name="s" />.</returns>
-        /// <exception cref="ArgumentException"><paramref name="style" /> is not a supported <see cref="NumberStyles" /> value.</exception>
-        /// <exception cref="FormatException"><paramref name="s" /> is not in the correct format.</exception>
-        /// <exception cref="OverflowException"><paramref name="s" /> is not representable by <typeparamref name="T" />.</exception>
-        /*static abstract*/
-        T Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider);
 
         // Removed
         // TryConvertFromChecked<TOther>
@@ -280,6 +241,63 @@ namespace Jodosoft.Numerics.Compatibility
         /*static abstract*/
         bool TryParse([NotNullWhen(true)] string? s, NumberStyles style, IFormatProvider? provider, [MaybeNullWhen(false)] out T result);
 
+        /// <summary>Tries to convert a value to an instance of the current type, throwing an overflow exception for any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
+        /// <param name="value">The value which is used to create the instance of <typeparamref name="T" />.</param>
+        /// <param name="result">On return, contains an instance of <typeparamref name="T" /> converted from <paramref name="value" />.</param>
+        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
+        /// <exception cref="OverflowException"><paramref name="value" /> is not representable by <typeparamref name="T" />.</exception>
+        bool TryConvertFromChecked<TOther>(TOther value, [MaybeNullWhen(false)] out T result) where TOther : INumberBase<TOther>, new();
+
+        /// <summary>Tries to convert a value to an instance of the current type, saturating any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
+        /// <param name="value">The value which is used to create the instance of <typeparamref name="T" />.</param>
+        /// <param name="result">On return, contains an instance of <typeparamref name="T" /> converted from <paramref name="value" />.</param>
+        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
+        bool TryConvertFromSaturating<TOther>(TOther value, [MaybeNullWhen(false)] out T result) where TOther : INumberBase<TOther>, new();
+
+        /// <summary>Tries to convert a value to an instance of the current type, truncating any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
+        /// <param name="value">The value which is used to create the instance of <typeparamref name="T" />.</param>
+        /// <param name="result">On return, contains an instance of <typeparamref name="T" /> converted from <paramref name="value" />.</param>
+        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
+        bool TryConvertFromTruncating<TOther>(TOther value, [MaybeNullWhen(false)] out T result) where TOther : INumberBase<TOther>, new();
+
+        /// <summary>Tries to convert an instance of the current type to another type, throwing an overflow exception for any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="TOther">The type to which <paramref name="value" /> should be converted.</typeparam>
+        /// <param name="value">The value which is used to create the instance of <typeparamref name="TOther" />.</param>
+        /// <param name="result">On return, contains an instance of <typeparamref name="TOther" /> converted from <paramref name="value" />.</param>
+        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
+        /// <exception cref="OverflowException"><paramref name="value" /> is not representable by <typeparamref name="TOther" />.</exception>
+        bool TryConvertToChecked<TOther>(T value, [MaybeNullWhen(false)] out TOther result) where TOther : INumberBase<TOther>, new();
+
+        /// <summary>Tries to convert an instance of the current type to another type, saturating any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="TOther">The type to which <paramref name="value" /> should be converted.</typeparam>
+        /// <param name="value">The value which is used to create the instance of <typeparamref name="TOther" />.</param>
+        /// <param name="result">On return, contains an instance of <typeparamref name="TOther" /> converted from <paramref name="value" />.</param>
+        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
+        bool TryConvertToSaturating<TOther>(T value, [MaybeNullWhen(false)] out TOther result) where TOther : INumberBase<TOther>, new();
+
+        /// <summary>Tries to convert an instance of the current type to another type, truncating any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="TOther">The type to which <paramref name="value" /> should be converted.</typeparam>
+        /// <param name="value">The value which is used to create the instance of <typeparamref name="TOther" />.</param>
+        /// <param name="result">On return, contains an instance of <typeparamref name="TOther" /> converted from <paramref name="value" />.</param>
+        /// <returns><c>false</c> if <typeparamref name="TOther" /> is not supported; otherwise, <c>true</c>.</returns>
+        bool TryConvertToTruncating<TOther>(T value, [MaybeNullWhen(false)] out TOther result) where TOther : INumberBase<TOther>, new();
+
+#if HAS_SPANS
+
+        /// <summary>Parses a span of characters into a value.</summary>
+        /// <param name="s">The span of characters to parse.</param>
+        /// <param name="style">A bitwise combination of number styles that can be present in <paramref name="s" />.</param>
+        /// <param name="provider">An object that provides culture-specific formatting information about <paramref name="s" />.</param>
+        /// <returns>The result of parsing <paramref name="s" />.</returns>
+        /// <exception cref="ArgumentException"><paramref name="style" /> is not a supported <see cref="NumberStyles" /> value.</exception>
+        /// <exception cref="FormatException"><paramref name="s" /> is not in the correct format.</exception>
+        /// <exception cref="OverflowException"><paramref name="s" /> is not representable by <typeparamref name="T" />.</exception>
+        /*static abstract*/
+        T Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider);
+
         /// <summary>Tries to parse a span of characters into a value.</summary>
         /// <param name="s">The span of characters to parse.</param>
         /// <param name="style">A bitwise combination of number styles that can be present in <paramref name="s" />.</param>
@@ -290,137 +308,8 @@ namespace Jodosoft.Numerics.Compatibility
         /*static abstract*/
         bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, [MaybeNullWhen(false)] out T result);
 
-        /// <summary>Tries to parse a span of UTF-8 characters into a value.</summary>
-        /// <param name="utf8Text">The span of UTF-8 characters to parse.</param>
-        /// <param name="style">A bitwise combination of number styles that can be present in <paramref name="utf8Text" />.</param>
-        /// <param name="provider">An object that provides culture-specific formatting information about <paramref name="utf8Text" />.</param>
-        /// <param name="result">On return, contains the result of successfully parsing <paramref name="utf8Text" /> or an undefined value on failure.</param>
-        /// <returns><c>true</c> if <paramref name="utf8Text" /> was successfully parsed; otherwise, <c>false</c>.</returns>
-        /// <exception cref="ArgumentException"><paramref name="style" /> is not a supported <see cref="NumberStyles" /> value.</exception>
-        static virtual bool TryParse(ReadOnlySpan<byte> utf8Text, NumberStyles style, IFormatProvider? provider, [MaybeNullWhen(false)] out T result)
-        {
-            // Convert text using stackalloc for <= 256 characters and ArrayPool otherwise
+#endif
 
-            char[]? utf16TextArray;
-            scoped Span<char> utf16Text;
-            int textMaxCharCount = Encoding.UTF8.GetMaxCharCount(utf8Text.Length);
-
-            if (textMaxCharCount < 256)
-            {
-                utf16TextArray = null;
-                utf16Text = stackalloc char[256];
-            }
-            else
-            {
-                utf16TextArray = ArrayPool<char>.Shared.Rent(textMaxCharCount);
-                utf16Text = utf16TextArray.AsSpan(0, textMaxCharCount);
-            }
-
-            OperationStatus utf8TextStatus = Utf8.ToUtf16(utf8Text, utf16Text, out _, out int utf16TextLength, replaceInvalidSequences: false);
-
-            if (utf8TextStatus != OperationStatus.Done)
-            {
-                result = default;
-                return false;
-            }
-            utf16Text = utf16Text.Slice(0, utf16TextLength);
-
-            // Actual operation
-
-            bool succeeded = T.TryParse(utf16Text, style, provider, out result);
-
-            // Return rented buffers if necessary
-
-            if (utf16TextArray != null)
-            {
-                ArrayPool<char>.Shared.Return(utf16TextArray);
-            }
-
-            return succeeded;
-        }
-
-        static T IUtf8SpanParsable<T>.Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
-        {
-            // Convert text using stackalloc for <= 256 characters and ArrayPool otherwise
-
-            char[]? utf16TextArray;
-            scoped Span<char> utf16Text;
-            int textMaxCharCount = Encoding.UTF8.GetMaxCharCount(utf8Text.Length);
-
-            if (textMaxCharCount < 256)
-            {
-                utf16TextArray = null;
-                utf16Text = stackalloc char[256];
-            }
-            else
-            {
-                utf16TextArray = ArrayPool<char>.Shared.Rent(textMaxCharCount);
-                utf16Text = utf16TextArray.AsSpan(0, textMaxCharCount);
-            }
-
-            OperationStatus utf8TextStatus = Utf8.ToUtf16(utf8Text, utf16Text, out _, out int utf16TextLength, replaceInvalidSequences: false);
-
-            if (utf8TextStatus != OperationStatus.Done)
-            {
-                ThrowHelper.ThrowFormatInvalidString();
-            }
-            utf16Text = utf16Text.Slice(0, utf16TextLength);
-
-            // Actual operation
-
-            T result = T.Parse(utf16Text, provider);
-
-            // Return rented buffers if necessary
-
-            if (utf16TextArray != null)
-            {
-                ArrayPool<char>.Shared.Return(utf16TextArray);
-            }
-
-            return result;
-        }
-
-        static bool IUtf8SpanParsable<T>.TryParse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider, [MaybeNullWhen(returnValue: false)] out T result)
-        {
-            // Convert text using stackalloc for <= 256 characters and ArrayPool otherwise
-
-            char[]? utf16TextArray;
-            scoped Span<char> utf16Text;
-            int textMaxCharCount = Encoding.UTF8.GetMaxCharCount(utf8Text.Length);
-
-            if (textMaxCharCount < 256)
-            {
-                utf16TextArray = null;
-                utf16Text = stackalloc char[256];
-            }
-            else
-            {
-                utf16TextArray = ArrayPool<char>.Shared.Rent(textMaxCharCount);
-                utf16Text = utf16TextArray.AsSpan(0, textMaxCharCount);
-            }
-
-            OperationStatus utf8TextStatus = Utf8.ToUtf16(utf8Text, utf16Text, out _, out int utf16TextLength, replaceInvalidSequences: false);
-
-            if (utf8TextStatus != OperationStatus.Done)
-            {
-                result = default;
-                return false;
-            }
-            utf16Text = utf16Text.Slice(0, utf16TextLength);
-
-            // Actual operation
-
-            bool succeeded = T.TryParse(utf16Text, provider, out result);
-
-            // Return rented buffers if necessary
-
-            if (utf16TextArray != null)
-            {
-                ArrayPool<char>.Shared.Return(utf16TextArray);
-            }
-
-            return succeeded;
-        }
     }
 }
 

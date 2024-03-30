@@ -28,6 +28,10 @@ namespace Jodosoft.Numerics.Compatibility
         /// <summary>Decrements a value.</summary>
         /// <param name="value">The value to decrement.</param>
         /// <returns>The result of decrementing <paramref name="value" />.</returns>
+        /// <remarks>
+        ///     Provides cross-compatibility for targets with and without the
+        ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Decrement<T>(this T value) where T : IDecrementOperators<T>, new()
 #if HAS_SYSTEM_NUMERICS

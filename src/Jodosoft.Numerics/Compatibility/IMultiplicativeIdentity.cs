@@ -33,7 +33,7 @@ namespace Jodosoft.Numerics.Compatibility
     /// </remarks>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
     public interface IMultiplicativeIdentity<TSelf, TResult>
-        : IProvider<IMultiplicativeIdentity<TSelf, TResult>>
+        : IProvider<IMultiplicativeIdentityCompatibility<TSelf, TResult>>
         where TSelf : IMultiplicativeIdentity<TSelf, TResult>?, new()
     {
     }

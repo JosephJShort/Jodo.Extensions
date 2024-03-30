@@ -32,7 +32,6 @@ namespace Jodosoft.Numerics.Compatibility
     ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> in .NET 7.
     /// </remarks>
     [SuppressMessage("csharpsquid", "S3246:Generic type parameters should be co/contravariant when possible.", Justification = "Mirroring the .NET API.")]
-    [Obsolete("Use System.Numerics.IMultiplicativeIdentity.")]
     public interface IMultiplicativeIdentityCompatibility<TSelf, TResult>
         where TSelf : IMultiplicativeIdentity<TSelf, TResult>?, new()
     {
