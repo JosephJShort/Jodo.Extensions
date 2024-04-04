@@ -328,15 +328,15 @@ namespace Jodosoft.Numerics.Tests
                 .GetMethods(BindingFlags.Static | BindingFlags.Public)
                 .Single(x => x.Name == "Parse" && x.GetParameters().Length == 1);
             //act
-            Func<TNumeric>[] actions = new Func<TNumeric>[]
-            {
+            Func<TNumeric>[] actions =
+            [
                 () => Numeric.Parse<TNumeric>(input),
                 () =>
                 {
-                    try { return (TNumeric)underlyingParseMethod.Invoke(null, new object[] { input }); }
+                    try { return (TNumeric)underlyingParseMethod.Invoke(null, [input]); }
                     catch (TargetInvocationException ex) { throw ex.InnerException; }
                 }
-            };
+            ];
 
             //assert
             AssertSame.Outcome(actions);
@@ -363,15 +363,15 @@ namespace Jodosoft.Numerics.Tests
                 .Single(x => x.Name == "Parse" && x.GetParameters().Length == 2 &&
                         x.GetParameters()[1].ParameterType == typeof(IFormatProvider));
             //act
-            Func<TNumeric>[] actions = new Func<TNumeric>[]
-            {
+            Func<TNumeric>[] actions =
+            [
                 () => Numeric.Parse<TNumeric>(input, formatProvider),
                 () =>
                 {
-                    try { return (TNumeric)underlyingParseMethod.Invoke(null, new object[] { input, formatProvider }); }
+                    try { return (TNumeric)underlyingParseMethod.Invoke(null, [input, formatProvider]); }
                     catch (TargetInvocationException ex) { throw ex.InnerException; }
                 }
-            };
+            ];
 
             //assert
             AssertSame.Outcome(actions);
@@ -392,15 +392,15 @@ namespace Jodosoft.Numerics.Tests
                         x.GetParameters()[1].ParameterType == typeof(NumberStyles));
 
             //act
-            Func<TNumeric>[] actions = new Func<TNumeric>[]
-            {
+            Func<TNumeric>[] actions =
+            [
                 () => Numeric.Parse<TNumeric>(input, numberStyles),
                 () =>
                 {
-                    try { return (TNumeric)underlyingParseMethod.Invoke(null, new object[] { input, numberStyles }); }
+                    try { return (TNumeric)underlyingParseMethod.Invoke(null, [input, numberStyles]); }
                     catch (TargetInvocationException ex) { throw ex.InnerException; }
                 }
-            };
+            ];
 
             //assert
             AssertSame.Outcome(actions);
@@ -428,15 +428,15 @@ namespace Jodosoft.Numerics.Tests
                 .Single(x => x.Name == "Parse" && x.GetParameters().Length == 3);
 
             //act
-            Func<TNumeric>[] actions = new Func<TNumeric>[]
-            {
+            Func<TNumeric>[] actions =
+            [
                 () => Numeric.Parse<TNumeric>(input, numberStyles, formatProvider),
                 () =>
                 {
-                    try { return (TNumeric)underlyingParseMethod.Invoke(null, new object[] { input, numberStyles, formatProvider }); }
+                    try { return (TNumeric)underlyingParseMethod.Invoke(null, [input, numberStyles, formatProvider]); }
                     catch (TargetInvocationException ex) { throw ex.InnerException; }
                 }
-            };
+            ];
 
             //assert
             AssertSame.Outcome(actions);

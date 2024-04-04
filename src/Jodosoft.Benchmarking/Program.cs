@@ -70,7 +70,7 @@ namespace Jodosoft.Benchmarking
                                     !method.ContainsGenericParameters &&
                                     !method.ReflectedType.ContainsGenericParameters)
             {
-                Benchmark benchmark = (Benchmark)method.Invoke(null, Array.Empty<object>());
+                Benchmark benchmark = (Benchmark)method.Invoke(null, []);
                 try
                 {
                     BenchmarkResult result = benchmark.Execute(Duration);

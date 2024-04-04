@@ -31,7 +31,7 @@ namespace Jodosoft.Primitives.Tests
         {
             //arrange
             //act
-            Func<object>[] actions = new[] {
+            Func<object>[] actions = [
                 new Func<object>(() => DynamicInvoke.AdditionOperator(string.Empty, string.Empty)),
                 new Func<object>(() => DynamicInvoke.BitwiseComplementOperator(string.Empty)),
                 new Func<object>(() => DynamicInvoke.DecrementOperator(string.Empty)),
@@ -51,7 +51,7 @@ namespace Jodosoft.Primitives.Tests
                 new Func<object>(() => DynamicInvoke.SubtractionOperator(string.Empty, string.Empty)),
                 new Func<object>(() => DynamicInvoke.UnaryMinusOperator(string.Empty)),
                 new Func<object>(() => DynamicInvoke.UnaryPlusOperator(string.Empty))
-            };
+            ];
 
             //assert
             actions[0].Should().Throw<InvalidOperationException>().Which.Message.Should().Contain("not defined");

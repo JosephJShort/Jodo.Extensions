@@ -231,7 +231,7 @@ namespace Jodosoft.Numerics.Compatibility
 
             int INumericBitConverter<NSByte>.ConvertedSize => sizeof(sbyte);
             NSByte INumericBitConverter<NSByte>.ToNumeric(byte[] value, int startIndex) => BitOperations.ToSByte(value, startIndex);
-            byte[] INumericBitConverter<NSByte>.GetBytes(NSByte value) => new byte[] { (byte)value._value };
+            byte[] INumericBitConverter<NSByte>.GetBytes(NSByte value) => [(byte)value._value];
 #if HAS_SPANS
             NSByte INumericBitConverter<NSByte>.ToNumeric(ReadOnlySpan<byte> value) => BitOperations.ToSByte(value);
             bool INumericBitConverter<NSByte>.TryWriteBytes(Span<byte> destination, NSByte value) => BitOperations.TryWriteSByte(destination, value);

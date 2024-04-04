@@ -232,7 +232,7 @@ namespace Jodosoft.Numerics.Compatibility
 
             int INumericBitConverter<NByte>.ConvertedSize => sizeof(byte);
             NByte INumericBitConverter<NByte>.ToNumeric(byte[] value, int startIndex) => BitOperations.ToByte(value, startIndex);
-            byte[] INumericBitConverter<NByte>.GetBytes(NByte value) => new byte[] { value._value };
+            byte[] INumericBitConverter<NByte>.GetBytes(NByte value) => [value._value];
 #if HAS_SPANS
             NByte INumericBitConverter<NByte>.ToNumeric(ReadOnlySpan<byte> value) => BitOperations.ToByte(value);
             bool INumericBitConverter<NByte>.TryWriteBytes(Span<byte> destination, NByte value) => BitOperations.TryWriteByte(destination, value);

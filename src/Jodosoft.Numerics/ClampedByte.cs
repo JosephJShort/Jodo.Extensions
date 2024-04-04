@@ -231,7 +231,7 @@ namespace Jodosoft.Numerics
 
             int INumericBitConverter<ClampedByte>.ConvertedSize => sizeof(byte);
             ClampedByte INumericBitConverter<ClampedByte>.ToNumeric(byte[] value, int startIndex) => BitOperations.ToByte(value, startIndex);
-            byte[] INumericBitConverter<ClampedByte>.GetBytes(ClampedByte value) => new byte[] { value._value };
+            byte[] INumericBitConverter<ClampedByte>.GetBytes(ClampedByte value) => [value._value];
 #if HAS_SPANS
             ClampedByte INumericBitConverter<ClampedByte>.ToNumeric(ReadOnlySpan<byte> value) => BitOperations.ToByte(value);
             bool INumericBitConverter<ClampedByte>.TryWriteBytes(Span<byte> destination, ClampedByte value) => BitOperations.TryWriteByte(destination, value);

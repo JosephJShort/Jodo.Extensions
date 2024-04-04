@@ -114,8 +114,8 @@ namespace Jodosoft.Geometry
 
         public AARectangleN<TNumeric> GetBounds()
         {
-            TNumeric[]? xs = new[] { this.GetTopLeft().X, this.GetTopRight().X, this.GetBottomLeft().X, this.GetBottomRight().X };
-            TNumeric[]? ys = new[] { this.GetTopLeft().Y, this.GetTopRight().Y, this.GetBottomLeft().Y, this.GetBottomRight().Y };
+            TNumeric[]? xs = [this.GetTopLeft().X, this.GetTopRight().X, this.GetBottomLeft().X, this.GetBottomRight().X];
+            TNumeric[]? ys = [this.GetTopLeft().Y, this.GetTopRight().Y, this.GetBottomLeft().Y, this.GetBottomRight().Y];
 
             TNumeric minX = xs.Min();
             TNumeric maxX = xs.Max();

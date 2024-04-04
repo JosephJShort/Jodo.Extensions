@@ -47,7 +47,7 @@ namespace Jodosoft.Numerics.Tests
         {
             //arrange
             const int Count = 10;
-            List<byte> buffer = new List<byte>();
+            List<byte> buffer = [];
             TNumeric[] inputs = Enumerable.Range(0, Count).Select(_ => Random.NextVariant<TNumeric>()).ToArray();
             TNumeric[] results = new TNumeric[Count];
 
@@ -56,7 +56,7 @@ namespace Jodosoft.Numerics.Tests
             {
                 buffer.AddRange(BitConverterN.GetBytes(inputs[i]));
             }
-            byte[] contiguousBytes = buffer.ToArray();
+            byte[] contiguousBytes = [.. buffer];
             for (int i = 0; i < Count; i++)
             {
                 results[i] = BitConverterN.ToNumeric<TNumeric>(contiguousBytes, i * BitConverterN.ConvertedSize<TNumeric>());
@@ -99,7 +99,7 @@ namespace Jodosoft.Numerics.Tests
         {
             //arrange
             //act
-            Action action = new Action(() => BitConverterN.ToNumeric<TNumeric>(Array.Empty<byte>(), 0));
+            Action action = new Action(() => BitConverterN.ToNumeric<TNumeric>([], 0));
 
             //assert
             action.Should().Throw<ArgumentException>();

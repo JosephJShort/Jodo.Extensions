@@ -140,3 +140,7 @@ dotnet_diagnostic.CA1835.severity = none
 # CA1845: Use span-based 'string.Concat'
 # Justification: Not available in all target frameworks.
 dotnet_diagnostic.CA1845.severity = none
+
+# IDE0290: Use primary constructor
+# Justification: Not an improvement in all situations.
+dotnet_diagnostic.IDE0290.severity = none
