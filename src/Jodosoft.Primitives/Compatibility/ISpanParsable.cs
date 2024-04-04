@@ -17,8 +17,6 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-using Jodosoft.Primitives.Compatibility.Jodosoft.Primitives.Compatibility;
-
 #if HAS_SPANS && !NET7_0_OR_GREATER
 
 namespace Jodosoft.Primitives.Compatibility
