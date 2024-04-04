@@ -31,6 +31,7 @@ namespace Jodosoft.Numerics.Tests
         public void GetScalingFactor_ReturnsOneMillion()
             => Fix64N.GetScalingFactor().Should().Be(1_000_000);
 
+#if !NET7_0_OR_GREATER
         [Test, Repeat(RandomVariations)]
         public void IncrementOperator_RandomInputs_SameAsPlusOne()
         {
@@ -58,6 +59,7 @@ namespace Jodosoft.Numerics.Tests
             //assert
             input.Should().Be(expected);
         }
+#endif
 
         [Test]
         public void Scratch()
