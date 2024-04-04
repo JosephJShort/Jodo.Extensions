@@ -33,22 +33,22 @@ namespace Jodosoft.Numerics.Compatibility
         where T : ILogarithmicFunctions<T>?, new()
     {
         /// <summary>Computes the natural (<c>base-E</c>) logarithm of a value.</summary>
-        /// <remarks>Use <see cref="MathN.Log{T}(T)"/> to ensure compatibility with all .NET targets.</remarks>
+        /// <remarks>Use <see cref="MathN2.Log{T}(T)"/> to ensure compatibility with all .NET targets.</remarks>
         [Obsolete("Use Jodosoft.Numerics.MathN.Log to ensure compatibility with all .NET targets.")]
         T Log(T x);
 
         /// <summary>Computes the logarithm of a value in the specified base.</summary>
-        /// <remarks>Use <see cref="MathN.Log{T}(T, T)"/> to ensure compatibility with all .NET targets.</remarks>
+        /// <remarks>Use <see cref="MathN2.Log{T}(T, T)"/> to ensure compatibility with all .NET targets.</remarks>
         [Obsolete("Use Jodosoft.Numerics.MathN.Log to ensure compatibility with all .NET targets.")]
         T Log(T x, T newBase);
 
         /// <summary>Computes the base-2 logarithm of a value.</summary>
-        /// <remarks>Use <see cref="MathN.Log2{T}(T)"/> to ensure compatibility with all .NET targets.</remarks>
+        /// <remarks>Use <see cref="MathN2.Log2{T}(T)"/> to ensure compatibility with all .NET targets.</remarks>
         [Obsolete("Use Jodosoft.Numerics.MathN.Log2 to ensure compatibility with all .NET targets.")]
         T Log2(T x);
 
         /// <summary>Computes the base-10 logarithm of a value.</summary>
-        /// <remarks>Use <see cref="MathN.Log10{T}(T)"/> to ensure compatibility with all .NET targets.</remarks>
+        /// <remarks>Use <see cref="MathN2.Log10{T}(T)"/> to ensure compatibility with all .NET targets.</remarks>
         [Obsolete("Use Jodosoft.Numerics.MathN.Log10 to ensure compatibility with all .NET targets.")]
         T Log10(T x);
     }

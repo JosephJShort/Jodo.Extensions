@@ -36,8 +36,6 @@ namespace Jodosoft.Numerics.Compatibility
           IShiftOperators<TSelf, int, TSelf>
         where TSelf : IBinaryInteger<TSelf>?, new()
     {
-        /// <summary>Gets the number of bytes that will be written as part of <see cref="TryWriteLittleEndian(Span{byte}, out int)" />.</summary>
-        /// <returns>The number of bytes that will be written as part of <see cref="TryWriteLittleEndian(Span{byte}, out int)" />.</returns>
         int GetByteCount();
 
         /// <summary>Gets the length, in bits, of the shortest two's complement representation of the current value.</summary>

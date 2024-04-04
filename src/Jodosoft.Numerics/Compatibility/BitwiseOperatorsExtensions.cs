@@ -43,7 +43,7 @@ namespace Jodosoft.Numerics.Compatibility
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
-        /// <inheritdoc cref="LogicalAnd{T, TOther, TResult}(T, T)"/>
+        /// <inheritdoc cref="LogicalAnd{T, TOther, TResult}(T, TOther)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TResult LogicalAnd<T, TOther, TResult>(this IBitwiseOperators<T, TOther, TResult> left, TOther right) where T : IBitwiseOperators<T, TOther, TResult>, new()
             => LogicalAnd<T, TOther, TResult>((T)left, right);
@@ -66,7 +66,7 @@ namespace Jodosoft.Numerics.Compatibility
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
-        /// <inheritdoc cref="LogicalOr{T, TOther, TResult}(T, T)"/>
+        /// <inheritdoc cref="LogicalOr{T, TOther, TResult}(T, TOther)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TResult LogicalOr<T, TOther, TResult>(this IBitwiseOperators<T, TOther, TResult> left, TOther right) where T : IBitwiseOperators<T, TOther, TResult>, new()
             => LogicalOr<T, TOther, TResult>((T)left, right);
@@ -89,7 +89,7 @@ namespace Jodosoft.Numerics.Compatibility
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
-        /// <inheritdoc cref="LogicalExclusiveOr{T, TOther, TResult}(T, T)"/>
+        /// <inheritdoc cref="LogicalExclusiveOr{T, TOther, TResult}(T, TOther)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TResult LogicalExclusiveOr<T, TOther, TResult>(this IBitwiseOperators<T, TOther, TResult> left, TOther right) where T : IBitwiseOperators<T, TOther, TResult>, new()
             => LogicalExclusiveOr<T, TOther, TResult>((T)left, right);

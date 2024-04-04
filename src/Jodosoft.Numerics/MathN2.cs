@@ -37,7 +37,8 @@ namespace Jodosoft.Numerics
         /// <summary>Computes the quotient and remainder of two values.</summary>
         /// <param name="left">The value which <paramref name="right" /> divides.</param>
         /// <param name="right">The value which divides <paramref name="left" />.</param>
-        /// <returns>The quotient and remainder of <paramref name="left" /> divided-by <paramref name="right" />.</returns>
+        /// <param name="quotient">The quotient of <paramref name="left" /> divided-by <paramref name="right" />.</param>
+        /// <param name="remainder">Theremainder of <paramref name="left" /> divided-by <paramref name="right" />.</param>
         public static void DivRem<T>(T left, T right, out T quotient, out T remainder) where T : IBinaryInteger<T>, new()
 #if HAS_SYSTEM_NUMERICS
         {

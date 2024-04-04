@@ -37,8 +37,6 @@ namespace Jodosoft.Numerics.Compatibility
           ISignedNumber<TSelf>
         where TSelf : IFloatingPoint<TSelf>?, new()
     {
-        /// <summary>Gets the number of bytes that will be written as part of <see cref="TryWriteExponentLittleEndian(Span{byte}, out int)" />.</summary>
-        /// <returns>The number of bytes that will be written as part of <see cref="TryWriteExponentLittleEndian(Span{byte}, out int)" />.</returns>
         int GetExponentByteCount();
 
         /// <summary>Gets the length, in bits, of the shortest two's complement representation of the current exponent.</summary>
@@ -49,8 +47,6 @@ namespace Jodosoft.Numerics.Compatibility
         /// <returns>The length, in bits, of the current significand.</returns>
         int GetSignificandBitLength();
 
-        /// <summary>Gets the number of bytes that will be written as part of <see cref="TryWriteSignificandLittleEndian(Span{byte}, out int)" />.</summary>
-        /// <returns>The number of bytes that will be written as part of <see cref="TryWriteSignificandLittleEndian(Span{byte}, out int)" />.</returns>
         int GetSignificandByteCount();
 
 #if HAS_SPANS

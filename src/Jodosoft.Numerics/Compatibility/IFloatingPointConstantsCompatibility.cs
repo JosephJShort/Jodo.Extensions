@@ -33,17 +33,17 @@ namespace Jodosoft.Numerics.Compatibility
         where T : IFloatingPointConstants<T>?, new()
     {
         /// <summary>Gets the mathematical constant <c>e</c>.</summary>
-        /// <remarks>Use <see cref="MathN.E{T}"/>.</remarks>
+        /// <remarks>Use <see cref="MathN2.E{T}"/>.</remarks>
         [Obsolete("Use Jodosoft.Numerics.MathN.E to ensure forward-compatibility.")]
         T E { get; }
 
         /// <summary>Gets the mathematical constant <c>pi</c>.</summary>
-        /// <remarks>Use <see cref="MathN.Pi{T}"/>.</remarks>
+        /// <remarks>Use <see cref="MathN2.Pi{T}"/>.</remarks>
         [Obsolete("Use Jodosoft.Numerics.MathN.Pi to ensure forward-compatibility.")]
         T Pi { get; }
 
         /// <summary>Gets the mathematical constant <c>tau</c>.</summary>
-        /// <remarks>Use <see cref="MathN.Tau{T}"/>.</remarks>
+        /// <remarks>Use <see cref="MathN2.Tau{T}"/>.</remarks>
         [Obsolete("Use Jodosoft.Numerics.MathN.Tau to ensure forward-compatibility.")]
         T Tau { get; }
     }

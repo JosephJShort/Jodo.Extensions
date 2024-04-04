@@ -26,6 +26,7 @@ namespace Jodosoft.Numerics.Compatibility
     public static class BinaryIntegerExtensions
     {
         /// <summary>Writes the current value, in big-endian format, to a given array.</summary>
+        /// <param name="instance"></param>
         /// <param name="destination">The array to which the current value should be written.</param>
         /// <returns>The number of bytes written to <paramref name="destination" />.</returns>
         public static int WriteBigEndian<T>(this T instance, byte[] destination) where T : IBinaryInteger<T>, new()
@@ -38,6 +39,7 @@ namespace Jodosoft.Numerics.Compatibility
         }
 
         /// <summary>Writes the current value, in big-endian format, to a given array.</summary>
+        /// <param name="instance"></param>
         /// <param name="destination">The array to which the current value should be written.</param>
         /// <param name="startIndex">The starting index at which the value should be written.</param>
         /// <returns>The number of bytes written to <paramref name="destination" /> starting at <paramref name="startIndex" />.</returns>
@@ -51,6 +53,7 @@ namespace Jodosoft.Numerics.Compatibility
         }
 
         /// <summary>Writes the current value, in big-endian format, to a given span.</summary>
+        /// <param name="instance"></param>
         /// <param name="destination">The span to which the current value should be written.</param>
         /// <returns>The number of bytes written to <paramref name="destination" />.</returns>
         public static int WriteBigEndian<T>(this T instance, Span<byte> destination) where T : IBinaryInteger<T>, new()
@@ -63,6 +66,7 @@ namespace Jodosoft.Numerics.Compatibility
         }
 
         /// <summary>Writes the current value, in little-endian format, to a given array.</summary>
+        /// <param name="instance"></param>
         /// <param name="destination">The array to which the current value should be written.</param>
         /// <returns>The number of bytes written to <paramref name="destination" />.</returns>
         public static int WriteLittleEndian<T>(this T instance, byte[] destination) where T : IBinaryInteger<T>, new()
@@ -75,6 +79,7 @@ namespace Jodosoft.Numerics.Compatibility
         }
 
         /// <summary>Writes the current value, in little-endian format, to a given array.</summary>
+        /// <param name="instance"></param>
         /// <param name="destination">The array to which the current value should be written.</param>
         /// <param name="startIndex">The starting index at which the value should be written.</param>
         /// <returns>The number of bytes written to <paramref name="destination" /> starting at <paramref name="startIndex" />.</returns>
@@ -88,6 +93,7 @@ namespace Jodosoft.Numerics.Compatibility
         }
 
         /// <summary>Writes the current value, in little-endian format, to a given span.</summary>
+        /// <param name="instance"></param>
         /// <param name="destination">The span to which the current value should be written.</param>
         /// <returns>The number of bytes written to <paramref name="destination" />.</returns>
         public static int WriteLittleEndian<T>(this T instance, Span<byte> destination) where T : IBinaryInteger<T>, new()

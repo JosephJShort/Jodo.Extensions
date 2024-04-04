@@ -622,7 +622,7 @@ namespace Jodosoft.Numerics
 
         /// <summary>Computes the sign of a value.</summary>
         /// <param name="value">The value whose sign is to be computed.</param>
-        /// <returns>A positive value if <paramref name="value" /> is positive, <see cref="INumberBase{T}.Zero" /> if <paramref name="value" /> is zero, and a negative value if <paramref name="value" /> is negative.</returns>
+        /// <returns>A positive value if <paramref name="value" /> is positive, <see cref="Zero{T}" /> if <paramref name="value" /> is zero, and a negative value if <paramref name="value" /> is negative.</returns>
         /// <remarks>It is recommended that a function return <c>1</c>, <c>0</c>, and <c>-1</c>, respectively.</remarks>
         public static int Sign<T>(T value) where T : INumber<T>, new()
 #if HAS_SYSTEM_NUMERICS
@@ -677,6 +677,7 @@ namespace Jodosoft.Numerics
 #endif
 
         /// <summary>Creates an instance of the current type from a value, throwing an overflow exception for any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="T">The type of the result.</typeparam>
         /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
         /// <param name="value">The value which is used to create the instance of <typeparamref name="T" />.</param>
         /// <returns>An instance of <typeparamref name="T" /> created from <paramref name="value" />.</returns>
@@ -704,6 +705,7 @@ namespace Jodosoft.Numerics
 #endif
 
         /// <summary>Creates an instance of the current type from a value, saturating any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="T">The type of the result.</typeparam>
         /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
         /// <param name="value">The value which is used to create the instance of <typeparamref name="T" />.</param>
         /// <returns>An instance of <typeparamref name="T" /> created from <paramref name="value" />, saturating if <paramref name="value" /> falls outside the representable range of <typeparamref name="T" />.</returns>
@@ -731,6 +733,7 @@ namespace Jodosoft.Numerics
 #endif
 
         /// <summary>Creates an instance of the current type from a value, truncating any values that fall outside the representable range of the current type.</summary>
+        /// <typeparam name="T">The type of the result.</typeparam>
         /// <typeparam name="TOther">The type of <paramref name="value" />.</typeparam>
         /// <param name="value">The value which is used to create the instance of <typeparamref name="T" />.</param>
         /// <returns>An instance of <typeparamref name="T" /> created from <paramref name="value" />, truncating if <paramref name="value" /> falls outside the representable range of <typeparamref name="T" />.</returns>
@@ -786,7 +789,7 @@ namespace Jodosoft.Numerics
         /// <returns><c>true</c> if <paramref name="value" /> is an even integer; otherwise, <c>false</c>.</returns>
         /// <remarks>
         ///     <para>This correctly handles floating-point values and so <c>2.0</c> will return <c>true</c> while <c>2.2</c> will return <c>false</c>.</para>
-        ///     <para>This functioning returning <c>false</c> does not imply that <see cref="IsOddInteger(T)" /> will return <c>true</c>. A number with a fractional portion, <c>3.3</c>, is not even nor odd.</para>
+        ///     <para>This functioning returning <c>false</c> does not imply that <see cref="IsOddInteger{T}(T)" /> will return <c>true</c>. A number with a fractional portion, <c>3.3</c>, is not even nor odd.</para>
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsEvenInteger<T>(T value) where T : INumberBase<T>, new()
@@ -799,7 +802,7 @@ namespace Jodosoft.Numerics
         /// <summary>Determines if a value is finite.</summary>
         /// <param name="value">The value to be checked.</param>
         /// <returns><c>true</c> if <paramref name="value" /> is finite; otherwise, <c>false</c>.</returns>
-        /// <remarks>This function returning <c>false</c> does not imply that <see cref="IsInfinity(T)" /> will return <c>true</c>. <c>NaN</c> is not finite nor infinite.</remarks>
+        /// <remarks>This function returning <c>false</c> does not imply that <see cref="IsInfinity{T}(T)" /> will return <c>true</c>. <c>NaN</c> is not finite nor infinite.</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsFinite<T>(T value) where T : INumberBase<T>, new()
 #if HAS_SYSTEM_NUMERICS
@@ -823,7 +826,7 @@ namespace Jodosoft.Numerics
         /// <summary>Determines if a value is infinite.</summary>
         /// <param name="value">The value to be checked.</param>
         /// <returns><c>true</c> if <paramref name="value" /> is infinite; otherwise, <c>false</c>.</returns>
-        /// <remarks>This function returning <c>false</c> does not imply that <see cref="IsFinite(T)" /> will return <c>true</c>. <c>NaN</c> is not finite nor infinite.</remarks>
+        /// <remarks>This function returning <c>false</c> does not imply that <see cref="IsFinite{T}(T)" /> will return <c>true</c>. <c>NaN</c> is not finite nor infinite.</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsInfinity<T>(T value) where T : INumberBase<T>, new()
 #if HAS_SYSTEM_NUMERICS
@@ -860,7 +863,7 @@ namespace Jodosoft.Numerics
         /// <returns><c>true</c> if <paramref name="value" /> represents negative zero or a negative real number; otherwise, <c>false</c>.</returns>
         /// <remarks>
         ///     <para>If this type has signed zero, then <c>-0</c> is also considered negative.</para>
-        ///     <para>This function returning <c>false</c> does not imply that <see cref="IsPositive(T)" /> will return <c>true</c>. A complex number, <c>a + bi</c> for non-zero <c>b</c>, is not positive nor negative</para>
+        ///     <para>This function returning <c>false</c> does not imply that <see cref="IsPositive{T}(T)" /> will return <c>true</c>. A complex number, <c>a + bi</c> for non-zero <c>b</c>, is not positive nor negative</para>
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNegative<T>(T value) where T : INumberBase<T>, new()
@@ -897,7 +900,7 @@ namespace Jodosoft.Numerics
         /// <returns><c>true</c> if <paramref name="value" /> is an odd integer; otherwise, <c>false</c>.</returns>
         /// <remarks>
         ///     <para>This correctly handles floating-point values and so <c>3.0</c> will return <c>true</c> while <c>3.3</c> will return <c>false</c>.</para>
-        ///     <para>This functioning returning <c>false</c> does not imply that <see cref="IsOddInteger(T)" /> will return <c>true</c>. A number with a fractional portion, <c>3.3</c>, is neither even nor odd.</para>
+        ///     <para>This functioning returning <c>false</c> does not imply that <see cref="IsOddInteger{T}(T)" /> will return <c>true</c>. A number with a fractional portion, <c>3.3</c>, is neither even nor odd.</para>
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsOddInteger<T>(T value) where T : INumberBase<T>, new()
@@ -912,7 +915,7 @@ namespace Jodosoft.Numerics
         /// <returns><c>true</c> if <paramref name="value" /> represents (positive) zero or a positive real number; otherwise, <c>false</c>.</returns>
         /// <remarks>
         ///     <para>If this type has signed zero, then <c>-0</c> is not considered positive, but <c>+0</c> is.</para>
-        ///     <para>This function returning <c>false</c> does not imply that <see cref="IsNegative(T)" /> will return <c>true</c>. A complex number, <c>a + bi</c> for non-zero <c>b</c>, is not positive nor negative</para>
+        ///     <para>This function returning <c>false</c> does not imply that <see cref="IsNegative{T}(T)" /> will return <c>true</c>. A complex number, <c>a + bi</c> for non-zero <c>b</c>, is not positive nor negative</para>
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsPositive<T>(T value) where T : INumberBase<T>, new()
