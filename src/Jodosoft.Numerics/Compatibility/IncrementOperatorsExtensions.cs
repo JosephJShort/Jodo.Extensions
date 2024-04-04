@@ -38,7 +38,7 @@ namespace Jodosoft.Numerics.Compatibility
             => value++;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => Provide.SingleInstance<T, IIncrementOperatorsCompatibility<T>>().Increment(value);
+            => SingleInstance.Of<T>().Provide().Increment(value);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 

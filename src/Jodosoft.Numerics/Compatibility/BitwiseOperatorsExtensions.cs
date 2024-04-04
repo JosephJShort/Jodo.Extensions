@@ -39,7 +39,7 @@ namespace Jodosoft.Numerics.Compatibility
             => left & right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => Provide.SingleInstance<T, IBitwiseOperatorsCompatibility<T, TOther, TResult>>().LogicalAnd(left, right);
+            => SingleInstance.Of<T>().Provide().LogicalAnd(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
@@ -62,7 +62,7 @@ namespace Jodosoft.Numerics.Compatibility
             => left | right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => Provide.SingleInstance<T, IBitwiseOperatorsCompatibility<T, TOther, TResult>>().LogicalOr(left, right);
+            => SingleInstance.Of<T>().Provide().LogicalOr(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
@@ -85,7 +85,7 @@ namespace Jodosoft.Numerics.Compatibility
             => left ^ right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => Provide.SingleInstance<T, IBitwiseOperatorsCompatibility<T, TOther, TResult>>().LogicalExclusiveOr(left, right);
+            => SingleInstance.Of<T>().Provide().LogicalExclusiveOr(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
@@ -107,7 +107,7 @@ namespace Jodosoft.Numerics.Compatibility
             => ~value;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => Provide.SingleInstance<T, IBitwiseOperatorsCompatibility<T, TOther, TResult>>().BitwiseComplement(value);
+            => SingleInstance.Of<T>().Provide().BitwiseComplement(value);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 

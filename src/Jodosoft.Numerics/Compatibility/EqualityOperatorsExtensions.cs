@@ -35,7 +35,7 @@ namespace Jodosoft.Numerics.Compatibility
             => left == right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => Provide.SingleInstance<T, IEqualityOperatorsCompatibility<T, TOther, TResult>>().IsEqualTo(left, right);
+            => SingleInstance.Of<T>().Provide().IsEqualTo(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
@@ -54,7 +54,7 @@ namespace Jodosoft.Numerics.Compatibility
             => left != right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => Provide.SingleInstance<T, IEqualityOperatorsCompatibility<T, TOther, TResult>>().IsNotEqualTo(left, right);
+            => SingleInstance.Of<T>().Provide().IsNotEqualTo(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 

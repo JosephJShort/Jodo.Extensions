@@ -38,7 +38,7 @@ namespace Jodosoft.Numerics.Compatibility
             => -value;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => Provide.SingleInstance<T, IUnaryNegationOperatorsCompatibility<T, TResult>>().Negative(value);
+            => SingleInstance.Of<T>().Provide().Negative(value);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 

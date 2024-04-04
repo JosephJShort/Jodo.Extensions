@@ -39,7 +39,7 @@ namespace Jodosoft.Numerics.Compatibility
             => left * right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => Provide.SingleInstance<T, IMultiplyOperatorsCompatibility<T, TOther, TResult>>().Multiply(left, right);
+            => SingleInstance.Of<T>().Provide().Multiply(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 

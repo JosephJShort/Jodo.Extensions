@@ -39,7 +39,7 @@ namespace Jodosoft.Numerics.Compatibility
             => left < right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => Provide.SingleInstance<T, IComparisonOperatorsCompatibility<T, TOther, TResult>>().IsLessThan(left, right);
+            => SingleInstance.Of<T>().Provide<IComparisonOperatorsCompatibility<T, TOther, TResult>>().IsLessThan(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
@@ -62,7 +62,7 @@ namespace Jodosoft.Numerics.Compatibility
             => left <= right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => Provide.SingleInstance<T, IComparisonOperatorsCompatibility<T, TOther, TResult>>().IsLessThanOrEqualTo(left, right);
+            => SingleInstance.Of<T>().Provide<IComparisonOperatorsCompatibility<T, TOther, TResult>>().IsLessThanOrEqualTo(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
@@ -85,7 +85,7 @@ namespace Jodosoft.Numerics.Compatibility
             => left > right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => Provide.SingleInstance<T, IComparisonOperatorsCompatibility<T, TOther, TResult>>().IsGreaterThan(left, right);
+            => SingleInstance.Of<T>().Provide<IComparisonOperatorsCompatibility<T, TOther, TResult>>().IsGreaterThan(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
@@ -108,7 +108,7 @@ namespace Jodosoft.Numerics.Compatibility
             => left >= right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => Provide.SingleInstance<T, IComparisonOperatorsCompatibility<T, TOther, TResult>>().IsGreaterThanOrEqualTo(left, right);
+            => SingleInstance.Of<T>().Provide<IComparisonOperatorsCompatibility<T, TOther, TResult>>().IsGreaterThanOrEqualTo(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 

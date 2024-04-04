@@ -39,7 +39,7 @@ namespace Jodosoft.Numerics.Compatibility
             => left % right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => Provide.SingleInstance<T, IModulusOperatorsCompatibility<T, TOther, TResult>>().Remainder(left, right);
+            => SingleInstance.Of<T>().Provide().Remainder(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
