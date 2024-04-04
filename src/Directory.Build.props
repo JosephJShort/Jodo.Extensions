@@ -29,4 +29,8 @@
     <DefineConstants>HAS_VALUE_TUPLES;$(AdditionalConstants)</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
+    <DefineConstants>HAS_VALUE_TUPLES;HAS_SPANS;HAS_DEFAULT_INTERFACE_METHODS;$(AdditionalConstants)</DefineConstants>
+  </PropertyGroup>
+
 </Project>
