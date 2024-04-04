@@ -406,7 +406,7 @@ namespace Jodosoft.Numerics.Tests
 #if HAS_SPANS
         [MethodImpl(MethodImplOptions.AggressiveInlining)] ISpanParsableCompatibility<ExampleNumber> IProvider<ISpanParsableCompatibility<ExampleNumber>>.GetInstance() => StaticCompatibility.Instance;
 #endif
-        private class StaticCompatibility
+        private sealed class StaticCompatibility
             : IAdditionOperatorsCompatibility<ExampleNumber, ExampleNumber, ExampleNumber>,
               IAdditiveIdentityCompatibility<ExampleNumber, ExampleNumber>,
               IBinaryIntegerCompatibility<ExampleNumber>,
