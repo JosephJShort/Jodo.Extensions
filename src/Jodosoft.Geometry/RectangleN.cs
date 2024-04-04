@@ -56,9 +56,9 @@ namespace Jodosoft.Geometry
 
         private RectangleN(SerializationInfo info, StreamingContext context)
         {
-            Center = (Vector2N<TNumeric>)info.GetValue(nameof(Center), typeof(Vector2N<TNumeric>));
-            Dimensions = (Vector2N<TNumeric>)info.GetValue(nameof(Dimensions), typeof(Vector2N<TNumeric>));
-            Angle = (AngleN<TNumeric>)info.GetValue(nameof(Angle), typeof(AngleN<TNumeric>));
+            Center = (Vector2N<TNumeric>)(info.GetValue(nameof(Center), typeof(Vector2N<TNumeric>)) ?? throw new InvalidOperationException());
+            Dimensions = (Vector2N<TNumeric>)(info.GetValue(nameof(Dimensions), typeof(Vector2N<TNumeric>)) ?? throw new InvalidOperationException());
+            Angle = (AngleN<TNumeric>)(info.GetValue(nameof(Angle), typeof(AngleN<TNumeric>)) ?? throw new InvalidOperationException());
         }
 
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
@@ -114,8 +114,8 @@ namespace Jodosoft.Geometry
 
         public AARectangleN<TNumeric> GetBounds()
         {
-            TNumeric[]? xs = new[] { this.GetTopLeft().X, this.GetTopRight().X, this.GetBottomLeft().X, this.GetBottomRight().X };
-            TNumeric[]? ys = new[] { this.GetTopLeft().Y, this.GetTopRight().Y, this.GetBottomLeft().Y, this.GetBottomRight().Y };
+            TNumeric[]? xs = [this.GetTopLeft().X, this.GetTopRight().X, this.GetBottomLeft().X, this.GetBottomRight().X];
+            TNumeric[]? ys = [this.GetTopLeft().Y, this.GetTopRight().Y, this.GetBottomLeft().Y, this.GetBottomRight().Y];
 
             TNumeric minX = xs.Min();
             TNumeric maxX = xs.Max();

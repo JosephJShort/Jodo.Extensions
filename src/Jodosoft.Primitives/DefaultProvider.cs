@@ -19,8 +19,8 @@
 
 namespace Jodosoft.Primitives
 {
-    public static class DefaultProvider<TProvider, T> where TProvider : struct, IProvider<T>
+    public static class DefaultProvider<TProvider, T> where TProvider : IProvider<T>, new()
     {
-        public static readonly T Instance = default(TProvider).GetInstance();
+        public static readonly T Instance = new TProvider().GetInstance();
     }
 }

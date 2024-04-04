@@ -44,11 +44,11 @@ namespace Jodosoft.Testing.NewtonsoftJson
         public void SerializeObjectInList_RandomVariantsFromJson_CanRoundTrip()
         {
             //arrange
-            T[] inputs = new T[] {
+            T[] inputs = [
                 JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(Random.NextVariant<T>(Variants.LowMagnitude))),
                 JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(Random.NextVariant<T>(Variants.LowMagnitude))),
                 JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(Random.NextVariant<T>(Variants.LowMagnitude)))
-            };
+            ];
 
             //act
             T[] results = JsonConvert.DeserializeObject<T[]>(JsonConvert.SerializeObject(inputs));

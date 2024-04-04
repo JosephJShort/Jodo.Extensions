@@ -65,7 +65,7 @@ namespace Jodosoft.Testing
 
             if (functionsArray.Length < 2) throw new ArgumentException("Must provide at least 2 functions for comparison", nameof(functions));
 
-            List<(TResult Result, Exception Exception)> outcomes = new List<(TResult Result, Exception Exception)>();
+            List<(TResult Result, Exception Exception)> outcomes = [];
 
             foreach (Func<TResult> function in functionsArray)
             {
@@ -123,7 +123,7 @@ namespace Jodosoft.Testing
 
             if (functionsArray.Length < 2) throw new ArgumentException("Must provide at least 2 functions for comparison", nameof(functions));
 
-            List<TResult> results = new List<TResult>();
+            List<TResult> results = [];
 
             foreach (Func<TResult> function in functionsArray)
             {
@@ -200,7 +200,7 @@ namespace Jodosoft.Testing
             if (expected == null) throw new ArgumentNullException(nameof(expected));
             if (actual == null) throw new ArgumentNullException(nameof(actual));
 
-            List<Func<TResult>> functions = new List<Func<TResult>> { expected, actual };
+            List<Func<TResult>> functions = [expected, actual];
             if (actuals != null)
             {
                 foreach (Func<TResult> a in actuals)

@@ -35,7 +35,7 @@ namespace Jodosoft.Benchmarking
         {
             string assemblyName = Assembly.GetEntryAssembly().GetName().Name;
 
-            string[] lines = new[] {
+            string[] lines = [
                     string.Empty,
                     $"{assemblyName} - Results from {DateTime.UtcNow:u}",
                     "------",
@@ -48,7 +48,7 @@ namespace Jodosoft.Benchmarking
                     $"> * **Seconds per Benchmark:** {duration.TotalSeconds:N1}",
                     string.Empty,
                     "| Subjects \"(1)\\_Versus\\_(2)\" | Operations Per Second (1) | Operations Per Second (2) | Average Time (1) | Average Time (2) | Relative Speed (1) | Relative Speed (2) |",
-                    "| --- | --- | --- | --- | --- | --- | --- |" };
+                    "| --- | --- | --- | --- | --- | --- | --- |" ];
             foreach (string line in lines)
             {
                 Console.WriteLine(line);
@@ -59,7 +59,7 @@ namespace Jodosoft.Benchmarking
         public static void WriteFooter()
         {
             Console.WriteLine();
-            File.AppendAllLines(FileName, new[] { string.Empty });
+            File.AppendAllLines(FileName, [string.Empty]);
         }
 
         public static void WriteError(string name)
@@ -67,7 +67,7 @@ namespace Jodosoft.Benchmarking
             string row = $"| {name} | *Error* | *Error* | *Error* | *Error* | *Error* | *Error* |";
 
             Console.WriteLine(row);
-            File.AppendAllLines(FileName, new[] { row });
+            File.AppendAllLines(FileName, [row]);
         }
 
         public static void WriteResult(BenchmarkResult result)
@@ -83,7 +83,7 @@ namespace Jodosoft.Benchmarking
                 $"|";
 
             Console.WriteLine(row);
-            File.AppendAllLines(FileName, new[] { row });
+            File.AppendAllLines(FileName, [row]);
         }
 
         private static string FormatRate(Count count)

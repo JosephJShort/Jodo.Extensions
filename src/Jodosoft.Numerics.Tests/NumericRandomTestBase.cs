@@ -235,7 +235,7 @@ namespace Jodosoft.Numerics.Tests
         public void NextNumeric_BoundariesVariant_ReturnsMinValueOrMaxValue()
         {
             //arrange
-            TNumeric[] expected = new[] { Numeric.MinValue<TNumeric>(), Numeric.MaxValue<TNumeric>() };
+            TNumeric[] expected = [Numeric.MinValue<TNumeric>(), Numeric.MaxValue<TNumeric>()];
 
             //act
             TNumeric result = Random.NextNumeric<TNumeric>(Variants.Boundaries);
