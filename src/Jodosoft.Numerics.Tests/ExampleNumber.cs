@@ -71,8 +71,6 @@ namespace Jodosoft.Numerics.Tests
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context) => throw new NotImplementedException();
         void IDeserializationCallback.OnDeserialization(object? sender) => throw new NotImplementedException();
 
-        private static void SinCos(ExampleNumber x, out ExampleNumber sin, out ExampleNumber cos) => throw new NotImplementedException();
-        private static void SinCosPi(ExampleNumber x, out ExampleNumber sinPi, out ExampleNumber cosPi) => throw new NotImplementedException();
         private static bool Equals(ExampleNumber value, ExampleNumber other) => throw new NotImplementedException();
         private static bool Equals(ExampleNumber value, object? obj) => throw new NotImplementedException();
         private static bool IsCanonical(ExampleNumber value) => throw new NotImplementedException();
@@ -131,6 +129,7 @@ namespace Jodosoft.Numerics.Tests
         private static ExampleNumber FusedMultiplyAdd(ExampleNumber left, ExampleNumber right, ExampleNumber addend) => throw new NotImplementedException();
         private static ExampleNumber Hypot(ExampleNumber x, ExampleNumber y) => throw new NotImplementedException();
         private static ExampleNumber Ieee754Remainder(ExampleNumber left, ExampleNumber right) => throw new NotImplementedException();
+        private static ExampleNumber LeadingZeroCount(ExampleNumber value) => throw new NotImplementedException();
         private static ExampleNumber Log(ExampleNumber x) => throw new NotImplementedException();
         private static ExampleNumber Log(ExampleNumber x, ExampleNumber newBase) => throw new NotImplementedException();
         private static ExampleNumber Log10(ExampleNumber x) => throw new NotImplementedException();
@@ -146,7 +145,13 @@ namespace Jodosoft.Numerics.Tests
         private static ExampleNumber PopCount(ExampleNumber value) => throw new NotImplementedException();
         private static ExampleNumber PositiveInfinity => throw new NotImplementedException();
         private static ExampleNumber Pow(ExampleNumber x, ExampleNumber y) => throw new NotImplementedException();
+        private static ExampleNumber ReadBigEndian(byte[] source, bool isUnsigned) => throw new NotImplementedException();
+        private static ExampleNumber ReadBigEndian(byte[] source, int startIndex, bool isUnsigned) => throw new NotImplementedException();
+        private static ExampleNumber ReadLittleEndian(byte[] source, bool isUnsigned) => throw new NotImplementedException();
+        private static ExampleNumber ReadLittleEndian(byte[] source, int startIndex, bool isUnsigned) => throw new NotImplementedException();
         private static ExampleNumber RootN(ExampleNumber x, int n) => throw new NotImplementedException();
+        private static ExampleNumber RotateLeft(ExampleNumber value, int rotateAmount) => throw new NotImplementedException();
+        private static ExampleNumber RotateRight(ExampleNumber value, int rotateAmount) => throw new NotImplementedException();
         private static ExampleNumber Round(ExampleNumber x, int digits, MidpointRounding mode) => throw new NotImplementedException();
         private static ExampleNumber ScaleB(ExampleNumber x, int n) => throw new NotImplementedException();
         private static ExampleNumber Sin(ExampleNumber x) => throw new NotImplementedException();
@@ -180,6 +185,8 @@ namespace Jodosoft.Numerics.Tests
         private static uint ToUInt32(ExampleNumber value, IFormatProvider? provider) => throw new NotImplementedException();
         private static ulong ToUInt64(ExampleNumber value, IFormatProvider? provider) => throw new NotImplementedException();
         private static ushort ToUInt16(ExampleNumber value, IFormatProvider? provider) => throw new NotImplementedException();
+        private static void SinCos(ExampleNumber x, out ExampleNumber sin, out ExampleNumber cos) => throw new NotImplementedException();
+        private static void SinCosPi(ExampleNumber x, out ExampleNumber sinPi, out ExampleNumber cosPi) => throw new NotImplementedException();
 
 #if HAS_SPANS
         private static bool TryFormat(ExampleNumber value, Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider) => throw new NotImplementedException();
@@ -195,6 +202,8 @@ namespace Jodosoft.Numerics.Tests
         private static bool TryWriteSignificandLittleEndian(ExampleNumber value, Span<byte> destination, out int bytesWritten) => throw new NotImplementedException();
         private static ExampleNumber Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => throw new NotImplementedException();
         private static ExampleNumber Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider) => throw new NotImplementedException();
+        private static ExampleNumber ReadBigEndian(ReadOnlySpan<byte> source, bool isUnsigned) => throw new NotImplementedException();
+        private static ExampleNumber ReadLittleEndian(ReadOnlySpan<byte> source, bool isUnsigned) => throw new NotImplementedException();
 #endif
 
         public static bool operator !=(ExampleNumber left, ExampleNumber right) => throw new NotImplementedException();
@@ -484,7 +493,14 @@ namespace Jodosoft.Numerics.Tests
             [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] bool INumberBaseCompatibility<ExampleNumber>.TryParse(string? s, NumberStyles style, IFormatProvider? provider, out ExampleNumber result) => TryParse(s, style, provider, out result);
             [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] bool IParsableCompatibility<ExampleNumber>.TryParse(string? s, IFormatProvider? provider, out ExampleNumber result) => TryParse(s, provider, out result);
             [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber IAdditionOperatorsCompatibility<ExampleNumber, ExampleNumber, ExampleNumber>.Add(ExampleNumber left, ExampleNumber right) => left + right;
+            [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber IBinaryIntegerCompatibility<ExampleNumber>.LeadingZeroCount(ExampleNumber value) => LeadingZeroCount(value);
             [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber IBinaryIntegerCompatibility<ExampleNumber>.PopCount(ExampleNumber value) => PopCount(value);
+            [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber IBinaryIntegerCompatibility<ExampleNumber>.ReadBigEndian(byte[] source, bool isUnsigned) => ReadBigEndian(source, isUnsigned);
+            [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber IBinaryIntegerCompatibility<ExampleNumber>.ReadBigEndian(byte[] source, int startIndex, bool isUnsigned) => ReadBigEndian(source, startIndex, isUnsigned);
+            [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber IBinaryIntegerCompatibility<ExampleNumber>.ReadLittleEndian(byte[] source, bool isUnsigned) => ReadLittleEndian(source, isUnsigned);
+            [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber IBinaryIntegerCompatibility<ExampleNumber>.ReadLittleEndian(byte[] source, int startIndex, bool isUnsigned) => ReadLittleEndian(source, startIndex, isUnsigned);
+            [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber IBinaryIntegerCompatibility<ExampleNumber>.RotateLeft(ExampleNumber value, int rotateAmount) => RotateLeft(value, rotateAmount);
+            [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber IBinaryIntegerCompatibility<ExampleNumber>.RotateRight(ExampleNumber value, int rotateAmount) => RotateRight(value, rotateAmount);
             [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber IBinaryIntegerCompatibility<ExampleNumber>.TrailingZeroCount(ExampleNumber value) => TrailingZeroCount(value);
             [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber IBinaryNumberCompatibility<ExampleNumber>.Log2(ExampleNumber value) => Log2(value);
             [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber IBitwiseOperatorsCompatibility<ExampleNumber, ExampleNumber, ExampleNumber>.BitwiseComplement(ExampleNumber value) => ~value;
@@ -555,6 +571,8 @@ namespace Jodosoft.Numerics.Tests
             [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] bool IBinaryIntegerCompatibility<ExampleNumber>.TryReadLittleEndian(ReadOnlySpan<byte> source, bool isUnsigned, out ExampleNumber value) => TryReadLittleEndian(source, isUnsigned, out value);
             [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] bool INumberBaseCompatibility<ExampleNumber>.TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, out ExampleNumber result) => TryParse(s, style, provider, out result);
             [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] bool ISpanParsableCompatibility<ExampleNumber>.TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out ExampleNumber result) => TryParse(s, provider, out result);
+            [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber IBinaryIntegerCompatibility<ExampleNumber>.ReadBigEndian(ReadOnlySpan<byte> source, bool isUnsigned) => ReadBigEndian(source, isUnsigned);
+            [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber IBinaryIntegerCompatibility<ExampleNumber>.ReadLittleEndian(ReadOnlySpan<byte> source, bool isUnsigned) => ReadLittleEndian(source, isUnsigned);
             [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber INumberBaseCompatibility<ExampleNumber>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider) => Parse(s, style, provider);
             [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] ExampleNumber ISpanParsableCompatibility<ExampleNumber>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => Parse(s, provider);
 #endif
