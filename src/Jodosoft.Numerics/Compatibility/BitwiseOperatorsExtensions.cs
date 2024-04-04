@@ -34,14 +34,19 @@ namespace Jodosoft.Numerics.Compatibility
         ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T LogicalAnd<T>(this T? left, T? right) where T : IBitwiseOperators<T, T, T>, new()
+        public static TResult LogicalAnd<T, TOther, TResult>(this T left, TOther right) where T : IBitwiseOperators<T, TOther, TResult>, new()
 #if HAS_SYSTEM_NUMERICS
             => left & right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().LogicalAnd(left, right);
+            => Provide.SingleInstance<T, IBitwiseOperatorsCompatibility<T, TOther, TResult>>().LogicalAnd(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="LogicalAnd{T, TOther, TResult}(T, T)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult LogicalAnd<T, TOther, TResult>(this IBitwiseOperators<T, TOther, TResult> left, TOther right) where T : IBitwiseOperators<T, TOther, TResult>, new()
+            => LogicalAnd<T, TOther, TResult>((T)left, right);
 
         /// <summary>Computes the bitwise-or of two values.</summary>
         /// <param name="left">The value to or with <paramref name="right" />.</param>
@@ -52,14 +57,19 @@ namespace Jodosoft.Numerics.Compatibility
         ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T LogicalOr<T>(this T? left, T? right) where T : IBitwiseOperators<T, T, T>, new()
+        public static TResult LogicalOr<T, TOther, TResult>(this T left, TOther right) where T : IBitwiseOperators<T, TOther, TResult>, new()
 #if HAS_SYSTEM_NUMERICS
             => left | right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().LogicalOr(left, right);
+            => Provide.SingleInstance<T, IBitwiseOperatorsCompatibility<T, TOther, TResult>>().LogicalOr(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="LogicalOr{T, TOther, TResult}(T, T)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult LogicalOr<T, TOther, TResult>(this IBitwiseOperators<T, TOther, TResult> left, TOther right) where T : IBitwiseOperators<T, TOther, TResult>, new()
+            => LogicalOr<T, TOther, TResult>((T)left, right);
 
         /// <summary>Computes the exclusive-or of two values.</summary>
         /// <param name="left">The value to xor with <paramref name="right" />.</param>
@@ -70,14 +80,19 @@ namespace Jodosoft.Numerics.Compatibility
         ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T LogicalExclusiveOr<T>(this T? left, T? right) where T : IBitwiseOperators<T, T, T>, new()
+        public static TResult LogicalExclusiveOr<T, TOther, TResult>(this T left, TOther right) where T : IBitwiseOperators<T, TOther, TResult>, new()
 #if HAS_SYSTEM_NUMERICS
             => left ^ right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().LogicalExclusiveOr(left, right);
+            => Provide.SingleInstance<T, IBitwiseOperatorsCompatibility<T, TOther, TResult>>().LogicalExclusiveOr(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="LogicalExclusiveOr{T, TOther, TResult}(T, T)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult LogicalExclusiveOr<T, TOther, TResult>(this IBitwiseOperators<T, TOther, TResult> left, TOther right) where T : IBitwiseOperators<T, TOther, TResult>, new()
+            => LogicalExclusiveOr<T, TOther, TResult>((T)left, right);
 
         /// <summary>Computes the ones-complement representation of a given value.</summary>
         /// <param name="value">The value for which to compute its ones-complement.</param>
@@ -87,13 +102,18 @@ namespace Jodosoft.Numerics.Compatibility
         ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T BitwiseComplement<T>(this T? value) where T : IBitwiseOperators<T, T, T>, new()
+        public static TResult BitwiseComplement<T, TOther, TResult>(this T value) where T : IBitwiseOperators<T, TOther, TResult>, new()
 #if HAS_SYSTEM_NUMERICS
             => ~value;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().BitwiseComplement(value);
+            => Provide.SingleInstance<T, IBitwiseOperatorsCompatibility<T, TOther, TResult>>().BitwiseComplement(value);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="BitwiseComplement{T, TOther, TResult}(T)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult BitwiseComplement<T, TOther, TResult>(this IBitwiseOperators<T, TOther, TResult> value) where T : IBitwiseOperators<T, TOther, TResult>, new()
+            => BitwiseComplement<T, TOther, TResult>((T)value);
     }
 }

@@ -39,8 +39,13 @@ namespace Jodosoft.Numerics.Compatibility
             => left - right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().Subtract(left, right);
+            => Provide.SingleInstance<T, ISubtractionOperatorsCompatibility<T, TOther, TResult>>().Subtract(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="Subtract{T, TOther, TResult}(T, TOther)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult Subtract<T, TOther, TResult>(this ISubtractionOperators<T, TOther, TResult> left, TOther right) where T : ISubtractionOperators<T, TOther, TResult>, new()
+            => Subtract<T, TOther, TResult>((T)left, right);
     }
 }

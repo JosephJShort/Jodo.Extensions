@@ -39,9 +39,14 @@ namespace Jodosoft.Numerics.Compatibility
             => left < right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => ((IProvider<IComparisonOperatorsCompatibility<T, TOther, TResult>>)DefaultInstance<T>.Value).GetInstance().IsLessThan(left, right);
+            => Provide.SingleInstance<T, IComparisonOperatorsCompatibility<T, TOther, TResult>>().IsLessThan(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="IsLessThan{T, TOther, TResult}(T, TOther)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult IsLessThan<T, TOther, TResult>(this IComparisonOperators<T, TOther, TResult> left, TOther right) where T : IComparisonOperators<T, TOther, TResult>, new()
+            => IsLessThan<T, TOther, TResult>((T)left, right);
 
         /// <summary>Compares two values to determine which is less or equal.</summary>
         /// <param name="left">The value to compare with <paramref name="right" />.</param>
@@ -57,9 +62,14 @@ namespace Jodosoft.Numerics.Compatibility
             => left <= right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => ((IProvider<IComparisonOperatorsCompatibility<T, TOther, TResult>>)DefaultInstance<T>.Value).GetInstance().IsLessThanOrEqualTo(left, right);
+            => Provide.SingleInstance<T, IComparisonOperatorsCompatibility<T, TOther, TResult>>().IsLessThanOrEqualTo(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="IsLessThanOrEqualTo{T, TOther, TResult}(T, TOther)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult IsLessThanOrEqualTo<T, TOther, TResult>(this IComparisonOperators<T, TOther, TResult> left, TOther right) where T : IComparisonOperators<T, TOther, TResult>, new()
+            => IsLessThanOrEqualTo<T, TOther, TResult>((T)left, right);
 
         /// <summary>Compares two values to determine which is greater.</summary>
         /// <param name="left">The value to compare with <paramref name="right" />.</param>
@@ -75,9 +85,14 @@ namespace Jodosoft.Numerics.Compatibility
             => left > right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => ((IProvider<IComparisonOperatorsCompatibility<T, TOther, TResult>>)DefaultInstance<T>.Value).GetInstance().IsGreaterThan(left, right);
+            => Provide.SingleInstance<T, IComparisonOperatorsCompatibility<T, TOther, TResult>>().IsGreaterThan(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="IsGreaterThan{T, TOther, TResult}(T, TOther)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult IsGreaterThan<T, TOther, TResult>(this IComparisonOperators<T, TOther, TResult> left, TOther right) where T : IComparisonOperators<T, TOther, TResult>, new()
+            => IsGreaterThan<T, TOther, TResult>((T)left, right);
 
         /// <summary>Compares two values to determine which is greater or equal.</summary>
         /// <param name="left">The value to compare with <paramref name="right" />.</param>
@@ -93,8 +108,13 @@ namespace Jodosoft.Numerics.Compatibility
             => left >= right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => ((IProvider<IComparisonOperatorsCompatibility<T, TOther, TResult>>)DefaultInstance<T>.Value).GetInstance().IsGreaterThanOrEqualTo(left, right);
+            => Provide.SingleInstance<T, IComparisonOperatorsCompatibility<T, TOther, TResult>>().IsGreaterThanOrEqualTo(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="IsGreaterThanOrEqualTo{T, TOther, TResult}(T, TOther)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult IsGreaterThanOrEqualTo<T, TOther, TResult>(this IComparisonOperators<T, TOther, TResult> left, TOther right) where T : IComparisonOperators<T, TOther, TResult>, new()
+            => IsGreaterThanOrEqualTo<T, TOther, TResult>((T)left, right);
     }
 }

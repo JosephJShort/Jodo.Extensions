@@ -38,8 +38,13 @@ namespace Jodosoft.Numerics.Compatibility
             => value--;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().Decrement(value);
+            => Provide.SingleInstance<T, IDecrementOperatorsCompatibility<T>>().Decrement(value);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="Decrement{T}(T)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Decrement<T>(this IDecrementOperators<T> value) where T : IDecrementOperators<T>, new()
+            => Decrement((T)value);
     }
 }

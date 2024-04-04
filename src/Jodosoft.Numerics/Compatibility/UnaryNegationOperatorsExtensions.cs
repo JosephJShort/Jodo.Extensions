@@ -38,8 +38,13 @@ namespace Jodosoft.Numerics.Compatibility
             => -value;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().Negative(value);
+            => Provide.SingleInstance<T, IUnaryNegationOperatorsCompatibility<T, TResult>>().Negative(value);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="Negative{T, TResult}(T)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult Negative<T, TResult>(this IUnaryNegationOperators<T, TResult> value) where T : IUnaryNegationOperators<T, TResult>, new()
+            => Negative<T, TResult>((T)value);
     }
 }

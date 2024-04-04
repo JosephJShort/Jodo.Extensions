@@ -39,8 +39,13 @@ namespace Jodosoft.Numerics.Compatibility
             => left * right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().Multiply(left, right);
+            => Provide.SingleInstance<T, IMultiplyOperatorsCompatibility<T, TOther, TResult>>().Multiply(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="Multiply{T, TOther, TResult}(T, TOther)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult Multiply<T, TOther, TResult>(this IMultiplyOperators<T, TOther, TResult> left, TOther right) where T : IMultiplyOperators<T, TOther, TResult>, new()
+            => Multiply<T, TOther, TResult>((T)left, right);
     }
 }

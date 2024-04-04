@@ -17,6 +17,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using Jodosoft.Primitives;
 
@@ -33,13 +34,18 @@ namespace Jodosoft.Numerics.Compatibility
         ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Remainder<T>(this T left, T right) where T : IModulusOperators<T, T, T>, new()
+        public static TResult Remainder<T, TOther, TResult>(this T left, TOther right) where T : IModulusOperators<T, TOther, TResult>, new()
 #if HAS_SYSTEM_NUMERICS
             => left % right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().Remainder(left, right);
+            => Provide.SingleInstance<T, IModulusOperatorsCompatibility<T, TOther, TResult>>().Remainder(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="Remainder{T, TOther, TResult}(T, TOther)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult Remainder<T, TOther, TResult>(this IModulusOperators<T, TOther, TResult> left, TOther right) where T : IModulusOperators<T, TOther, TResult>, new()
+            => Remainder<T, TOther, TResult>((T)left, right);
     }
 }

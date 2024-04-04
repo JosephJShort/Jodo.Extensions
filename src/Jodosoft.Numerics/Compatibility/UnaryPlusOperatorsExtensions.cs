@@ -38,8 +38,13 @@ namespace Jodosoft.Numerics.Compatibility
             => +value;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().Positive(value);
+            => Provide.SingleInstance<T, IUnaryPlusOperatorsCompatibility<T, TResult>>().Positive(value);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="Positive{T, TResult}(T)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult Positive<T, TResult>(this IUnaryPlusOperators<T, TResult> value) where T : IUnaryPlusOperators<T, TResult>, new()
+            => Positive<T, TResult>((T)value);
     }
 }

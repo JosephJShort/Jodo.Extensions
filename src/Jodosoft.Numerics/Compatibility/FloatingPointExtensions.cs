@@ -17,14 +17,13 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-using System;
-
 #if !HAS_SYSTEM_NUMERICS
 
 namespace Jodosoft.Numerics.Compatibility
 {
     public static class FloatingPointExtensions
     {
+        /*
         /// <summary>Writes the current exponent, in big-endian format, to a given array.</summary>
         /// <param name="destination">The array to which the current exponent should be written.</param>
         /// <returns>The number of bytes written to <paramref name="destination" />.</returns>
@@ -172,6 +171,7 @@ namespace Jodosoft.Numerics.Compatibility
             }
             return bytesWritten;
         }
+        */
     }
 }
 

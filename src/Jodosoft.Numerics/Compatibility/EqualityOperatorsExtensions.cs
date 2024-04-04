@@ -35,9 +35,14 @@ namespace Jodosoft.Numerics.Compatibility
             => left == right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().IsEqualTo(left, right);
+            => Provide.SingleInstance<T, IEqualityOperatorsCompatibility<T, TOther, TResult>>().IsEqualTo(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="IsEqualTo{T, TOther, TResult}(T, TOther)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult IsEqualTo<T, TOther, TResult>(this IEqualityOperators<T, TOther, TResult> left, TOther right) where T : IEqualityOperators<T, TOther, TResult>, new()
+            => IsEqualTo<T, TOther, TResult>((T)left, right);
 
         /// <summary>Compares two values to determine inequality.</summary>
         /// <param name="left">The value to compare with <paramref name="right" />.</param>
@@ -49,8 +54,13 @@ namespace Jodosoft.Numerics.Compatibility
             => left != right;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().IsNotEqualTo(left, right);
+            => Provide.SingleInstance<T, IEqualityOperatorsCompatibility<T, TOther, TResult>>().IsNotEqualTo(left, right);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="IsNotEqualTo{T, TOther, TResult}(T, TOther)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult IsNotEqualTo<T, TOther, TResult>(this IEqualityOperators<T, TOther, TResult> left, TOther right) where T : IEqualityOperators<T, TOther, TResult>, new()
+            => IsNotEqualTo<T, TOther, TResult>((T)left, right);
     }
 }

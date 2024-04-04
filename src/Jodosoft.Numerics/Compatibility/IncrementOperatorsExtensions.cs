@@ -38,8 +38,13 @@ namespace Jodosoft.Numerics.Compatibility
             => value++;
 #else
 #pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().Increment(value);
+            => Provide.SingleInstance<T, IIncrementOperatorsCompatibility<T>>().Increment(value);
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
+
+        /// <inheritdoc cref="Increment{T}(T)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Increment<T>(this IIncrementOperators<T> value) where T : IIncrementOperators<T>, new()
+            => Increment((T)value);
     }
 }

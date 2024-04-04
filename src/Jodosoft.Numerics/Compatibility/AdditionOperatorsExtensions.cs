@@ -21,6 +21,8 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using Jodosoft.Primitives;
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
 namespace Jodosoft.Numerics.Compatibility
 {
     public static class AdditionOperatorsExtensions
@@ -34,13 +36,18 @@ namespace Jodosoft.Numerics.Compatibility
         ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Add<T>(this T left, T right) where T : IAdditionOperators<T, T, T>, new()
+        public static TResult Add<T, TOther, TResult>(this T left, TOther right) where T : IAdditionOperators<T, TOther, TResult>, new()
 #if HAS_SYSTEM_NUMERICS
             => left + right;
 #else
-#pragma warning disable CS0618 // Type or member is obsolete
-            => DefaultInstance<T>.Value.GetInstance().Add(left, right);
-#pragma warning restore CS0618 // Type or member is obsolete
+            => SingleInstance.Of<T>().Provide().Add(left, right);
 #endif
+
+        /// <inheritdoc cref="Add{T, TOther, TResult}(T, TOther)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TResult Add<T, TOther, TResult>(this IAdditionOperators<T, TOther, TResult> left, TOther right) where T : IAdditionOperators<T, TOther, TResult>, new()
+            => Add<T, TOther, TResult>((T)left, right);
     }
 }
+
+#pragma warning restore CS0618 // Type or member is obsolete
