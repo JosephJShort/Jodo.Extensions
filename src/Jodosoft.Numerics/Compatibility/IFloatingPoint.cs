@@ -24,11 +24,6 @@ using Jodosoft.Primitives;
 
 namespace Jodosoft.Numerics.Compatibility
 {
-    public interface ICompatProvider<T>
-    {
-        T StaticCompatibility { get; }
-    }
-
     /// <summary>Defines a floating-point type.</summary>
     /// <typeparam name="TSelf">The type that implements the interface.</typeparam>
     /// <remarks>
@@ -36,7 +31,7 @@ namespace Jodosoft.Numerics.Compatibility
     ///     <see href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math</see> introduced in .NET 7.
     /// </remarks>
     public interface IFloatingPoint<TSelf>
-        : IProvider<IFloatingPointCompatibility<TSelf>>
+        : IProvider<IFloatingPointCompatibility<TSelf>>,
           IFloatingPointConstants<TSelf>,
           INumber<TSelf>,
           ISignedNumber<TSelf>
