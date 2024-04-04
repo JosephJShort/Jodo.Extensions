@@ -19,6 +19,7 @@
 
 using System;
 using FluentAssertions;
+using Jodosoft.Primitives;
 using Jodosoft.Testing;
 using NUnit.Framework;
 
@@ -29,6 +30,34 @@ namespace Jodosoft.Numerics.Tests
         [Test]
         public void GetScalingFactor_ReturnsOneMillion()
             => Fix64N.GetScalingFactor().Should().Be(1_000_000);
+
+        [Test, Repeat(RandomVariations)]
+        public void IncrementOperator_RandomInputs_SameAsPlusOne()
+        {
+            //arrange
+            Fix64N input = Random.NextVariant<Fix64N>();
+            Fix64N expected = input + 1;
+
+            //act
+            input++;
+
+            //assert
+            input.Should().Be(expected);
+        }
+
+        [Test, Repeat(RandomVariations)]
+        public void DecrementOperator_RandomInputs_SameAsMinusOne()
+        {
+            //arrange
+            Fix64N input = Random.NextVariant<Fix64N>();
+            Fix64N expected = input - 1;
+
+            //act
+            input--;
+
+            //assert
+            input.Should().Be(expected);
+        }
 
         [Test]
         public void Scratch()

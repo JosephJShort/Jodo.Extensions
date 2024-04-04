@@ -21,6 +21,6 @@ namespace Jodosoft.Primitives
 {
     public static class ProviderExtensions
     {
-        public static T Provide<T>(this IProvider<T> instance) => instance.Provide();
+        public static T Provide<T>(this IProvider<T> instance) => instance.GetInstance();
     }
 }

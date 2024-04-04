@@ -72,21 +72,22 @@ namespace Jodosoft.Numerics
           ITrigonometricFunctions<Fix64N>,
           IUnaryNegationOperators<Fix64N, Fix64N>,
           IUnaryPlusOperators<Fix64N, Fix64N>,
-          IUnsignedNumber<Fix64N>
+          IUnsignedNumber<Fix64N>,
+          IProvider<IVariantRandom<Fix64N>>
 #if HAS_SPANS
         , ISpanFormattable,
           ISpanParsable<Fix64N>
 #endif
     {
         private static int Radix => 2;
-        private static Fix64N AdditiveIdentity => Zero;
-        private static Fix64N MultiplicativeIdentity => One;
-        private static Fix64N NegativeOne => new Fix64N(-ScalingFactor);
-        private static Fix64N One => new Fix64N(ScalingFactor);
-        private static Fix64N Zero => new Fix64N(0);
-        private static Fix64N E => new Fix64N(ScaledE);
-        private static Fix64N Pi => new Fix64N(ScaledPi);
-        private static Fix64N Tau => new Fix64N(ScaledTau);
+        private static readonly Fix64N AdditiveIdentity = Zero;
+        private static readonly Fix64N MultiplicativeIdentity = One;
+        private static readonly Fix64N NegativeOne = new Fix64N(-ScalingFactor);
+        private static readonly Fix64N One = new Fix64N(ScalingFactor);
+        private static readonly Fix64N Zero = new Fix64N(0);
+        private static readonly Fix64N E = new Fix64N(ScaledE);
+        private static readonly Fix64N Pi = new Fix64N(ScaledPi);
+        private static readonly Fix64N Tau = new Fix64N(ScaledTau);
 
         public static readonly Fix64N Epsilon = new Fix64N(1);
         public static readonly Fix64N MaxValue = new Fix64N(long.MaxValue);
@@ -463,6 +464,11 @@ namespace Jodosoft.Numerics
         [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] static Fix64N ITrigonometricFunctions<Fix64N>.SinPi(Fix64N x) => SinPi(x);
         [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] static Fix64N ITrigonometricFunctions<Fix64N>.Tan(Fix64N x) => Tan(x);
         [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] static Fix64N ITrigonometricFunctions<Fix64N>.TanPi(Fix64N x) => TanPi(x);
+
+        IVariantRandom<Fix64N> IProvider<IVariantRandom<Fix64N>>.GetInstance()
+        {
+            throw new NotImplementedException();
+        }
 #else
         [MethodImpl(MethodImplOptions.AggressiveInlining)] IAdditionOperatorsCompatibility<Fix64N, Fix64N, Fix64N> IProvider<IAdditionOperatorsCompatibility<Fix64N, Fix64N, Fix64N>>.GetInstance() => StaticCompatibility.Instance;
         [MethodImpl(MethodImplOptions.AggressiveInlining)] IAdditiveIdentityCompatibility<Fix64N, Fix64N> IProvider<IAdditiveIdentityCompatibility<Fix64N, Fix64N>>.GetInstance() => StaticCompatibility.Instance;
@@ -493,6 +499,7 @@ namespace Jodosoft.Numerics
         [MethodImpl(MethodImplOptions.AggressiveInlining)] ITrigonometricFunctionsCompatibility<Fix64N> IProvider<ITrigonometricFunctionsCompatibility<Fix64N>>.GetInstance() => StaticCompatibility.Instance;
         [MethodImpl(MethodImplOptions.AggressiveInlining)] IUnaryNegationOperatorsCompatibility<Fix64N, Fix64N> IProvider<IUnaryNegationOperatorsCompatibility<Fix64N, Fix64N>>.GetInstance() => StaticCompatibility.Instance;
         [MethodImpl(MethodImplOptions.AggressiveInlining)] IUnaryPlusOperatorsCompatibility<Fix64N, Fix64N> IProvider<IUnaryPlusOperatorsCompatibility<Fix64N, Fix64N>>.GetInstance() => StaticCompatibility.Instance;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] IVariantRandom<Fix64N> IProvider<IVariantRandom<Fix64N>>.GetInstance() => StaticCompatibility.Instance;
 #if HAS_SPANS
         [MethodImpl(MethodImplOptions.AggressiveInlining)] ISpanParsableCompatibility<Fix64N> IProvider<ISpanParsableCompatibility<Fix64N>>.GetInstance() => StaticCompatibility.Instance;
 #endif
@@ -528,7 +535,8 @@ namespace Jodosoft.Numerics
               ISubtractionOperatorsCompatibility<Fix64N, Fix64N, Fix64N>,
               ITrigonometricFunctionsCompatibility<Fix64N>,
               IUnaryNegationOperatorsCompatibility<Fix64N, Fix64N>,
-              IUnaryPlusOperatorsCompatibility<Fix64N, Fix64N>
+              IUnaryPlusOperatorsCompatibility<Fix64N, Fix64N>,
+              IVariantRandom<Fix64N>
         {
             public static readonly StaticCompatibility Instance = new StaticCompatibility();
 
@@ -543,6 +551,8 @@ namespace Jodosoft.Numerics
             Fix64N INumberBaseCompatibility<Fix64N>.Zero => Zero;
             Fix64N ISignedNumberCompatibility<Fix64N>.NegativeOne => NegativeOne;
             int INumberBaseCompatibility<Fix64N>.Radix => Radix;
+
+            Fix64N IVariantRandom<Fix64N>.Generate(Random random, Variants variants) => new Fix64N(random.NextInt64(variants));
 
             [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] bool IBinaryNumberCompatibility<Fix64N>.IsPow2(Fix64N value) => IsPow2(value);
             [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)] bool IComparisonOperatorsCompatibility<Fix64N, Fix64N, bool>.IsGreaterThan(Fix64N left, Fix64N right) => left > right;
